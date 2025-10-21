@@ -1,0 +1,9 @@
+h1 {
+  text-decoration: underline;
+}
+
+nav {
+  position: sticky;
+  top: 0;
+  background-color: gray;
+}
