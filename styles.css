@@ -8,6 +8,10 @@ nav {
   background-color: gray;
 }
 
+.dropdown {
+  
+}
+
 .dropdown-content {
   display: none;
   position: absolute;
@@ -15,6 +19,6 @@ nav {
   min-index: 160px;
 }
 
-#account-button:hover .dropdown-content {
+.dropdown:hover .dropdown-content {
   display: block;
 }
