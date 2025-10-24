@@ -15,22 +15,42 @@
     <nav>
       <a href="index.html">Logo</a>
       <input type="text" placeholder="Search for anything"/>
-      <select>
-        <option value="Category 1">Category 1</option>
-        <option value="Category 2">Category 2</option>
-        <!--TODO: get a list of categories from the JSON instead-->
+      <select id="category-select">
+        <script src="categories.js"></script>
       </select>
       <button>Search!</button>
       <div class="dropdown">
         <button>My Account</button>
         <div class="dropdown-content">
-          <button>Register</button>
-          <button>Login</button>
-          <input type="text" placeholder="Username"/>
-          <input type="text" placeholder="Password"/>
-          <button>Submit</button>
+          <div class="tab-area">
+            <button onclick="changeTab(event, 'login-tab-content')">Login</button>
+            <button onclick="changeTab(event, 'login-tab-content')">Register</button>
+            <div id="login-tab-content" class="tab-content" style="display:unset">
+              <input type="text" placeholder="Username"/>
+              <input type="text" placeholder="Password"/>
+              <button>Submit</button>
+            </div>
+            <div id="register-tab-content" class="tab-content">
+              <input type="text" placeholder="Username"/>
+              <input type="text" placeholder="Password"/>
+              <button>Submit</button>
+            </div>
+          </div>
+          <script>
+            // call this function on a button click
+            // switches the currently displayed tab in the surrounding .tab-area to tabID
+            function changeTab(event, tabID)
+            {
+              const tabArea = event.currentTarget.closest(".tab-area");
+              var tabContents = tabArea.getElementsByClassName("tab-content");
+              for (const tabContent in tabContents)
+                tabContent.style.display = "none";
+              document.getElementById(tabID).style.display("block");
+            }
+          </script>
         </div>
       </div>
+      <button>My Cart</button>
     </nav>
 
     <main>
