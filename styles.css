@@ -8,6 +8,50 @@ nav {
   background-color: gray;
 }
 
+/********************* dropdowns *********************/
+
+/* contains a dropdown */
+.dropdown {
+  display: inline;
+}
+
+/* contains the content of a dropdown. Place inside a .dropdown */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  left: 300px;
+  /* TODO: make positioning relative to the dropdown instead */
+  z-index: 1;
+  background-color: gray;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/********************* tabs *********************/
+
+/* contains a bunch of tabs and their content */
+.tab-area {
+
+}
+
+/* a tab button. Clicking it should change tabs */
+.tab {
+  
+}
+
+/* contains the content for one tab */
+.tab-content {
+  display: none;
+}
+
+.tab.active {
+  background-color: gray;
+}
+
+/********************* product grid *********************/
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));

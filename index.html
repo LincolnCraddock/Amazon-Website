@@ -13,7 +13,50 @@
     </header>
 
     <nav>
-      <a href="index.html">Home</a>
+      <a href="index.html">Logo</a>
+      <input type="text" placeholder="Search for anything"/>
+      <select id="category-select">
+        <option value="" disabled selected>Filter</option>
+        <script src="categories.js"></script>
+      </select>
+      <button>Search!</button>
+      <div class="dropdown">
+        <button>My Account</button>
+        <div class="dropdown-content">
+          <div class="tab-area">
+            <button class="tab active" onclick="changeTab(event, 'login-tab-content')">Login</button>
+            <button class="tab" onclick="changeTab(event, 'register-tab-content')">Register</button>
+            <br>
+            <div id="login-tab-content" class="tab-content" style="display:block">
+              <input type="text" placeholder="Username"/>
+              <input type="text" placeholder="Password"/>
+              <button>Login</button>
+            </div>
+            <div id="register-tab-content" class="tab-content">
+              <input type="text" placeholder="Username"/>
+              <input type="text" placeholder="Password"/>
+              <button>Register</button>
+            </div>
+          </div>
+          <script>
+            // call this function on a button click
+            // switches the currently displayed tab in the surrounding .tab-area to tabID
+            function changeTab(event, tabID)
+            {
+              const tabArea = event.currentTarget.closest(".tab-area");
+              const tabContents = tabArea.getElementsByClassName("tab-content");
+              for (const tabContent of tabContents)
+                tabContent.style.display = tabContent.id == tabID ? "block" : "none";
+              const tabs = tabArea.getElementsByClassName("tab")
+              for (const tab of tabs)
+                tab.classList.remove("active");
+              event.currentTarget.classList.add("active");
+            }
+          </script>
+          <!--TODO: move this script somewhere better ^^^ -->
+        </div>
+      </div>
+      <button>My Cart</button>
     </nav>
 
     <main>
