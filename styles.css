@@ -8,6 +8,21 @@ nav {
   background-color: gray;
 }
 
+.dropdown {
+  
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  z-index: 1;
+  min-index: 160px;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
