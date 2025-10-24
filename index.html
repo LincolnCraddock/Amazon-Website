@@ -16,6 +16,7 @@
       <a href="index.html">Logo</a>
       <input type="text" placeholder="Search for anything"/>
       <select id="category-select">
+        <option value="" disabled selected>Filter</option>
         <script src="categories.js"></script>
       </select>
       <button>Search!</button>
@@ -23,17 +24,18 @@
         <button>My Account</button>
         <div class="dropdown-content">
           <div class="tab-area">
-            <button onclick="changeTab(event, 'login-tab-content')">Login</button>
-            <button onclick="changeTab(event, 'login-tab-content')">Register</button>
-            <div id="login-tab-content" class="tab-content" style="display:unset">
+            <button class="tab active" onclick="changeTab(event, 'login-tab-content')">Login</button>
+            <button class="tab" onclick="changeTab(event, 'register-tab-content')">Register</button>
+            <br>
+            <div id="login-tab-content" class="tab-content" style="display:block">
               <input type="text" placeholder="Username"/>
               <input type="text" placeholder="Password"/>
-              <button>Submit</button>
+              <button>Login</button>
             </div>
             <div id="register-tab-content" class="tab-content">
               <input type="text" placeholder="Username"/>
               <input type="text" placeholder="Password"/>
-              <button>Submit</button>
+              <button>Register</button>
             </div>
           </div>
           <script>
@@ -42,12 +44,16 @@
             function changeTab(event, tabID)
             {
               const tabArea = event.currentTarget.closest(".tab-area");
-              var tabContents = tabArea.getElementsByClassName("tab-content");
-              for (const tabContent in tabContents)
-                tabContent.style.display = "none";
-              document.getElementById(tabID).style.display("block");
+              const tabContents = tabArea.getElementsByClassName("tab-content");
+              for (const tabContent of tabContents)
+                tabContent.style.display = tabContent.id == tabID ? "block" : "none";
+              const tabs = tabArea.getElementsByClassName("tab")
+              for (const tab of tabs)
+                tab.classList.remove("active");
+              event.currentTarget.classList.add("active");
             }
           </script>
+          <!--TODO: move this script somewhere better ^^^ -->
         </div>
       </div>
       <button>My Cart</button>

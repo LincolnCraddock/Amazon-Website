@@ -19,12 +19,14 @@ nav {
 .dropdown-content {
   display: none;
   position: absolute;
+  left: 300px;
+  /* TODO: make positioning relative to the dropdown instead */
   z-index: 1;
-  min-index: 160px;
+  background-color: gray;
 }
 
 .dropdown:hover .dropdown-content {
-  display: unset;
+  display: block;
 }
 
 /********************* tabs *********************/
@@ -34,15 +36,18 @@ nav {
 
 }
 
+/* a tab button. Clicking it should change tabs */
+.tab {
+  
+}
+
 /* contains the content for one tab */
 .tab-content {
   display: none;
-  animation: fadeEffect 0.2s;
 }
 
-@keyframes fadeEffect {
-  from { opacity: 0; }
-  to { opacity: 1; }
+.tab.active {
+  background-color: gray;
 }
 
 /********************* product grid *********************/
