@@ -2,17 +2,21 @@ const searchInput = document.getElementById("search-bar");
 const searchButton = document.getElementById("search-button");
 
 searchButton.addEventListener("click", () => {
-  const term = searchInput.value.toLowerCase();
+  const searchedItem = searchInput.value.trim().toLowerCase();
   const productCards = document.querySelectorAll(".product-card");
 
   productCards.forEach((card) => {
     const title = card.querySelector(".product-title").textContent.toLowerCase();
     const category = card.querySelector(".product-category").textContent.toLowerCase();
 
-    if (title.includes(term) || category.includes(term)) {
-      card.style.display = ""; // show
+    if (title.includes(searchedItem) || category.includes(searchedItem)) {
+      // show item
+      card.style.display = "";               // make it visible immediately
+      setTimeout(() => card.classList.remove("hidden"), 10); // remove hidden class to trigger fade in
     } else {
-      card.style.display = "none"; // hide
+      // hide item with animation
+      card.classList.add("hidden");          // start fade-out
+      setTimeout(() => card.style.display = "none", 300); // hide completely after animation
     }
   });
 });
