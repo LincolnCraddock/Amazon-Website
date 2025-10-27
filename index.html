@@ -10,12 +10,12 @@
   <body>
     <header>
       <a href="index.html">Logo</a>
-      <input type="text" placeholder="Search for anything"/>
+      <input type="text" id="search-bar" placeholder="Search for anything"/>
       <select id="category-select">
         <option value="" disabled selected>Filter</option>
         <script src="categories.js"></script>
       </select>
-      <button>Search!</button>
+      <button id="search-button">Search!</button>
       <div class="dropdown">
         <button class="dropdown-button">My Account</button>
         <div class="dropdown-content">
@@ -61,6 +61,7 @@
       <div id="product-grid" class="grid"></div>
 
       <script src="allItems.js"></script>
+      <script src="search.js"></script>
     </main>
 
     <footer>
