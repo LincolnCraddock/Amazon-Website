@@ -9,10 +9,6 @@
   </head>
   <body>
     <header>
-      <h1>This is a header</h1>
-    </header>
-
-    <nav>
       <a href="index.html">Logo</a>
       <input type="text" placeholder="Search for anything"/>
       <select id="category-select">
@@ -21,7 +17,7 @@
       </select>
       <button>Search!</button>
       <div class="dropdown">
-        <button>My Account</button>
+        <button class="dropdown-button">My Account</button>
         <div class="dropdown-content">
           <div class="tab-area">
             <button class="tab active" onclick="changeTab(event, 'login-tab-content')">Login</button>
@@ -57,7 +53,9 @@
         </div>
       </div>
       <button>My Cart</button>
-    </nav>
+    </header>
+
+    <nav></nav>
 
     <main>
       <div id="product-grid" class="grid"></div>
@@ -69,4 +67,13 @@
       <p>this is a footer</p>
     </footer>
   </body>
+  <script>
+    // track the last clicked element, for use in CSS
+    let lastClickedElement = document.querySelector("body"); // default element
+    document.addEventListener('click', event => {
+      lastClickedElement.classList.remove("last-clicked");
+      lastClickedElement = event.target;
+      lastClickedElement.classList.add("last-clicked");
+    });
+  </script>
 </html>
