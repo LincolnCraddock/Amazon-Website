@@ -15,7 +15,7 @@
         <option value="" disabled selected>Filter</option>
         <script src="categories.js"></script>
       </select>
-      <button>Search!</button>
+      <button id="search-button">Search!</button>
       <div class="dropdown">
         <button class="dropdown-button">My Account</button>
         <div class="dropdown-content">
@@ -73,7 +73,16 @@
     <main>
       <div id="product-grid" class="grid"></div>
 
+      <!-- Popup Modal -->
+      <div id="product-modal" class="modal hidden">
+        <div class="modal-content">
+          <span class="close-btn">&times;</span>
+          <div id="modal-body"></div>
+        </div>
+      </div>
+
       <script src="allItems.js"></script>
+      <script src="search.js"></script>
     </main>
 
     <footer>
