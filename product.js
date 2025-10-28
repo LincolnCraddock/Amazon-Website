@@ -15,5 +15,18 @@ function initProductDetails(id) {
       document.getElementById("prod-category").textContent = product.category;
       document.getElementById("prod-stock").textContent = product.stock;
       document.getElementById("prod-desc").textContent = product.description;
+
+      // Add-to-cart functionality
+      const addCartBtn = document.querySelector(".add-cart-btn");
+      addCartBtn.onclick = () => {
+        const quantity = parseInt(document.getElementById("quantity").value);
+        const productData = {
+          id: id,
+          title: product.title,
+          price: product.price,
+        };
+        addToCart(productData, quantity);
+        alert(`${product.title} added to cart!`);
+      };
     });
 }
