@@ -17,7 +17,6 @@ header {
 
 /* the button that displays the dropdown content when clicked */
 .dropdown-button {
-
 }
 
 /* contains the content of a dropdown. Place inside a .dropdown */
@@ -42,12 +41,10 @@ header {
 
 /* contains a bunch of tabs and their contents */
 .tab-area {
-
 }
 
 /* a tab button. Clicking it should change tabs */
 .tab {
-  
 }
 
 /* contains the content for one tab */
@@ -80,7 +77,7 @@ header {
 .product-card.hidden {
   opacity: 0;
   transform: scale(0.95); /* subtle shrink */
-  pointer-events: none; 
+  pointer-events: none;
   transform: translateY(15px) scale(0.98);
 }
 
@@ -111,4 +108,136 @@ header {
 .product-category {
   font-size: 0.85rem;
   color: #666;
+}
+
+/********************* product details pop-up *********************/
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.modal:not(.hidden) {
+  display: flex;
+}
+
+.modal-content {
+  position: relative;
+  width: 75%;
+  max-width: 900px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.close-btn {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #444;
+}
+
+/* Popup Layout */
+.popup-layout {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 30px;
+  width: 100%;
+  align-items: start;
+}
+
+/* Left Column */
+.left-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.left-col .product-category {
+  font-weight: bold;
+  color: #444;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.left-col img {
+  display: block;
+  width: 100%;
+  max-width: 500px;
+  height: 500px; /* fixed display area */
+  object-fit: contain; /* preserves proportions */
+  background: transparent;
+  border-radius: 10px;
+  align-self: flex-start;
+  image-rendering: auto; /* prevents pixelation */
+}
+
+/* Right Column */
+.right-col {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 10px;
+}
+
+.product-price {
+  font-weight: bold;
+}
+
+.quantity-container {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.quantity-container input {
+  width: 60px;
+  padding: 5px;
+  font-size: 1rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.add-cart-btn {
+  margin-top: 15px;
+  padding: 12px;
+  background: #0077cc;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.add-cart-btn:hover {
+  background: #005fa3;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .popup-layout {
+    grid-template-columns: 1fr;
+  }
+  .left-col,
+  .right-col {
+    align-items: center;
+    text-align: center;
+  }
+  .quantity-container {
+    justify-content: center;
+  }
+  .left-col img {
+    height: 240px;
+    align-self: center;
+    margin-top: 10px;
+  }
 }
