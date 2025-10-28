@@ -10,7 +10,7 @@
   <body>
     <header>
       <a href="index.html">Logo</a>
-      <input type="text" id="search-bar" placeholder="Search for anything"/>
+      <input type="text" id="search-bar" placeholder="Search for anything" />
       <select id="category-select">
         <option value="" disabled selected>Filter</option>
         <script src="categories.js"></script>
@@ -20,32 +20,45 @@
         <button class="dropdown-button">My Account</button>
         <div class="dropdown-content">
           <div class="tab-area">
-            <button class="tab active" onclick="changeTab(event, 'login-tab-content')">Login</button>
-            <button class="tab" onclick="changeTab(event, 'register-tab-content')">Register</button>
-            <br>
-            <div id="login-tab-content" class="tab-content" style="display:block">
-              <input type="text" placeholder="Username"/>
-              <input type="text" placeholder="Password"/>
+            <button
+              class="tab active"
+              onclick="changeTab(event, 'login-tab-content')"
+            >
+              Login
+            </button>
+            <button
+              class="tab"
+              onclick="changeTab(event, 'register-tab-content')"
+            >
+              Register
+            </button>
+            <br />
+            <div
+              id="login-tab-content"
+              class="tab-content"
+              style="display: block"
+            >
+              <input type="text" placeholder="Username" />
+              <input type="text" placeholder="Password" />
               <button>Login</button>
             </div>
             <div id="register-tab-content" class="tab-content">
-              <input type="text" placeholder="Username"/>
-              <input type="text" placeholder="Password"/>
+              <input type="text" placeholder="Username" />
+              <input type="text" placeholder="Password" />
               <button>Register</button>
             </div>
           </div>
           <script>
             // call this function on a button click
             // switches the currently displayed tab in the surrounding .tab-area to tabID
-            function changeTab(event, tabID)
-            {
+            function changeTab(event, tabID) {
               const tabArea = event.currentTarget.closest(".tab-area");
               const tabContents = tabArea.getElementsByClassName("tab-content");
               for (const tabContent of tabContents)
-                tabContent.style.display = tabContent.id == tabID ? "block" : "none";
-              const tabs = tabArea.getElementsByClassName("tab")
-              for (const tab of tabs)
-                tab.classList.remove("active");
+                tabContent.style.display =
+                  tabContent.id == tabID ? "block" : "none";
+              const tabs = tabArea.getElementsByClassName("tab");
+              for (const tab of tabs) tab.classList.remove("active");
               event.currentTarget.classList.add("active");
             }
           </script>
@@ -60,6 +73,14 @@
     <main>
       <div id="product-grid" class="grid"></div>
 
+      <!-- Popup Modal -->
+      <div id="product-modal" class="modal hidden">
+        <div class="modal-content">
+          <span class="close-btn">&times;</span>
+          <div id="modal-body"></div>
+        </div>
+      </div>
+
       <script src="allItems.js"></script>
       <script src="search.js"></script>
     </main>
@@ -71,7 +92,7 @@
   <script>
     // track the last clicked element, for use in CSS
     let lastClickedElement = document.querySelector("body"); // default element
-    document.addEventListener('click', event => {
+    document.addEventListener("click", (event) => {
       lastClickedElement.classList.remove("last-clicked");
       lastClickedElement = event.target;
       lastClickedElement.classList.add("last-clicked");
