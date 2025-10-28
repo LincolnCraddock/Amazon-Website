@@ -50,9 +50,6 @@ function initProductDetails(id) {
 
         // Call the global addToCart() function defined in cart.js
         addToCart(productData, quantity);
-
-        // Give the user feedback that the item was added
-        alert(`${product.title} added to cart!`);
       };
     });
 }
