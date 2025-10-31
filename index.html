@@ -10,7 +10,7 @@
   <body>
     <header>
       <a href="index.html">Logo</a>
-      <input type="text" placeholder="Search for anything" />
+      <input type="text" id="search-bar" placeholder="Search for anything" />
       <select id="category-select">
         <option value="" disabled selected>Filter</option>
         <script src="categories.js"></script>
@@ -65,7 +65,7 @@
           <!--TODO: move this script somewhere better ^^^ -->
         </div>
       </div>
-      <a href="cart.html"><button>My Cart</button></a>
+      <button id="cart-button">My Cart</button>
     </header>
 
     <nav></nav>
@@ -81,7 +81,13 @@
         </div>
       </div>
 
+      <!-- Cart Slide-In -->
+      <div id="cart-modal" class="cart-modal hidden">
+        <div id="cart-body" class="cart-body"></div>
+      </div>
+
       <script src="allItems.js"></script>
+      <script src="cart.js"></script>
       <script src="search.js"></script>
     </main>
 
