@@ -40,6 +40,7 @@ fetch("products_real_titles.json")
         <div class="product-title">${product.title}</div>
         <div class="product-price">$${product.price}</div>
         <div class="product-category">${product.category}</div>
+        <button class="add-to-cart-btn" data-id="${id}">Add to Cart</button>
       `;
 
       // --- CLICK EVENT: OPEN PRODUCT POPUP ---
@@ -102,3 +103,46 @@ function showProduct(id) {
     modal.classList.remove("hidden");
   });
 }
+
+// ------------------- CART LOGIC -------------------
+
+function addToCart(product) {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  const existing = cart.find((item) => item.id === product.id);
+  if (existing) {
+    existing.quantity++;
+  } else {
+    cart.push({ ...product, quantity: 1 });
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+  console.log(`${product.title} added to cart!`);
+}
+
+setTimeout(() => {
+  const buttons = document.querySelectorAll(".add-to-cart-btn");
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const id = e.target.dataset.id;
+      const item = productsData.find((p) => p.sys.id === id);
+      if (!item) return;
+
+      const product = item.fields;
+      const img = product.image.fields.file.url.startsWith("http")
+        ? product.image.fields.file.url
+        : "." + product.image.fields.file.url;
+
+      const cartItem = {
+        id: item.sys.id,
+        title: product.title,
+        price: product.price,
+        image: img,
+      };
+
+      addToCart(cartItem);
+      alert(`${product.title} added to cart!`);
+    });
+  });
+}, 500);
