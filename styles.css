@@ -7,8 +7,8 @@ header {
   top: 0;
   background-color: gray;
   z-index: 1;
-  height: 25px; 
-  padding-top: 3px; 
+  height: 25px;
+  padding-top: 3px;
 }
 
 /********************* dropdowns *********************/
@@ -334,4 +334,37 @@ header {
 
 .remove-btn:hover {
   color: #900;
+}
+
+.cart-sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 350px;
+  height: 100vh;
+  background: #fff;
+  box-shadow: -3px 0 8px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  overflow-y: auto;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  z-index: 1000;
+}
+
+.cart-sidebar.visible {
+  transform: translateX(0);
+}
+
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.cart-header button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
 }
