@@ -81,9 +81,16 @@
         </div>
       </div>
 
-      <!-- Cart Slide-In -->
-      <div id="cart-modal" class="cart-modal hidden">
-        <div id="cart-body" class="cart-body"></div>
+      <!-- Cart Sidebar -->
+      <div id="cart-sidebar" class="cart-sidebar hidden">
+        <div class="cart-header">
+          <h2>My Cart</h2>
+          <button id="close-cart">×</button>
+        </div>
+        <div id="cart-items"></div>
+        <p>Subtotal: $<span id="cart-total">0.00</span></p>
+        <button id="clear-cart-btn">Clear Cart</button>
+        <button id="checkout-btn">Checkout</button>
       </div>
 
       <script src="allItems.js"></script>
