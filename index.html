@@ -12,7 +12,8 @@
       <a href="index.html">Logo</a>
       <input type="text" id="search-bar" placeholder="Search for anything" />
       <select id="category-select">
-        <option value="" disabled selected>Filter</option>
+        <option value="all">All Items</option>
+        <!-- <option value="" disabled selected>Filter</option> -->
         <script src="categories.js"></script>
       </select>
       <button id="search-button">Search!</button>
@@ -51,7 +52,7 @@
           </div>
         </div>
       </div>
-      <button>My Cart</button>
+      <button id="cart-button">My Cart</button>
     </header>
 
     <nav></nav>
@@ -67,13 +68,27 @@
         </div>
       </div>
 
+      <!-- Cart Sidebar -->
+      <div id="cart-sidebar" class="cart-sidebar hidden">
+        <div class="cart-header">
+          <h2>My Cart</h2>
+          <button id="close-cart">×</button>
+        </div>
+        <div id="cart-items"></div>
+        <p>Subtotal: $<span id="cart-total">0.00</span></p>
+        <button id="clear-cart-btn">Clear Cart</button>
+        <button id="checkout-btn">Checkout</button>
+      </div>
+
       <script src="allItems.js"></script>
+      <script src="cart.js"></script>
       <script src="search.js"></script>
     </main>
 
     <footer>
       <p>this is a scam</p>
     </footer>
+    <!-- placeholder for the sidebar -->
   </body>
   <script>
     // track the last clicked element, for use in CSS
@@ -86,4 +101,3 @@
   </script>
   <script src="tabs.js"></script>
 </html>
-<!-- testing branch -->
