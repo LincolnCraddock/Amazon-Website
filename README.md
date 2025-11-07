@@ -13,7 +13,7 @@ Do you like buying AI generated slop? Using our tool, you can search for slop, f
 
 ## Authors
 - Evan Magill
-- James
-- Tanner
-- Calvin
+- James Liranzo
+- Tanner Pobursky
+- Calvin Becker
 - Lincoln Craddock
