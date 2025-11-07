@@ -1135,7 +1135,7 @@
         "image": {
           "fields": {
             "file": {
-              "url": "/images/product43.jpg"
+              "url": "https://m.media-amazon.com/images/I/71xvL9XGwYL._AC_SL1500_.jpg"
             }
           }
         },
@@ -1161,7 +1161,7 @@
         "image": {
           "fields": {
             "file": {
-              "url": "/images/product44.jpg"
+              "url": "https://m.media-amazon.com/images/I/51BtCFefjiL._AC_SL1200_.jpg"
             }
           }
         },
@@ -1187,7 +1187,7 @@
         "image": {
           "fields": {
             "file": {
-              "url": "/images/product45.jpg"
+              "url": "https://m.media-amazon.com/images/I/71gESWzXrJL._AC_SL1500_.jpg"
             }
           }
         },
@@ -1213,7 +1213,7 @@
         "image": {
           "fields": {
             "file": {
-              "url": "/images/product46.jpg"
+              "url": "https://m.media-amazon.com/images/I/81xr+BrYBwL._AC_SL1500_.jpg"
             }
           }
         },
@@ -1239,7 +1239,7 @@
         "image": {
           "fields": {
             "file": {
-              "url": "/images/product47.jpg"
+              "url": "https://m.media-amazon.com/images/I/71lQsuUIuIL._AC_SL1500_.jpg"
             }
           }
         },
@@ -1265,7 +1265,7 @@
         "image": {
           "fields": {
             "file": {
-              "url": "/images/product48.jpg"
+              "url": "https://m.media-amazon.com/images/I/51nvDczrU+L._AC_SL1000_.jpg"
             }
           }
         },
@@ -1291,7 +1291,7 @@
         "image": {
           "fields": {
             "file": {
-              "url": "/images/product49.jpg"
+              "url": "https://m.media-amazon.com/images/I/61TyCpcEVCL._AC_SL1000_.jpg"
             }
           }
         },
@@ -1317,7 +1317,7 @@
         "image": {
           "fields": {
             "file": {
-              "url": "/images/product50.jpg"
+              "url": "https://m.media-amazon.com/images/I/61d2sc1YAQL._AC_SL1500_.jpg"
             }
           }
         },
@@ -1343,7 +1343,7 @@
         "image": {
           "fields": {
             "file": {
-              "url": "/images/product51.jpg"
+              "url": "https://m.media-amazon.com/images/I/71pNu+RikwL._SL1500_.jpg"
             }
           }
         },
@@ -1369,7 +1369,7 @@
         "image": {
           "fields": {
             "file": {
-              "url": "/images/product52.jpg"
+              "url": "https://m.media-amazon.com/images/I/81h2WhI4dtL._SL1500_.jpg"
             }
           }
         },
@@ -1395,7 +1395,7 @@
         "image": {
           "fields": {
             "file": {
-              "url": "/images/product53.jpg"
+              "url": "https://m.media-amazon.com/images/I/810yu0mtz9L._SL1500_.jpg"
             }
           }
         },
@@ -1421,7 +1421,7 @@
         "image": {
           "fields": {
             "file": {
-              "url": "/images/product54.jpg"
+              "url": "https://m.media-amazon.com/images/I/81JuQGZ77WL._SL1500_.jpg"
             }
           }
         },
@@ -1447,7 +1447,7 @@
         "image": {
           "fields": {
             "file": {
-              "url": "/images/product55.jpg"
+              "url": "https://m.media-amazon.com/images/I/71p8G+YeA6L._SL1500_.jpg"
             }
           }
         },
@@ -1473,7 +1473,7 @@
         "image": {
           "fields": {
             "file": {
-              "url": "/images/product56.jpg"
+              "url": "https://m.media-amazon.com/images/I/71SloFaiQ5L._SL1500_.jpg"
             }
           }
         },
@@ -1499,7 +1499,7 @@
         "image": {
           "fields": {
             "file": {
-              "url": "/images/product57.jpg"
+              "url": "https://m.media-amazon.com/images/I/917JLu3S8DL._SL1500_.jpg"
             }
           }
         },
@@ -1525,7 +1525,7 @@
         "image": {
           "fields": {
             "file": {
-              "url": "/images/product58.jpg"
+              "url": "https://m.media-amazon.com/images/I/81luvT5OyAL._SL1500_.jpg"
             }
           }
         },
@@ -1551,7 +1551,7 @@
         "image": {
           "fields": {
             "file": {
-              "url": "/images/product59.jpg"
+              "url": "https://m.media-amazon.com/images/I/71UQZy7HEjL._SL1500_.jpg"
             }
           }
         },
@@ -1577,7 +1577,7 @@
         "image": {
           "fields": {
             "file": {
-              "url": "/images/product60.jpg"
+              "url": "https://m.media-amazon.com/images/I/61J+75YWivL.jpg"
             }
           }
         },
@@ -1785,7 +1785,7 @@
         "image": {
           "fields": {
             "file": {
-              "url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSW4StXi0xgBKeHBLEVI5XTriSIugVWyXfuhw&s"
+              "url": "https://www.lego.com/cdn/product-assets/product.img.pri/7190_prod.jpg?format=webply&fit=bounds&quality=75&width=500&height=500&dpr=1"
             }
           }
         },
@@ -2436,7 +2436,7 @@
           "fields": {
             "file": {
               "url": "https://m.media-amazon.com/images/I/61si+8eYUpL._AC_UL640_FMwebp_QL65_.jpg"
-
+            }
           }
         },
         "description": "Theragun PRO is a popular household item known for its durability and user-friendly design.",
@@ -2449,7 +2449,6 @@
           "weight": "8.21 kg",
           "madeIn": "Vietnam"
         }
-      }
       }
     },
     {
@@ -2515,6 +2514,7 @@
           "fields": {
             "file": {
               "url": "https://m.media-amazon.com/images/I/818DNxv912L._AC_UL640_FMwebp_QL65_.jpg"
+            }
           }
         },
         "description": "Casper Original Mattress is a popular household item known for its durability and user-friendly design.",
@@ -2528,7 +2528,6 @@
           "madeIn": "Germany"
         }
       }
-    }
     },
     {
       "sys": {
@@ -2541,6 +2540,7 @@
           "fields": {
             "file": {
               "url": "https://m.media-amazon.com/images/I/61DaJDqI+DL._AC_UL640_FMwebp_QL65_.jpg"
+            }
           }
         },
         "description": "Blue Light Blocking Glasses is a popular household item known for its durability and user-friendly design.",
@@ -2554,7 +2554,6 @@
           "madeIn": "Japan"
         }
       }
-    }
     },
     {
       "sys": {
