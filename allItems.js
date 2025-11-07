@@ -20,6 +20,7 @@ fetch("products_real_titles.json")
         <div class="product-title">${product.title}</div>
         <div class="product-price">$${product.price}</div>
         <div class="product-category">${product.category}</div>
+        <button class="add-to-cart-btn" data-id="${id}">Add to Cart</button>
       `;
       card.addEventListener("click", () => openModal(id));
       grid.appendChild(card);
