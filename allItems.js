@@ -159,3 +159,40 @@ cartButton.addEventListener("click", () => {
 closeCartBtn.addEventListener("click", () => {
   cartSidebar.classList.remove("visible");
 });
+
+// ------------------- CATEGORY FILTER -------------------
+
+const categorySelect = document.getElementById("category-select");
+
+categorySelect.addEventListener("change", () => {
+  const selectedCategory = categorySelect.value.toLowerCase();
+  const searchInput = document.getElementById("search-bar");
+  const searchTerm = searchInput.value.trim().toLowerCase();
+
+  const productCards = document.querySelectorAll(".product-card");
+
+  productCards.forEach((card) => {
+    const title = card
+      .querySelector(".product-title")
+      .textContent.toLowerCase();
+    const category = card
+      .querySelector(".product-category")
+      .textContent.toLowerCase();
+
+    const matchesCategory =
+      selectedCategory === "all" || category === selectedCategory;
+    const matchesSearch =
+      !searchTerm ||
+      title.includes(searchTerm) ||
+      category.includes(searchTerm);
+
+    // show/hide based on both conditions
+    if (matchesCategory && matchesSearch) {
+      card.style.display = "";
+      setTimeout(() => card.classList.remove("hidden"), 10);
+    } else {
+      card.classList.add("hidden");
+      setTimeout(() => (card.style.display = "none"), 300);
+    }
+  });
+});
