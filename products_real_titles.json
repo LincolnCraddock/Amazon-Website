@@ -2436,7 +2436,7 @@
           "fields": {
             "file": {
               "url": "https://m.media-amazon.com/images/I/61si+8eYUpL._AC_UL640_FMwebp_QL65_.jpg"
-
+            }
           }
         },
         "description": "Theragun PRO is a popular household item known for its durability and user-friendly design.",
@@ -2449,7 +2449,6 @@
           "weight": "8.21 kg",
           "madeIn": "Vietnam"
         }
-      }
       }
     },
     {
@@ -2515,6 +2514,7 @@
           "fields": {
             "file": {
               "url": "https://m.media-amazon.com/images/I/818DNxv912L._AC_UL640_FMwebp_QL65_.jpg"
+            }
           }
         },
         "description": "Casper Original Mattress is a popular household item known for its durability and user-friendly design.",
@@ -2528,7 +2528,6 @@
           "madeIn": "Germany"
         }
       }
-    }
     },
     {
       "sys": {
@@ -2541,6 +2540,7 @@
           "fields": {
             "file": {
               "url": "https://m.media-amazon.com/images/I/61DaJDqI+DL._AC_UL640_FMwebp_QL65_.jpg"
+            }
           }
         },
         "description": "Blue Light Blocking Glasses is a popular household item known for its durability and user-friendly design.",
@@ -2554,7 +2554,6 @@
           "madeIn": "Japan"
         }
       }
-    }
     },
     {
       "sys": {
