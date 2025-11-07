@@ -12,8 +12,8 @@ Do you like buying AI generated slop? Using our tool, you can search for slop, f
 - 100% fully AI generated products!
 
 ## Authors
-Evan Magill
-James
-Tanner
-Calvin
-Lincoln Craddock
+- Evan Magill
+- James
+- Tanner
+- Calvin
+- Lincoln Craddock
