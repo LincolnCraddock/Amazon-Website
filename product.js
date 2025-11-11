@@ -32,27 +32,27 @@ function initProductDetails(id) {
       document.getElementById("prod-stock").textContent = product.stock;
       document.getElementById("prod-desc").textContent = product.description;
 
-      // --- HANDLE ADD-TO-CART FUNCTIONALITY ---
-      // Get the Add to Cart button inside the modal
-      const addCartBtn = document.querySelector(".add-cart-btn");
+      // --- Add to Cart button handler ---
+      const addBtn = document.querySelector(".add-cart-btn");
+      if (addBtn) {
+        addBtn.onclick = () => {
+          const quantity =
+            parseInt(document.getElementById("quantity").value) || 1;
 
-      // Attach click event listener
-      addCartBtn.onclick = () => {
-        // Get the quantity value entered by the user
-        const quantity = parseInt(document.getElementById("quantity").value);
+          const title = document.getElementById("prod-title").textContent;
+          const price = parseFloat(
+            document.getElementById("prod-price").textContent
+          );
+          const image = document.getElementById("prod-img").src;
 
-        // Build a simplified product object for cart storage
-        const productData = {
-          id: id,
-          title: product.title,
-          price: product.price,
+          let cart = JSON.parse(localStorage.getItem("cart")) || [];
+          const existing = cart.find((c) => c.id === id);
+          if (existing) existing.quantity += quantity;
+          else cart.push({ id, title, price, image, quantity });
+
+          localStorage.setItem("cart", JSON.stringify(cart));
+          alert(`${title} added to cart!`);
         };
-
-        // Call the global addToCart() function defined in cart.js
-        addToCart(productData, quantity);
-
-        // Give the user feedback that the item was added
-        alert(`${product.title} added to cart!`);
-      };
+      }
     });
 }

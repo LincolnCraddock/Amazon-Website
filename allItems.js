@@ -40,6 +40,7 @@ fetch("products_real_titles.json")
         <div class="product-title">${product.title}</div>
         <div class="product-price">$${product.price}</div>
         <div class="product-category">${product.category}</div>
+        <button class="add-to-cart-btn" data-id="${id}">Add to Cart</button>
       `;
 
       // --- CLICK EVENT: OPEN PRODUCT POPUP ---
@@ -102,3 +103,96 @@ function showProduct(id) {
     modal.classList.remove("hidden");
   });
 }
+
+// ------------------- CART LOGIC -------------------
+
+function addToCart(product) {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  const existing = cart.find((item) => item.id === product.id);
+  if (existing) {
+    existing.quantity++;
+  } else {
+    cart.push({ ...product, quantity: 1 });
+  }
+
+  localStorage.setItem("cart", JSON.stringify(cart));
+  console.log(`${product.title} added to cart!`);
+}
+
+setTimeout(() => {
+  const buttons = document.querySelectorAll(".add-to-cart-btn");
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const id = e.target.dataset.id;
+      const item = productsData.find((p) => p.sys.id === id);
+      if (!item) return;
+
+      const product = item.fields;
+      const img = product.image.fields.file.url.startsWith("http")
+        ? product.image.fields.file.url
+        : "." + product.image.fields.file.url;
+
+      const cartItem = {
+        id: item.sys.id,
+        title: product.title,
+        price: product.price,
+        image: img,
+      };
+
+      addToCart(cartItem);
+      alert(`${product.title} added to cart!`);
+    });
+  });
+}, 500);
+
+const cartButton = document.getElementById("cart-button");
+const cartSidebar = document.getElementById("cart-sidebar");
+const closeCartBtn = document.getElementById("close-cart");
+
+cartButton.addEventListener("click", () => {
+  cartSidebar.classList.add("visible");
+  renderCart(); // this uses your existing cart.js logic
+});
+
+closeCartBtn.addEventListener("click", () => {
+  cartSidebar.classList.remove("visible");
+});
+
+// ------------------- CATEGORY FILTER -------------------
+
+const categorySelect = document.getElementById("category-select");
+
+categorySelect.addEventListener("change", () => {
+  const selectedCategory = categorySelect.value.toLowerCase();
+  const searchInput = document.getElementById("search-bar");
+  const searchTerm = searchInput.value.trim().toLowerCase();
+
+  const productCards = document.querySelectorAll(".product-card");
+
+  productCards.forEach((card) => {
+    const title = card
+      .querySelector(".product-title")
+      .textContent.toLowerCase();
+    const category = card
+      .querySelector(".product-category")
+      .textContent.toLowerCase();
+
+    const matchesCategory =
+      selectedCategory === "all" || category === selectedCategory;
+    const matchesSearch =
+      !searchTerm ||
+      title.includes(searchTerm) ||
+      category.includes(searchTerm);
+
+    // show/hide based on both conditions
+    if (matchesCategory && matchesSearch) {
+      card.style.display = "";
+      setTimeout(() => card.classList.remove("hidden"), 10);
+    } else {
+      card.classList.add("hidden");
+      setTimeout(() => (card.style.display = "none"), 300);
+    }
+  });
+});

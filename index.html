@@ -12,7 +12,8 @@
       <a href="index.html">Logo</a>
       <input type="text" id="search-bar" placeholder="Search for anything" />
       <select id="category-select">
-        <option value="" disabled selected>Filter</option>
+        <option value="all">All Items</option>
+        <!-- <option value="" disabled selected>Filter</option> -->
         <script src="categories.js"></script>
       </select>
       <button id="search-button">Search!</button>
@@ -38,31 +39,17 @@
               class="tab-content"
               style="display: block"
             >
-              <input type="text" placeholder="Username" />
-              <input type="text" placeholder="Password" />
+              <input type="email" placeholder="Email/Username" />
+              <input type="password" placeholder="Password" autocomplete="current-password"/><br />
               <button>Login</button>
             </div>
             <div id="register-tab-content" class="tab-content">
+              <input type="email" placeholder="Email" /><br />
               <input type="text" placeholder="Username" />
-              <input type="text" placeholder="Password" />
+              <input type="password" placeholder="Password" autocomplete="new-password"/><br />
               <button>Register</button>
             </div>
           </div>
-          <script>
-            // call this function on a button click
-            // switches the currently displayed tab in the surrounding .tab-area to tabID
-            function changeTab(event, tabID) {
-              const tabArea = event.currentTarget.closest(".tab-area");
-              const tabContents = tabArea.getElementsByClassName("tab-content");
-              for (const tabContent of tabContents)
-                tabContent.style.display =
-                  tabContent.id == tabID ? "block" : "none";
-              const tabs = tabArea.getElementsByClassName("tab");
-              for (const tab of tabs) tab.classList.remove("active");
-              event.currentTarget.classList.add("active");
-            }
-          </script>
-          <!--TODO: move this script somewhere better ^^^ -->
         </div>
       </div>
       <button id="cart-button">My Cart</button>
@@ -81,9 +68,16 @@
         </div>
       </div>
 
-      <!-- Cart Slide-In -->
-      <div id="cart-modal" class="cart-modal hidden">
-        <div id="cart-body" class="cart-body"></div>
+      <!-- Cart Sidebar -->
+      <div id="cart-sidebar" class="cart-sidebar hidden">
+        <div class="cart-header">
+          <h2>My Cart</h2>
+          <button id="close-cart">×</button>
+        </div>
+        <div id="cart-items"></div>
+        <p>Subtotal: $<span id="cart-total">0.00</span></p>
+        <button id="clear-cart-btn">Clear Cart</button>
+        <button id="checkout-btn">Checkout</button>
       </div>
 
       <script src="allItems.js"></script>
@@ -93,8 +87,9 @@
     </main>
 
     <footer>
-      <p>this is a footer</p>
+      <p>this is a scam</p>
     </footer>
+    <!-- placeholder for the sidebar -->
   </body>
   <script>
     // track the last clicked element, for use in CSS
@@ -105,5 +100,5 @@
       lastClickedElement.classList.add("last-clicked");
     });
   </script>
+  <script src="tabs.js"></script>
 </html>
-<!-- testing branch -->
