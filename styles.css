@@ -11,6 +11,10 @@ header {
   padding-top: 3px;
 }
 
+input {
+  margin-top: 3px;
+}
+
 /********************* dropdowns *********************/
 
 /* contains a dropdown */
@@ -76,6 +80,9 @@ header {
   transition: opacity 0.7s ease, transform 0.7s ease;
   text-align: center;
   transform: translateY(0);
+  display: flex;
+  flex-direction: column;
+  min-height: 395px;
 }
 .product-card.hidden {
   opacity: 0;
@@ -204,8 +211,8 @@ header {
 .quantity-container input {
   width: 60px;
   padding: 5px;
-  font-size: 1rem;
   border-radius: 4px;
+  font-size: 1rem;
   border: 1px solid #ccc;
 }
 
@@ -219,6 +226,10 @@ header {
   border-radius: 8px;
   font-size: 1rem;
   width: 100%;
+}
+
+.product-card .add-cart-btn {
+  margin-top: auto;
 }
 
 .add-cart-btn:hover {

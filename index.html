@@ -39,31 +39,17 @@
               class="tab-content"
               style="display: block"
             >
-              <input type="text" placeholder="Username" />
-              <input type="text" placeholder="Password" />
+              <input type="email" placeholder="Email/Username" />
+              <input type="password" placeholder="Password" autocomplete="current-password"/><br />
               <button>Login</button>
             </div>
             <div id="register-tab-content" class="tab-content">
+              <input type="email" placeholder="Email" /><br />
               <input type="text" placeholder="Username" />
-              <input type="text" placeholder="Password" />
+              <input type="password" placeholder="Password" autocomplete="new-password"/><br />
               <button>Register</button>
             </div>
           </div>
-          <script>
-            // call this function on a button click
-            // switches the currently displayed tab in the surrounding .tab-area to tabID
-            function changeTab(event, tabID) {
-              const tabArea = event.currentTarget.closest(".tab-area");
-              const tabContents = tabArea.getElementsByClassName("tab-content");
-              for (const tabContent of tabContents)
-                tabContent.style.display =
-                  tabContent.id == tabID ? "block" : "none";
-              const tabs = tabArea.getElementsByClassName("tab");
-              for (const tab of tabs) tab.classList.remove("active");
-              event.currentTarget.classList.add("active");
-            }
-          </script>
-          <!--TODO: move this script somewhere better ^^^ -->
         </div>
       </div>
       <button id="cart-button">My Cart</button>
@@ -77,7 +63,7 @@
     <main>
       <div id="product-grid" class="grid"></div>
 
-      <!-- Popup Modal -->
+      <!-- Popup Modal for products -->
       <div id="product-modal" class="modal hidden">
         <div class="modal-content">
           <span class="close-btn">&times;</span>
@@ -102,10 +88,11 @@
       <script src="allItems.js"></script>
       <script src="cart.js"></script>
       <script src="search.js"></script>
+    </div>
     </main>
 
     <footer>
-      <p>this is a footer</p>
+      <p>this is a scam</p>
     </footer>
     <!-- placeholder for the sidebar -->
   </body>
@@ -118,4 +105,5 @@
       lastClickedElement.classList.add("last-clicked");
     });
   </script>
+  <script src="tabs.js"></script>
 </html>
