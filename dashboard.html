@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <a href="index.html">← Back to Home</a>
+      <h1 id="greeting">Welcome!</h1>
+    </header>
+
+    <main class="dashboard">
+      <section class="user-info">
+        <h2>Your Info</h2>
+        <p><strong>Username:</strong> <span id="username">N/A</span></p>
+        <p><strong>Email:</strong> <span id="email">N/A</span></p>
+        <p><strong>Date Joined:</strong> <span id="date-joined">N/A</span></p>
+      </section>
+
+      <section class="order-history">
+        <h2>Order History</h2>
+        <div id="order-list"></div>
+      </section>
+
+      <section class="account-actions">
+        <button id="logout-btn">Logout</button>
+      </section>
+    </main>
+
+    <script src="dashboard.js"></script>
+  </body>
+</html>
