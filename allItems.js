@@ -150,15 +150,26 @@ setTimeout(() => {
 const cartButton = document.getElementById("cart-button");
 const cartSidebar = document.getElementById("cart-sidebar");
 const closeCartBtn = document.getElementById("close-cart");
+const cartOverlay = document.getElementById("cart-overlay");
 
-cartButton.addEventListener("click", () => {
+function openCart() {
   cartSidebar.classList.add("visible");
-  renderCart(); // this uses your existing cart.js logic
-});
+  cartOverlay.classList.add("visible");
+  renderCart();
+}
 
-closeCartBtn.addEventListener("click", () => {
+function closeCart() {
   cartSidebar.classList.remove("visible");
-});
+  cartOverlay.classList.remove("visible");
+}
+
+if (cartButton && cartSidebar && cartOverlay) {
+  cartButton.addEventListener("click", openCart);
+  closeCartBtn.addEventListener("click", closeCart);
+  cartOverlay.addEventListener("click", closeCart);
+} else {
+  console.error("Cart elements not found. Check IDs in index.html.");
+}
 
 // ------------------- CATEGORY FILTER -------------------
 
