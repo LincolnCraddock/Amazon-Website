@@ -1,10 +1,10 @@
 {
   "name": "html-css",
   "version": "1.0.0",
-  "description": "A template for HTML and CSS",
-  "main": "index.html",
+  "description": "server.js is now handling routing",
+  "main": "server.js",
   "scripts": {
-    "start": "serve"
+    "start": "node server.js"
   },
   "keywords": [
     "html",
