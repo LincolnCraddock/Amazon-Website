@@ -5,6 +5,14 @@ const port = 3000;
 const mongoose = require('mongoose');
 const User = require('/model/User.js');
 
+/*---------------- SESSION SET UP ----------------- */
+app.use(session({
+    secret: "1233211",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 60 * 60 * 1000 }  //1 hour
+}));
+
 
 /* --------------- MIDDLEWARE SET UP ----------------- */
 app.use(express.json());
@@ -12,22 +20,16 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const connectEnsureLogin = require('connect-ensure-login');
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(passport.initialize());
+app.use(passport.session());
 
+/*---checks username and password automatically---*/
+passport.use(User.createStrategy());
 
-
-/*------------------ connecting MongoDB -------------- */
-mongoose.connect(
-    'mongodb+srv://admin:testing1@cluster0.vwlqvme.mongodb.net/amazon-db?appName=Cluster0', {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    })
-    .then(()=>
-        console.log("MongoDB connected!"))
-    .catch((err)=> 
-        console.log("MongoDB not connected " + err))
-
-
-
+// passport configurations
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 //serves all files inside of the current folder
 app.use(express.static(path.join(__dirname)));
