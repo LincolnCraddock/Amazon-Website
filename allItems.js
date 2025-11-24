@@ -121,7 +121,7 @@ function addToCart(product) {
 }
 
 setTimeout(() => {
-  const buttons = document.querySelectorAll(".add-to-cart-btn");
+  const buttons = document.querySelectorAll(".add-cart-btn");
   buttons.forEach((btn) => {
     btn.addEventListener("click", (e) => {
       e.stopPropagation();

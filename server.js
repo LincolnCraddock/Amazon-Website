@@ -40,6 +40,10 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, "index.html"));
 });
 
+app.get('/cart', (req, res)=> {
+    res.sendFile(path.join(__dirname, "cart.html"));
+});
+
 
 
 /*----------------- start server -----------------*/
