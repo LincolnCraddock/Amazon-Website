@@ -3,9 +3,11 @@ const path = require('path');
 const app = express();
 const port = 3000;
 const mongoose = require('mongoose');
-const User = require('/model/User.js');
+const User = require('/project/workspace/model/User.js');
+
 
 /*---------------- SESSION SET UP ----------------- */
+const session = require('express-session');
 app.use(session({
     secret: "1233211",
     resave: false,
@@ -16,7 +18,6 @@ app.use(session({
 
 /* --------------- MIDDLEWARE SET UP ----------------- */
 app.use(express.json());
-const session = require('express-session');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const connectEnsureLogin = require('connect-ensure-login');
