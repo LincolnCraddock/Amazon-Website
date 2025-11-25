@@ -14,7 +14,7 @@
       <select id="category-select">
         <option value="all">All Items</option>
         <!-- <option value="" disabled selected>Filter</option> -->
-        <script src="categories.js"></script>
+        <script src="scripts/categories.js"></script>
       </select>
       <button id="search-button">Search!</button>
       <div class="dropdown">
@@ -43,12 +43,14 @@
               <input type="password" placeholder="Password" autocomplete="current-password"/><br />
               <button>Login</button>
             </div>
-            <div id="register-tab-content" class="tab-content">
-              <input type="email" placeholder="Email" /><br />
-              <input type="text" placeholder="Username" />
-              <input type="password" placeholder="Password" autocomplete="new-password"/><br />
-              <button>Register</button>
-            </div>
+            <form id="register-form">
+              <div id="register-tab-content" class="tab-content">
+                <input type="email" placeholder="Email" name="email"/><br />
+                <input type="text" placeholder="Username" name="username"/>
+                <input type="password" placeholder="Password" name="password" required/><br />
+                <button type="submit">Register</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -85,9 +87,9 @@
       <!-- Overlay behind cart -->
       <div id="cart-overlay" class="cart-overlay hidden"></div>
 
-      <script src="allItems.js"></script>
-      <script src="cart.js"></script>
-      <script src="search.js"></script>
+      <script src="scripts/allItems.js"></script>
+      <script src="scripts/cart.js"></script>
+      <script src="scripts/search.js"></script>
     </div>
     </main>
 
@@ -105,5 +107,5 @@
       lastClickedElement.classList.add("last-clicked");
     });
   </script>
-  <script src="tabs.js"></script>
+  <script src="scripts/tabs.js"></script>
 </html>

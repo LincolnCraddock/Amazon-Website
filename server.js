@@ -32,7 +32,9 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-//serves all files inside of the current folder
+/* ----------------- server configs ---------------------*/
+
+//serves all files inside of this current folder
 app.use(express.static(path.join(__dirname)));
 
 //set index.html as the root route 
@@ -40,10 +42,18 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, "index.html"));
 });
 
-app.get('/cart', (req, res)=> {
-    res.sendFile(path.join(__dirname, "cart.html"));
-});
 
+/* -------------- registration ------------------- */
+app.post("/register", async (req, res) =>{
+    try{
+        const { email, username, password } = req.body;
+        const user = new User({email,password});
+        await User.register(user, password);
+        res.json({message: "User created!"});
+    }catch(err){
+        res.status(400).json({message: err.message});
+    }
+})
 
 
 /*----------------- start server -----------------*/
