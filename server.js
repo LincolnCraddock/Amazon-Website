@@ -67,7 +67,7 @@ app.post("/register", async (req, res) => {
 
 app.post("/login", passport.authenticate("local"), (req, res) => {
   res.json({ message: "Logged in!", user: req.user });
-  res.redirect();
+  res.redirect("/dashboard.html");
 });
 
 app.post("/order", (req, res) => {});
