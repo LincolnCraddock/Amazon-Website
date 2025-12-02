@@ -103,9 +103,8 @@ function addToCart(product) {
   console.log(`${product.title} added to cart!`);
 }
 
-function attachAddToCartButtons() {
-  const buttons = document.querySelectorAll(".add-cart-btn");
-
+setTimeout(() => {
+  const buttons = document.querySelectorAll(".add-to-cart-btn");
   buttons.forEach((btn) => {
     btn.addEventListener("click", (e) => {
       e.stopPropagation(); // Stop card click
@@ -130,7 +129,7 @@ function attachAddToCartButtons() {
       alert(`${product.title} added to cart!`);
     });
   });
-}
+}, 500);
 
 // ===== CART SIDEBAR ===== //
 
