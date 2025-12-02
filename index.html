@@ -4,66 +4,105 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>This is a title</title>
+
+    <title>Slop Shop</title>
+
+    <!-- Styles -->
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
-    <header>
-      <a href="index.html">Logo</a>
-      <input type="text" id="search-bar" placeholder="Search for anything" />
-      <select id="category-select">
-        <option value="all">All Items</option>
-        <!-- <option value="" disabled selected>Filter</option> -->
-        <script src="categories.js"></script>
-      </select>
-      <button id="search-button">Search!</button>
-      <div class="dropdown">
-        <button class="dropdown-button">Login / Register</button>
-        <div class="dropdown-content">
-          <div class="tab-area">
-            <button
-              class="tab active"
-              onclick="changeTab(event, 'login-tab-content')"
-            >
-              Login
-            </button>
-            <button
-              class="tab"
-              onclick="changeTab(event, 'register-tab-content')"
-            >
-              Register
-            </button>
-            <br />
-            <div
-              id="login-tab-content"
-              class="tab-content"
-              style="display: block"
-            >
-              <input type="email" placeholder="Email/Username" />
-              <input type="password" placeholder="Password" autocomplete="current-password"/><br />
-              <button>Login</button>
-            </div>
-            <div id="register-tab-content" class="tab-content">
-              <input type="email" placeholder="Email" /><br />
-              <input type="text" placeholder="Username" />
-              <input type="password" placeholder="Password" autocomplete="new-password"/><br />
-              <button>Register</button>
+  <body class="dashboard-dark">
+    <!-- Slimed Navbar -->
+    <nav class="slime-navbar">
+      <!-- Left: Logo -->
+      <div class="nav-left">
+        <a href="index.html">
+          <img src="images/Logo.png" alt="Slop Shop Logo" class="nav-logo" />
+        </a>
+      </div>
+
+      <!-- Center: Search -->
+      <div class="nav-center">
+        <div class="search-wrapper">
+          <input
+            type="text"
+            id="search-bar"
+            placeholder="Search for anything"
+          />
+
+          <select id="category-select">
+            <option value="all">All Items</option>
+            <!-- categories injected by categories.js -->
+          </select>
+
+          <button id="search-button" class="slime-btn">Search</button>
+        </div>
+      </div>
+
+      <!-- Right: Auth, Cart, Dashboard -->
+      <div class="nav-right">
+        <div class="dropdown">
+          <button class="slime-btn dropdown-button">Login / Register</button>
+          <div class="dropdown-content">
+            <div class="tab-area">
+              <button
+                class="tab active"
+                onclick="changeTab(event, 'login-tab-content')"
+              >
+                Login
+              </button>
+
+              <button
+                class="tab"
+                onclick="changeTab(event, 'register-tab-content')"
+              >
+                Register
+              </button>
+
+              <br />
+
+              <!-- Login -->
+              <div
+                id="login-tab-content"
+                class="tab-content"
+                style="display: block"
+              >
+                <input type="email" placeholder="Email/Username" /><br />
+                <input
+                  type="password"
+                  placeholder="Password"
+                  autocomplete="current-password"
+                /><br />
+                <button class="slime-btn">Login</button>
+              </div>
+
+              <!-- Register -->
+              <div id="register-tab-content" class="tab-content">
+                <input type="email" placeholder="Email" /><br />
+                <input type="text" placeholder="Username" /><br />
+                <input
+                  type="password"
+                  placeholder="Password"
+                  autocomplete="new-password"
+                /><br />
+                <button class="slime-btn">Register</button>
+              </div>
             </div>
           </div>
         </div>
+
+        <button id="cart-button" class="slime-btn">My Cart</button>
+
+        <a href="dashboard.html">
+          <button id="dashboard-button" class="slime-btn">Dashboard</button>
+        </a>
       </div>
-      <button id="cart-button">My Cart</button>
-      <a href="dashboard.html"
-        ><button id="dashboard-button">Dashboard</button></a
-      >
-    </header>
+    </nav>
 
-    <nav></nav>
-
+    <!-- main product area -->
     <main>
       <div id="product-grid" class="grid"></div>
 
-      <!-- Popup Modal for products -->
+      <!-- Modal -->
       <div id="product-modal" class="modal hidden">
         <div class="modal-content">
           <span class="close-btn">&times;</span>
@@ -79,31 +118,37 @@
         </div>
         <div id="cart-items"></div>
         <p>Subtotal: $<span id="cart-total">0.00</span></p>
-        <button id="clear-cart-btn">Clear Cart</button>
-        <button id="checkout-btn">Checkout</button>
+        <button id="clear-cart-btn" class="slime-btn">Clear Cart</button>
+        <button id="checkout-btn" class="slime-btn">Checkout</button>
       </div>
+
       <!-- Overlay behind cart -->
       <div id="cart-overlay" class="cart-overlay hidden"></div>
-
-      <script src="allItems.js"></script>
-      <script src="cart.js"></script>
-      <script src="search.js"></script>
-    </div>
     </main>
 
-    <footer>
-      <p>this is a scam</p>
+    <!-- Footer -->
+    <footer
+      style="text-align: center; margin-top: 40px; padding: 20px 0; color: #555"
+    >
+      <p>© 2025 Slop Shop. Probably not a scam.</p>
     </footer>
-    <!-- placeholder for the sidebar -->
+
+    <!-- Scripts -->
+    <script src="categories.js"></script>
+    <script src="allItems.js"></script>
+    <script src="product.js"></script>
+    <script src="cart.js"></script>
+    <script src="search.js"></script>
+    <script src="tabs.js"></script>
+
+    <!-- Track last clicked element for dropdown logic -->
+    <script>
+      let lastClickedElement = document.querySelector("body");
+      document.addEventListener("click", (event) => {
+        lastClickedElement.classList.remove("last-clicked");
+        lastClickedElement = event.target;
+        lastClickedElement.classList.add("last-clicked");
+      });
+    </script>
   </body>
-  <script>
-    // track the last clicked element, for use in CSS
-    let lastClickedElement = document.querySelector("body"); // default element
-    document.addEventListener("click", (event) => {
-      lastClickedElement.classList.remove("last-clicked");
-      lastClickedElement = event.target;
-      lastClickedElement.classList.add("last-clicked");
-    });
-  </script>
-  <script src="tabs.js"></script>
 </html>
