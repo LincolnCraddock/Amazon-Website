@@ -45,6 +45,7 @@ app.get("/", (req, res) => {
 /* -------------- register/login ------------------- */
 app.post("/register", async (req, res) => {
   try {
+    console.log("REQ BODY:", req.body); // <-- debug
     const { email, name, password } = req.body;
     const user = new User({ email, name });
     await User.register(user, password);
@@ -75,7 +76,7 @@ app.listen(port, () => {
 
 mongoose
   .connect(
-    `mongodb+srv://lincolncraddock:m7auLAtPf75BcukP@cluster0.zdso4zo.mongodb.net/?appName=Cluster0`
+    `mongodb+srv://admin:testing1@amazon-db.sccapev.mongodb.net/users?appName=amazon-db`
   )
   .then(() => console.log("connected"))
   .catch((e) => console.log(`whoops, didn't connect: ${e.message}`));
