@@ -88,7 +88,8 @@ function renderCart() {
       return;
     }
 
-    alert(`Thank you for your purchase! Total: $${total.toFixed(2)}`);
+    //alert(`Thank you for your purchase! Total: $${total.toFixed(2)}`);
+    
     localStorage.removeItem("cart");
     renderCart();
   };

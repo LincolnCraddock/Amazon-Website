@@ -4,6 +4,7 @@ const app = express();
 const port = 3000;
 const mongoose = require("mongoose");
 const User = require("/project/workspace/model/User.js");
+const Order = require("/project/workspace/model/Order.js");
 
 /*---------------- SESSION SET UP ----------------- */
 const session = require("express-session");
@@ -32,17 +33,26 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-/* ----------------- server configs ---------------------*/
-
 //serves all files inside of this current folder
 app.use(express.static(path.join(__dirname)));
+
+/* ----------------- get routes ---------------------*/
 
 //set index.html as the root route
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
-/* -------------- register/login ------------------- */
+//check user logged in
+app.get("/auth-status", (req, res) => {
+  if (req.isAuthenticated()) {
+    res.json({ loggedIn: true, user: req.user });
+  } else {
+    res.json({ loggedIn: false });
+  }
+});
+
+/* -------------- POST routes ------------------- */
 app.post("/register", async (req, res) => {
   try {
     console.log("REQ BODY:", req.body); // <-- debug
@@ -57,15 +67,10 @@ app.post("/register", async (req, res) => {
 
 app.post("/login", passport.authenticate("local"), (req, res) => {
   res.json({ message: "Logged in!", user: req.user });
+  res.redirect();
 });
 
-app.get("/auth-status", (req, res) => {
-  if (req.isAuthenticated()) {
-    res.json({ loggedIn: true, user: req.user });
-  } else {
-    res.json({ loggedIn: false });
-  }
-});
+app.post("/order", (req, res) => {});
 
 /*----------------- start server -----------------*/
 app.listen(port, () => {
