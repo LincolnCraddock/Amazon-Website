@@ -39,21 +39,36 @@
               class="tab-content"
               style="display: block"
             >
-              <input type="email" placeholder="Email/Username" />
-              <input type="password" placeholder="Password" autocomplete="current-password"/><br />
-              <button>Login</button>
+              <form id="login-form">
+                <input type="text" placeholder="Email/Username" name="name" />
+                <input
+                  type="password"
+                  placeholder="Password"
+                  autocomplete="current-password"
+                  name="password"
+                /><br />
+                <button>Login</button>
+              </form>
             </div>
-            <form id="register-form">
-              <div id="register-tab-content" class="tab-content">
-                <input type="email" placeholder="Email" name="email"/><br />
-                <input type="text" placeholder="Username" name="username"/>
-                <input type="password" placeholder="Password" name="password" required/><br />
+            <script src="scripts/login.js"></script>
+            <div id="register-tab-content" class="tab-content">
+              <form id="register-form">
+                <input type="email" placeholder="Email" name="email" /><br />
+                <input type="text" placeholder="Username" name="name" />
+                <input
+                  type="password"
+                  placeholder="Password"
+                  name="password"
+                  required
+                /><br />
                 <button type="submit">Register</button>
-              </div>
-            </form>
+              </form>
+            </div>
+            <script src="scripts/register.js"></script>
           </div>
         </div>
       </div>
+      <button class="dropdown-button">My Profile</button>
       <button id="cart-button">My Cart</button>
       <a href="dashboard.html"
         ><button id="dashboard-button">Dashboard</button></a
@@ -90,7 +105,6 @@
       <script src="scripts/allItems.js"></script>
       <script src="scripts/cart.js"></script>
       <script src="scripts/search.js"></script>
-    </div>
     </main>
 
     <footer>
