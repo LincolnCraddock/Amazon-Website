@@ -4,12 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>This is a title</title>
+
+    <title>Slop Shop</title>
+
+    <!-- Styles -->
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <header>
-      <a href="index.html">Logo</a>
+      <a href="scripts/index.html">Logo</a>
       <input type="text" id="search-bar" placeholder="Search for anything" />
       <select id="category-select">
         <option value="all">All Items</option>
@@ -39,7 +42,7 @@
               class="tab-content"
               style="display: block"
             >
-              <form id="login-form">
+            <form id="login-form">
                 <input type="text" placeholder="Email/Username" name="name" />
                 <input
                   type="password"
@@ -52,34 +55,35 @@
             </div>
             <script src="scripts/login.js"></script>
             <div id="register-tab-content" class="tab-content">
-              <form id="register-form">
-                <input type="email" placeholder="Email" name="email" /><br />
-                <input type="text" placeholder="name" name="name" />
-                <input
-                  type="password"
-                  placeholder="Password"
-                  name="password"
-                  required
-                /><br />
-                <button type="submit">Register</button>
-              </form>
+                <form id="register-form">
+                    <input type="email" placeholder="Email" name="email" /><br />
+                    <input type="text" placeholder="name" name="name" />
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        name="password"
+                        required
+                    /><br />
+                    <button type="submit">Register</button>
+                </form>
             </div>
             <script src="scripts/register.js"></script>
           </div>
         </div>
+
+        <button id="cart-button" class="slime-btn">My Cart</button>
+
+        <a href="dashboard.html">
+          <button id="dashboard-button" class="slime-btn">Dashboard</button>
+        </a>
       </div>
-      <button id="cart-button">My Cart</button>
-      <a href="dashboard.html"
-        ><button id="dashboard-button">Dashboard</button></a
-      >
-    </header>
+    </nav>
 
-    <nav></nav>
-
+    <!-- main product area -->
     <main>
       <div id="product-grid" class="grid"></div>
 
-      <!-- Popup Modal for products -->
+      <!-- Modal -->
       <div id="product-modal" class="modal hidden">
         <div class="modal-content">
           <span class="close-btn">&times;</span>
@@ -95,19 +99,24 @@
         </div>
         <div id="cart-items"></div>
         <p>Subtotal: $<span id="cart-total">0.00</span></p>
-        <button id="clear-cart-btn">Clear Cart</button>
-        <button id="checkout-btn">Checkout</button>
+        <button id="clear-cart-btn" class="slime-btn">Clear Cart</button>
+        <button id="checkout-btn" class="slime-btn">Checkout</button>
       </div>
+
       <!-- Overlay behind cart -->
       <div id="cart-overlay" class="cart-overlay hidden"></div>
 
       <script src="scripts/allItems.js"></script>
-      <script src="scripts/cart.js"></script>
+      <script src="scirpts/cart.js"></script>
       <script src="scripts/search.js"></script>
+    </div>
     </main>
 
-    <footer>
-      <p>this is a scam</p>
+    <!-- Footer -->
+    <footer
+      style="text-align: center; margin-top: 40px; padding: 20px 0; color: #555"
+    >
+      <p>© 2025 Slop Shop. Probably not a scam.</p>
     </footer>
     <!-- placeholder for the sidebar -->
   </body>
