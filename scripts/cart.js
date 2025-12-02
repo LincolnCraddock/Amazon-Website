@@ -1,3 +1,15 @@
+/***********************************************************
+ * cart.js
+ * ---------------------------------------------------------
+ * Handles:
+ *  - rendering cart items
+ *  - quantity changes
+ *  - removing items
+ *  - clearing cart
+ *  - checkout
+ *  - sidebar open/close logic (with blur + overlay)
+ ***********************************************************/
+
 function renderCart() {
   const cartContainer = document.getElementById("cart-items");
   const totalDisplay = document.getElementById("cart-total");
@@ -27,46 +39,57 @@ function renderCart() {
     div.className = "cart-item";
     div.innerHTML = `
       <div class="cart-left">
-        <img src="${item.image}" alt="${
-      item.title
-    }" style="width:80px;height:100px;object-fit:cover;">
+        <img 
+          src="${item.image}" 
+          alt="${item.title}" 
+          style="width:80px;height:100px;object-fit:cover;"
+        >
         <div class="cart-info">
           <p><strong>${item.title}</strong></p>
           <p>Price: $${item.price.toFixed(2)}</p>
           <p>Subtotal: $${itemTotal.toFixed(2)}</p>
         </div>
       </div>
+
       <div class="cart-controls">
         <button class="qty-btn" data-index="${index}" data-action="decrease">-</button>
         <span class="quantity">${item.quantity}</span>
         <button class="qty-btn" data-index="${index}" data-action="increase">+</button>
-        <button class="remove-btn" data-index="${index}">Remove</button>
+
+        <button class="remove-btn" data-index="${index}">
+          Remove
+        </button>
       </div>
     `;
+
     cartContainer.appendChild(div);
   });
 
   totalDisplay.textContent = total.toFixed(2);
 
-  // Quantity adjusters
+  // increase/decrease qty
   document.querySelectorAll(".qty-btn").forEach((btn) => {
     btn.addEventListener("click", (e) => {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
       const idx = parseInt(e.target.dataset.index);
       const action = e.target.dataset.action;
+
       if (action === "increase") cart[idx].quantity++;
-      else if (action === "decrease" && cart[idx].quantity > 1)
+      else if (action === "decrease" && cart[idx].quantity > 1) {
         cart[idx].quantity--;
-      else if (action === "decrease" && cart[idx].quantity === 1)
+      } else if (action === "decrease" && cart[idx].quantity === 1) {
         cart.splice(idx, 1);
+      }
 
       localStorage.setItem("cart", JSON.stringify(cart));
       renderCart();
     });
   });
 
-  // Remove item
+  // remove item
   document.querySelectorAll(".remove-btn").forEach((btn) => {
     btn.addEventListener("click", (e) => {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
       const idx = parseInt(e.target.dataset.index);
       cart.splice(idx, 1);
       localStorage.setItem("cart", JSON.stringify(cart));
@@ -74,7 +97,7 @@ function renderCart() {
     });
   });
 
-  // Clear cart
+  // clear cart button
   clearCartBtn.onclick = () => {
     if (confirm("Are you sure you want to clear your cart?")) {
       localStorage.removeItem("cart");
@@ -82,6 +105,7 @@ function renderCart() {
     }
   };
 
+  // checkout button
   checkoutBtn.onclick = () => {
     if (cart.length === 0) {
       alert("Your cart is empty!");
@@ -95,4 +119,47 @@ function renderCart() {
   };
 }
 
+// INITIAL CART RENDER
 renderCart();
+
+document.addEventListener("DOMContentLoaded", () => {
+  const cartBtn = document.getElementById("cart-button");
+  const cartSidebar = document.getElementById("cart-sidebar");
+  const cartOverlay = document.getElementById("cart-overlay");
+  const closeCart = document.getElementById("close-cart");
+
+  console.log("Sidebar Elements:", {
+    cartBtn,
+    cartSidebar,
+    cartOverlay,
+    closeCart,
+  });
+
+  // If anything is missing, don't crash
+  if (!cartBtn || !cartSidebar || !cartOverlay || !closeCart) {
+    console.warn("Cart sidebar failed to initialize. Missing DOM IDs.");
+    return;
+  }
+
+  // Remove hidden so CSS animation controls visibility
+  cartSidebar.classList.remove("hidden");
+  cartOverlay.classList.remove("hidden");
+
+  // Open sidebar
+  cartBtn.addEventListener("click", () => {
+    cartSidebar.classList.add("open");
+    cartOverlay.classList.add("show");
+  });
+
+  // Close using X
+  closeCart.addEventListener("click", () => {
+    cartSidebar.classList.remove("open");
+    cartOverlay.classList.remove("show");
+  });
+
+  // Close by clicking overlay
+  cartOverlay.addEventListener("click", () => {
+    cartSidebar.classList.remove("open");
+    cartOverlay.classList.remove("show");
+  });
+});
