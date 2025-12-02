@@ -33,7 +33,7 @@ function initProductDetails(id) {
       document.getElementById("prod-desc").textContent = product.description;
 
       // --- Add to Cart button handler ---
-      const addBtn = document.querySelector(".add-cart-btn");
+      const addBtn = document.querySelector(".modal-add-cart-btn");
       if (addBtn) {
         addBtn.onclick = () => {
           const quantity =

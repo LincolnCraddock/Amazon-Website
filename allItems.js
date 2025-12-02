@@ -2,114 +2,97 @@
  * allitems.js
  * ---------------------------------------------------------
  * Loads all products from the JSON file, displays them
- * in a responsive grid on the homepage, and handles opening
- * the detailed product popup (modal).
+ * in a responsive grid, and handles opening the product modal.
  ***********************************************************/
 
-// Initialize an empty array to store all product data globally
 let productsData = [];
 
-// Fetch product data from the JSON file
+// Fetch all products
 fetch("products_real_titles.json")
-  .then((res) => res.json()) // Parse the JSON response
+  .then((res) => res.json())
   .then((data) => {
-    // Store the array of items globally for easy access
     productsData = data.items;
-
-    // Get reference to the grid container on the page
     const grid = document.getElementById("product-grid");
 
-    // Loop through every product in the data
     productsData.forEach((item) => {
-      const product = item.fields; // Shortcut to the product's field data
-      const id = item.sys.id; // Each product has a unique ID
+      const product = item.fields;
+      const id = item.sys.id;
 
-      // --- IMAGE URL HANDLING ---
-      // Some images are local, others may be hosted externally
+      // Image URL
       const img = product.image.fields.file.url.startsWith("http")
-        ? product.image.fields.file.url // use as-is if HTTP URL
-        : "." + product.image.fields.file.url; // prepend dot for local paths
+        ? product.image.fields.file.url
+        : "." + product.image.fields.file.url;
 
-      // --- CREATE PRODUCT CARD ELEMENT ---
+      // Create card
       const card = document.createElement("div");
       card.className = "product-card";
 
-      // Set the inner HTML structure of each product card
       card.innerHTML = `
         <img src="${img}" alt="${product.title}">
-        <div class="product-title">${product.title}</div>
-        <div class="product-price">$${product.price}</div>
-        <div class="product-category">${product.category}</div>
+        <div class="product-info-block">
+          <div class="product-title">${product.title}</div>
+          <div class="product-price">$${product.price}</div>
+          <div class="product-category">${product.category}</div>
+        </div>
         <button class="add-cart-btn" data-id="${id}">Add to Cart</button>
       `;
 
-      // --- CLICK EVENT: OPEN PRODUCT POPUP ---
-      // When the card is clicked, open the product detail modal
-      card.addEventListener("click", () => openModal(id));
+      // Prevent modal from opening when clicking the Add Cart button
+      card.addEventListener("click", (e) => {
+        if (e.target.classList.contains("add-cart-btn")) return;
+        openModal(id);
+      });
 
-      // Finally, add the product card to the grid container
       grid.appendChild(card);
     });
+
+    // Attach Add to Cart events AFTER cards load
+    attachAddToCartButtons();
   });
 
-// --- MODAL SETUP --- //
-// The modal is hidden by default until a user clicks a product
+// ===== OPEN MODAL ===== //
+
 const modal = document.getElementById("product-modal");
 const modalBody = document.getElementById("modal-body");
 
-// --- FUNCTION: OPEN MODAL --- //
-// Loads the product detail HTML into the popup and shows it
 function openModal(id) {
-  // Temporary loading message while content is fetched
   modalBody.innerHTML = `<p style="text-align:center">Loading...</p>`;
 
-  // Fetch the HTML template for the product detail view
   fetch("product.html")
     .then((res) => res.text())
     .then((html) => {
-      // Insert the HTML structure into the modal body
       modalBody.innerHTML = html;
 
-      // If product.js (the logic file for product details)
-      // hasn’t been loaded yet, load it dynamically
       if (!window.initProductDetails) {
         const script = document.createElement("script");
         script.src = "product.js";
-        // Once script is loaded, display the specific product
         script.onload = () => showProduct(id);
         document.body.appendChild(script);
       } else {
-        // If already loaded, just display the product immediately
         showProduct(id);
       }
     });
 }
 
-// --- FUNCTION: SHOW PRODUCT IN MODAL --- //
-// Actually displays the chosen product and handles closing behavior
 function showProduct(id) {
-  // Call function from product.js to fill modal with content
   initProductDetails(id).then(() => {
-    // Handle close button (X in the corner)
     const closeBtn = document.querySelector(".close-btn");
     closeBtn.onclick = () => modal.classList.add("hidden");
 
-    // Handle click outside the popup to close it
     window.onclick = (e) => {
       if (e.target === modal) modal.classList.add("hidden");
     };
 
-    // Reveal the modal (fade-in / display flex)
     modal.classList.remove("hidden");
   });
 }
 
-// ------------------- CART LOGIC -------------------
+// ===== CART LOGIC ===== //
 
 function addToCart(product) {
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
   const existing = cart.find((item) => item.id === product.id);
+
   if (existing) {
     existing.quantity++;
   } else {
@@ -120,11 +103,13 @@ function addToCart(product) {
   console.log(`${product.title} added to cart!`);
 }
 
-setTimeout(() => {
-  const buttons = document.querySelectorAll(".add-to-cart-btn");
+function attachAddToCartButtons() {
+  const buttons = document.querySelectorAll(".add-cart-btn");
+
   buttons.forEach((btn) => {
     btn.addEventListener("click", (e) => {
-      e.stopPropagation();
+      e.stopPropagation(); // Stop card click
+
       const id = e.target.dataset.id;
       const item = productsData.find((p) => p.sys.id === id);
       if (!item) return;
@@ -145,40 +130,47 @@ setTimeout(() => {
       alert(`${product.title} added to cart!`);
     });
   });
-}, 500);
+}
+
+// ===== CART SIDEBAR ===== //
 
 const cartButton = document.getElementById("cart-button");
 const cartSidebar = document.getElementById("cart-sidebar");
 const closeCartBtn = document.getElementById("close-cart");
 const cartOverlay = document.getElementById("cart-overlay");
 
-function openCart() {
-  cartSidebar.classList.add("visible");
-  cartOverlay.classList.add("visible");
-  renderCart();
-}
-
-function closeCart() {
-  cartSidebar.classList.remove("visible");
-  cartOverlay.classList.remove("visible");
-}
-
 if (cartButton && cartSidebar && cartOverlay) {
-  cartButton.addEventListener("click", openCart);
-  closeCartBtn.addEventListener("click", closeCart);
-  cartOverlay.addEventListener("click", closeCart);
-} else {
-  console.error("Cart elements not found. Check IDs in index.html.");
+  cartButton.addEventListener("click", () => {
+    cartSidebar.classList.add("visible");
+    cartOverlay.classList.add("visible");
+    renderCart();
+  });
+
+  closeCartBtn.addEventListener("click", () => {
+    cartSidebar.classList.remove("visible");
+    cartOverlay.classList.remove("visible");
+  });
+
+  cartOverlay.addEventListener("click", () => {
+    cartSidebar.classList.remove("visible");
+    cartOverlay.classList.remove("visible");
+  });
 }
 
-// ------------------- CATEGORY FILTER -------------------
+// ===== CATEGORY FILTER ===== //
 
 const categorySelect = document.getElementById("category-select");
 
 categorySelect.addEventListener("change", () => {
+  filterProducts();
+});
+
+function filterProducts() {
   const selectedCategory = categorySelect.value.toLowerCase();
-  const searchInput = document.getElementById("search-bar");
-  const searchTerm = searchInput.value.trim().toLowerCase();
+  const searchTerm = document
+    .getElementById("search-bar")
+    .value.trim()
+    .toLowerCase();
 
   const productCards = document.querySelectorAll(".product-card");
 
@@ -197,7 +189,6 @@ categorySelect.addEventListener("change", () => {
       title.includes(searchTerm) ||
       category.includes(searchTerm);
 
-    // show/hide based on both conditions
     if (matchesCategory && matchesSearch) {
       card.style.display = "";
       setTimeout(() => card.classList.remove("hidden"), 10);
@@ -206,4 +197,4 @@ categorySelect.addEventListener("change", () => {
       setTimeout(() => (card.style.display = "none"), 300);
     }
   });
-});
+}
