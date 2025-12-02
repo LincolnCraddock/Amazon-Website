@@ -106,6 +106,7 @@ input {
   padding: 6px;
   display: block;
   pointer-events: none;
+  box-sizing: border-box;
 }
 
 /* MIDDLE: Title + Price + Category */
