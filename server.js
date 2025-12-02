@@ -43,19 +43,9 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
-//check user logged in
-app.get("/auth-status", (req, res) => {
-  if (req.isAuthenticated()) {
-    res.json({ loggedIn: true, user: req.user });
-  } else {
-    res.json({ loggedIn: false });
-  }
-});
-
 /* -------------- POST routes ------------------- */
 app.post("/register", async (req, res) => {
   try {
-    console.log("REQ BODY:", req.body); // <-- debug
     const { email, name, password } = req.body;
     const user = new User({ email, name });
     await User.register(user, password);
@@ -67,21 +57,31 @@ app.post("/register", async (req, res) => {
 
 app.post("/login", passport.authenticate("local"), (req, res) => {
   res.json({ message: "Logged in!", user: req.user });
-  res.redirect("/dashboard.html");
 });
 
-app.post("/order", (req, res) => {});
+app.get("/auth-status", (req, res) => {
+  if (req.isAuthenticated()) {
+    res.json({ loggedIn: true, user: req.user });
+  } else {
+    res.json({ loggedIn: false });
+  }
+});
 
 /*----------------- start server -----------------*/
-app.listen(port, () => {
-  console.log(`server running on localhost:${port}`);
-});
-
-// test
-
 mongoose
   .connect(
-    `mongodb+srv://admin:testing1@amazon-db.sccapev.mongodb.net/users?appName=amazon-db`
+    "mongodb+srv://admin:testing1@amazon-db.sccapev.mongodb.net/users?appName=amazon-db"
   )
-  .then(() => console.log("connected"))
+  .then(() => {
+    console.log("connected");
+
+    app.listen(port, () => {
+      console.log(`server running on localhost:${port}`);
+    });
+  })
   .catch((e) => console.log(`whoops, didn't connect: ${e.message}`));
+
+/*  ------------------ error handler --------------------- */
+app.use((err, req, res, next) => {
+  res.status(401).json({ message: err.message || "Unauthorized" });
+});

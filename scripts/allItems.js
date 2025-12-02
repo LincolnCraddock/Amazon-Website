@@ -34,7 +34,7 @@ fetch("products_real_titles.json")
           <div class="product-price">$${product.price}</div>
           <div class="product-category">${product.category}</div>
         </div>
-        <button class="add-cart-btn" data-id="${id}">Add to Cart</button>
+        <button class="add-to-cart-btn" data-id="${id}">Add to Cart</button>
       `;
 
       // Prevent modal from opening when clicking the Add Cart button
@@ -103,33 +103,35 @@ function addToCart(product) {
   console.log(`${product.title} added to cart!`);
 }
 
-setTimeout(() => {
-  const buttons = document.querySelectorAll(".add-to-cart-btn");
-  buttons.forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-      e.stopPropagation(); // Stop card click
+function attachAddToCartButtons() {
+  setTimeout(() => {
+    const buttons = document.querySelectorAll(".add-to-cart-btn");
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation(); // Stop card click
 
-      const id = e.target.dataset.id;
-      const item = productsData.find((p) => p.sys.id === id);
-      if (!item) return;
+        const id = e.target.dataset.id;
+        const item = productsData.find((p) => p.sys.id === id);
+        if (!item) return;
 
-      const product = item.fields;
-      const img = product.image.fields.file.url.startsWith("http")
-        ? product.image.fields.file.url
-        : "." + product.image.fields.file.url;
+        const product = item.fields;
+        const img = product.image.fields.file.url.startsWith("http")
+          ? product.image.fields.file.url
+          : "." + product.image.fields.file.url;
 
-      const cartItem = {
-        id: item.sys.id,
-        title: product.title,
-        price: product.price,
-        image: img,
-      };
+        const cartItem = {
+          id: item.sys.id,
+          title: product.title,
+          price: product.price,
+          image: img,
+        };
 
-      addToCart(cartItem);
-      alert(`${product.title} added to cart!`);
+        addToCart(cartItem);
+        alert(`${product.title} added to cart!`);
+      });
     });
-  });
-}, 500);
+  }, 500);
+}
 
 // ===== CART SIDEBAR ===== //
 
