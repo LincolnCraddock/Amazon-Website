@@ -7,5 +7,5 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
     method: "POST",
     body: new URLSearchParams(formData),
   });
-  console.log("Response from registering: ", await res.json());
+  console.log("Response from logging in: ", await res.json());
 });

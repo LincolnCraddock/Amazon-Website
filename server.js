@@ -42,7 +42,7 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
-/* -------------- registration ------------------- */
+/* -------------- register/login ------------------- */
 app.post("/register", async (req, res) => {
   try {
     const { email, name, password } = req.body;
@@ -58,9 +58,17 @@ app.post("/login", passport.authenticate("local"), (req, res) => {
   res.json({ message: "Logged in!", user: req.user });
 });
 
+app.get("/auth-status", (req, res) => {
+  if (req.isAuthenticated()) {
+    res.json({ loggedIn: true, user: req.user });
+  } else {
+    res.json({ loggedIn: false });
+  }
+});
+
 /*----------------- start server -----------------*/
 app.listen(port, () => {
-  console.log("server running on localhost:{port}");
+  console.log(`server running on localhost:${port}`);
 });
 
 // test
