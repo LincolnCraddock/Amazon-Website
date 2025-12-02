@@ -63,6 +63,8 @@ app.listen(port, () => {
   console.log("server running on localhost:{port}");
 });
 
+// test
+
 mongoose
   .connect(
     `mongodb+srv://lincolncraddock:m7auLAtPf75BcukP@cluster0.zdso4zo.mongodb.net/?appName=Cluster0`
