@@ -62,8 +62,6 @@ input {
   background-color: gray;
 }
 
-/********************* product grid *********************/
-
 /********************* PRODUCT GRID *********************/
 
 .grid {
@@ -102,10 +100,9 @@ input {
   width: 100%;
   height: 260px;
   object-fit: contain;
-  border-radius: 6px;
-  background: #0e0e0e;
+  border-radius: 15px;
+  background: #ffffff;
   padding: 6px;
-  border: 1px solid rgba(58, 173, 85, 0.25);
   display: block;
   pointer-events: none;
 }
