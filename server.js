@@ -4,6 +4,15 @@ const app = express();
 const port = 3000;
 const mongoose = require('mongoose');
 const User = require('/project/workspace/model/User.js');
+const MONGO_URL = "mongodb+srv://admin:testing1@amazon-db.sccapev.mongodb.net/users?appName=amazon-db";
+
+/*----------------------- mongodb connection --------------------------*/ 
+mongoose.connect(MONGO_URL )
+.then(()=>{
+    console.log("MongoDB connection successful!")
+})
+.catch(err => console.log("mongoDB connection failed: " + err));
+
 
 
 /*---------------- SESSION SET UP ----------------- */
@@ -58,7 +67,7 @@ app.post("/register", async (req, res) =>{
 
 /*----------------- start server -----------------*/
 app.listen(port, ()=>{
-    console.log("server running on localhost:{port}");
+    console.log(`server running on localhost:${port}`);
 });
 
 
