@@ -43,6 +43,13 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
+app.get("/auth-status", (req, res) => {
+  if (req.isAuthenticated()) {
+    res.json({ loggedIn: true, user: req.user });
+  } else {
+    res.json({ loggedIn: false });
+  }
+});
 /* -------------- POST routes ------------------- */
 app.post("/register", async (req, res) => {
   try {
@@ -59,27 +66,21 @@ app.post("/login", passport.authenticate("local"), (req, res) => {
   res.json({ message: "Logged in!", user: req.user });
 });
 
-app.get("/auth-status", (req, res) => {
-  if (req.isAuthenticated()) {
-    res.json({ loggedIn: true, user: req.user });
-  } else {
-    res.json({ loggedIn: false });
-  }
-});
-
 /*----------------- start server -----------------*/
 mongoose
   .connect(
-    "mongodb+srv://admin:testing1@amazon-db.sccapev.mongodb.net/users?appName=amazon-db"
+    "mongodb+srv://admin:testing1@amazon-db.sccapev.mongodb.net/users?retryWrites=true&w=majority&tls=true&appName=amazon-db"
   )
   .then(() => {
     console.log("connected");
 
-    app.listen(port, () => {
-      console.log(`server running on localhost:${port}`);
-    });
+   
   })
   .catch((e) => console.log(`whoops, didn't connect: ${e.message}`));
+
+  app.listen(port, () => {
+    console.log(`server running on localhost:${port}`);
+  });
 
 /*  ------------------ error handler --------------------- */
 app.use((err, req, res, next) => {
