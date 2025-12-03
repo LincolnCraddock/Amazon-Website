@@ -7,6 +7,11 @@
 
 let productsData = [];
 
+// Defer DOM lookups that might run before the DOM is ready
+function getCategorySelect() {
+  return document.getElementById("category-select");
+}
+
 // Fetch all products
 fetch("products_real_titles.json")
   .then((res) => res.json())
@@ -39,15 +44,66 @@ fetch("products_real_titles.json")
 
       // Prevent modal from opening when clicking the Add Cart button
       card.addEventListener("click", (e) => {
-        if (e.target.classList.contains("add-cart-btn")) return;
+        if (e.target.classList.contains("add-to-cart-btn")) return;
         openModal(id);
       });
 
       grid.appendChild(card);
     });
 
+    // ===== CATEGORY SELECT SETUP =====
+    // Wire up the category select element safely (element might not exist if DOM not complete)
+    const categorySelect = getCategorySelect();
+    if (categorySelect) {
+      categorySelect.addEventListener("change", () => {
+        filterProducts();
+      });
+    } else {
+      console.warn("category-select not found in DOM when script ran.");
+    }
+
+    // === APPLY CATEGORY FROM URL === //
+    const params = new URLSearchParams(window.location.search);
+    const catFromURL = params.get("category");
+
+    if (catFromURL) {
+      // Try to set the dropdown to the matching option (case-insensitive)
+      if (categorySelect) {
+        const lowerWanted = catFromURL.toLowerCase();
+        let matched = false;
+
+        // Try matching by option value or option text
+        Array.from(categorySelect.options).forEach((opt, idx) => {
+          if (
+            opt.value.toLowerCase() === lowerWanted ||
+            opt.text.toLowerCase() === lowerWanted
+          ) {
+            categorySelect.selectedIndex = idx;
+            matched = true;
+          }
+        });
+
+        // If no option matched, add a temporary option and select it (so the UI shows value)
+        if (!matched) {
+          const tempOpt = document.createElement("option");
+          tempOpt.value = catFromURL;
+          tempOpt.text = catFromURL;
+          tempOpt.selected = true;
+          categorySelect.appendChild(tempOpt);
+        }
+      }
+
+      // Filter after a short delay to ensure cards are in the DOM
+      setTimeout(() => {
+        filterProducts();
+      }, 60);
+    }
+
     // Attach Add to Cart events AFTER cards load
     attachAddToCartButtons();
+  })
+  .catch((err) => {
+    console.error("Failed loading products:", err);
   });
 
 // ===== OPEN MODAL ===== //
