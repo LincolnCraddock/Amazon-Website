@@ -149,7 +149,10 @@ input {
   inset: 0;
   justify-content: center;
   align-items: center;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  z-index: 9990; /* under sidebar but above everything else */
 }
 
 .modal:not(.hidden) {
