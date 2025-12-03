@@ -33,7 +33,6 @@ input {
   left: 300px;
   z-index: 1;
   background-color: gray;
-  
 }
 
 .dropdown:hover .dropdown-content {
@@ -166,7 +165,7 @@ input {
   background: #1b1b1b;
   box-shadow: 0 0 125px 75px rgba(58, 173, 85, 0.55);
   border-radius: 12px;
-  padding: 20px;
+  padding: 50px;
 }
 
 .popup-layout {
@@ -185,10 +184,19 @@ input {
   gap: 15px;
 }
 
-.left-col .product-category {
+.left-col .product-category a {
+  color: #ddd; /* normal text color */
+  text-decoration: none; /* remove underline */
+  cursor: pointer;
   font-weight: bold;
   font-size: 1rem;
-  margin-bottom: 10px;
+  outline: none; /* remove default focus outline (we add custom below) */
+  -webkit-text-decoration-skip: none;
+}
+
+/* subtle hover/keyboard focus */
+.left-col .product-category a:hover {
+  color: #fff;
 }
 
 .left-col img {
