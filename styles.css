@@ -33,6 +33,7 @@ input {
   left: 300px;
   z-index: 1;
   background-color: gray;
+  
 }
 
 .dropdown:hover .dropdown-content {
@@ -105,6 +106,7 @@ input {
   padding: 6px;
   display: block;
   pointer-events: none;
+  box-sizing: border-box;
 }
 
 /* MIDDLE: Title + Price + Category */
@@ -162,6 +164,7 @@ input {
   width: 75%;
   max-width: 900px;
   background: #1b1b1b;
+  box-shadow: 0 0 125px 75px rgba(58, 173, 85, 0.55);
   border-radius: 12px;
   padding: 20px;
 }
@@ -256,7 +259,7 @@ input {
 }
 
 /* Add to cart button */
-.add-cart-btn {
+.add-to-cart-btn {
   margin-top: 20px;
   padding: 14px;
   background: #3aad55;
@@ -269,7 +272,7 @@ input {
   transition: 0.15s ease;
 }
 
-.add-cart-btn:hover {
+.add-to-cart-btn:hover {
   background: #57d672;
   transform: scale(1.03);
 }
@@ -454,6 +457,7 @@ input {
 .nav-left {
   flex: 0 0 auto; /* logo keeps natural width */
   min-width: 0;
+  cursor: pointer;
 }
 
 /* Search center */
@@ -704,13 +708,18 @@ body.dashboard-dark {
   .popup-layout {
     grid-template-columns: 1fr;
   }
-
-  .left-col img {
-    height: 260px;
-  }
-
+  .left-col,
   .right-col {
+    align-items: center;
     text-align: center;
+  }
+  .quantity-container {
+    justify-content: center;
+  }
+  .left-col img {
+    height: 240px;
+    align-self: center;
+    margin-top: 10px;
   }
 
   .quantity-container {
