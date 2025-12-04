@@ -105,6 +105,7 @@ input {
   padding: 6px;
   display: block;
   pointer-events: none;
+  box-sizing: border-box;
 }
 
 /* MIDDLE: Title + Price + Category */
@@ -148,7 +149,10 @@ input {
   inset: 0;
   justify-content: center;
   align-items: center;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+  z-index: 9990; /* under sidebar but above everything else */
 }
 
 .modal:not(.hidden) {
@@ -162,8 +166,9 @@ input {
   width: 75%;
   max-width: 900px;
   background: #1b1b1b;
+  box-shadow: 0 0 125px 75px rgba(58, 173, 85, 0.55);
   border-radius: 12px;
-  padding: 20px;
+  padding: 50px;
 }
 
 .popup-layout {
@@ -182,10 +187,19 @@ input {
   gap: 15px;
 }
 
-.left-col .product-category {
+.left-col .product-category a {
+  color: #ddd; /* normal text color */
+  text-decoration: none; /* remove underline */
+  cursor: pointer;
   font-weight: bold;
   font-size: 1rem;
-  margin-bottom: 10px;
+  outline: none; /* remove default focus outline (we add custom below) */
+  -webkit-text-decoration-skip: none;
+}
+
+/* subtle hover/keyboard focus */
+.left-col .product-category a:hover {
+  color: #fff;
 }
 
 .left-col img {
@@ -256,7 +270,7 @@ input {
 }
 
 /* Add to cart button */
-.add-cart-btn {
+.add-to-cart-btn {
   margin-top: 20px;
   padding: 14px;
   background: #3aad55;
@@ -269,7 +283,7 @@ input {
   transition: 0.15s ease;
 }
 
-.add-cart-btn:hover {
+.add-to-cart-btn:hover {
   background: #57d672;
   transform: scale(1.03);
 }
@@ -454,6 +468,7 @@ input {
 .nav-left {
   flex: 0 0 auto; /* logo keeps natural width */
   min-width: 0;
+  cursor: pointer;
 }
 
 /* Search center */
@@ -704,13 +719,18 @@ body.dashboard-dark {
   .popup-layout {
     grid-template-columns: 1fr;
   }
-
-  .left-col img {
-    height: 260px;
-  }
-
+  .left-col,
   .right-col {
+    align-items: center;
     text-align: center;
+  }
+  .quantity-container {
+    justify-content: center;
+  }
+  .left-col img {
+    height: 240px;
+    align-self: center;
+    margin-top: 10px;
   }
 
   .quantity-container {

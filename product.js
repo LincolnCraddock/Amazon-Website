@@ -28,7 +28,11 @@ function initProductDetails(id) {
       document.getElementById("prod-img").src = img;
       document.getElementById("prod-title").textContent = product.title;
       document.getElementById("prod-price").textContent = product.price;
-      document.getElementById("prod-category").textContent = product.category;
+      const catLink = document.getElementById("prod-category-link");
+      catLink.textContent = product.category;
+      catLink.href = `index.html?category=${encodeURIComponent(
+        product.category
+      )}`;
       document.getElementById("prod-stock").textContent = product.stock;
       document.getElementById("prod-desc").textContent = product.description;
 

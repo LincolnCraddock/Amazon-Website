@@ -4,44 +4,32 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-
+  
     <title>Slop Shop</title>
 
     <!-- Styles -->
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body class="dashboard-dark">
-    <!-- Slimed Navbar -->
-    <nav class="slime-navbar">
-      <!-- Left: Logo -->
-      <div class="nav-left">
-        <a href="index.html">
-          <img src="images/Logo.png" alt="Slop Shop Logo" class="nav-logo" />
-        </a>
-      </div>
-
-      <!-- Center: Search -->
-      <div class="nav-center">
-        <div class="search-wrapper">
-          <input
-            type="text"
-            id="search-bar"
-            placeholder="Search for anything"
-          />
-
-          <select id="category-select">
-            <option value="all">All Items</option>
-            <!-- categories injected by categories.js -->
-          </select>
-
-          <button id="search-button" class="slime-btn">Search</button>
+    <body class="dashboard-dark">
+      <header class="slime-navbar">
+        <div class="nav-left">
+          <img src="images/Logo.png" alt="Slop Shop Logo" class="nav-logo"/>
+          <a href="scripts/index.html"></a> 
         </div>
+        <div class="nav-center">
+          <div class="search-wrapper">
+        <input type="text" id="search-bar" placeholder="Search for anything" />
+        
+        <select id="category-select">
+          <option value="all">All Items</option>
+          <!-- <option value="" disabled selected>Filter</option> -->
+          <script src="scripts/categories.js"></script>
+        </select>
+        <button id="search-button" class="slime-btn">Search!</button>
       </div>
-
-      <!-- Right: Auth, Cart, Dashboard -->
       <div class="nav-right">
-        <div class="dropdown">
-          <button class="slime-btn dropdown-button">Login / Register</button>
+        <div id="login-dropdown" class="dropdown">
+          <button class="dropdown-button slime-btn">Login / Register</button>
           <div class="dropdown-content">
             <div class="tab-area">
               <button
@@ -50,53 +38,57 @@
               >
                 Login
               </button>
-
               <button
                 class="tab"
                 onclick="changeTab(event, 'register-tab-content')"
               >
                 Register
               </button>
-
               <br />
-
-              <!-- Login -->
               <div
                 id="login-tab-content"
                 class="tab-content"
                 style="display: block"
               >
-                <input type="email" placeholder="Email/Username" /><br />
-                <input
-                  type="password"
-                  placeholder="Password"
-                  autocomplete="current-password"
-                /><br />
-                <button class="slime-btn">Login</button>
+                <form id="login-form">
+                  <input type="text" placeholder="Email/Username" name="name" />
+                  <input
+                    type="password"
+                    placeholder="Password"
+                    autocomplete="current-password"
+                    name="password"
+                  /><br />
+                  <button>Login</button>
+                </form>
               </div>
-
-              <!-- Register -->
+              <script src="scripts/login.js"></script>
               <div id="register-tab-content" class="tab-content">
-                <input type="email" placeholder="Email" /><br />
-                <input type="text" placeholder="Username" /><br />
-                <input
-                  type="password"
-                  placeholder="Password"
-                  autocomplete="new-password"
-                /><br />
-                <button class="slime-btn">Register</button>
+                  <form id="register-form">
+                      <input type="email" placeholder="Email" name="email" /><br />
+                      <input type="text" placeholder="name" name="name" />
+                      <input
+                          type="password"
+                          placeholder="Password"
+                          name="password"
+                          required
+                      /><br />
+                      <button type="submit">Register</button>
+                  </form>
               </div>
+              <script src="scripts/register.js"></script>
             </div>
           </div>
         </div>
-
         <button id="cart-button" class="slime-btn">My Cart</button>
 
         <a href="dashboard.html">
           <button id="dashboard-button" class="slime-btn">Dashboard</button>
         </a>
-      </div>
-    </nav>
+        </div>
+      
+    </header>
+
+    <nav></nav>
 
     <!-- main product area -->
     <main>
@@ -124,6 +116,11 @@
 
       <!-- Overlay behind cart -->
       <div id="cart-overlay" class="cart-overlay hidden"></div>
+
+      <script src="scripts/allItems.js"></script>
+      <script src="scripts/cart.js"></script>
+      <script src="scripts/search.js"></script>
+    </div>
     </main>
 
     <!-- Footer -->
@@ -132,23 +129,17 @@
     >
       <p>© 2025 Slop Shop. Probably not a scam.</p>
     </footer>
-
-    <!-- Scripts -->
-    <script src="categories.js"></script>
-    <script src="allItems.js"></script>
-    <script src="product.js"></script>
-    <script src="cart.js"></script>
-    <script src="search.js"></script>
-    <script src="tabs.js"></script>
-
-    <!-- Track last clicked element for dropdown logic -->
-    <script>
-      let lastClickedElement = document.querySelector("body");
-      document.addEventListener("click", (event) => {
-        lastClickedElement.classList.remove("last-clicked");
-        lastClickedElement = event.target;
-        lastClickedElement.classList.add("last-clicked");
-      });
-    </script>
+    <!-- placeholder for the sidebar -->
   </body>
+  <script>
+    // track the last clicked element, for use in CSS
+    let lastClickedElement = document.querySelector("body"); // default element
+    document.addEventListener("click", (event) => {
+      lastClickedElement.classList.remove("last-clicked");
+      lastClickedElement = event.target;
+      lastClickedElement.classList.add("last-clicked");
+    });
+  </script>
+  <script src="scripts/tabs.js"></script>
+  <script src="scripts/showHideLogin.js"></script>
 </html>
