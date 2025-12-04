@@ -113,7 +113,7 @@ function renderCart() {
     }
 
     //alert(`Thank you for your purchase! Total: $${total.toFixed(2)}`);
-    
+
     localStorage.removeItem("cart");
     renderCart();
   };
