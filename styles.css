@@ -18,30 +18,39 @@ input {
 /********************* dropdowns *********************/
 
 /* contains a dropdown */
+/* Dropdown anchor */
 .dropdown {
-  display: inline;
+  position: relative;
+  display: inline-block;
 }
 
-/* the button that displays the dropdown content when clicked */
-.dropdown-button {
-}
-
-/* contains the content of a dropdown. Place inside a .dropdown */
+/* Dropdown panel */
 .dropdown-content {
   display: none;
   position: absolute;
-  left: 300px;
-  z-index: 1;
-  background-color: gray;
+  top: 100%; /* Sit directly under button */
+  left: 0; /* Align with button */
+  z-index: 9999;
+  background: #111;
+  border: 1px solid #3aad55;
+  padding: 14px;
+  border-radius: 6px;
+  min-width: 260px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
 }
 
-.dropdown:hover .dropdown-content {
+/* Class that shows dropdown */
+.dropdown-content.show {
+  display: block;
+}
+
+/* .dropdown:hover .dropdown-content {
   display: block;
 }
 
 .dropdown:has(.last-clicked) .dropdown-content {
   display: block;
-}
+} */
 
 /********************* tabs *********************/
 
@@ -59,7 +68,7 @@ input {
 }
 
 .tab.active {
-  background-color: gray;
+  background-color: black;
 }
 
 /********************* PRODUCT GRID *********************/
@@ -365,6 +374,10 @@ input {
   color: #5cd97b;
 }
 
+#cart-subtotal {
+  margin-left: 15px;
+}
+
 /* Cart Buttons */
 #clear-cart-btn,
 #checkout-btn {
@@ -487,6 +500,7 @@ input {
   gap: 16px;
   min-width: 0; /* prevents forcing navbar wider */
   white-space: nowrap; /* keeps buttons inline */
+  margin-left: 16px;
 }
 
 /* Logo */
@@ -514,31 +528,10 @@ input {
   min-width: 0;
 }
 
-/************** Center Search Area **************/
-
-.search-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  max-width: 500px;
-  width: 100%;
-  min-width: 0; /* fixes overflow */
-}
-
-/************** Center Search Area **************/
-
-.search-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  max-width: 500px;
-  width: 100%;
-  min-width: 0;
-}
-
 #search-bar {
   padding: 10px 12px;
-  width: 260px;
+  max-width: 260px;
+  width: 100%;
   border-radius: 6px;
   border: 1px solid #333;
   background: #1a1a1a;
