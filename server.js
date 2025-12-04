@@ -203,16 +203,18 @@ app.get("/auth-status", (req, res) => {
 //     res.sendFile(__dirname + '/views/html/index.html');
 //   });
 
-// // -------- Log Out --------
-// // req.logout() removes the user from the session (logs them out).
-// // After logout, redirect back to login page.
+// -------- Log Out --------
+// req.logout() removes the user from the session (logs them out).
+// After logout, redirect back to login page.
 
-// app.get('/logout', function(req, res, next) {
-//   req.logout(function(err) {
-//     if (err) { return next(err); }
-//     res.redirect('/login');
-//   });
-// });
+app.get("/logout", function (req, res, next) {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/index.html");
+  });
+});
 
 // // -------- Registration Page --------
 // // Shows the signup form.
