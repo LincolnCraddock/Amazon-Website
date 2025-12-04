@@ -7,5 +7,13 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
     method: "POST",
     body: new URLSearchParams(formData),
   });
-  console.log("Response from logging in: ", await res.json());
+
+  const data = await res.json();
+  if (data.loggedIn) {
+    document.getElementById("dashboard-button").style.display = "";
+    document.getElementById("login-dropdown").style.display = "none";
+  } else {
+    document.getElementById("dashboard-button").style.display = "none";
+    document.getElementById("login-dropdown").style.display = "";
+  }
 });
