@@ -27,7 +27,7 @@ function initProductDetails(id) {
       // Populate all product info in the popup
       document.getElementById("prod-img").src = img;
       document.getElementById("prod-title").textContent = product.title;
-      document.getElementById("prod-price").textContent = product.price;
+      document.getElementById("prod-price").textContent = product.price.toFixed(2);
       const catLink = document.getElementById("prod-category-link");
       catLink.textContent = product.category;
       catLink.href = `index.html?category=${encodeURIComponent(

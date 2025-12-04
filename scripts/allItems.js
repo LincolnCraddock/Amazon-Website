@@ -36,7 +36,7 @@ fetch("products_real_titles.json")
         <img src="${img}" alt="${product.title}">
         <div class="product-info-block">
           <div class="product-title">${product.title}</div>
-          <div class="product-price">$${product.price}</div>
+          <div class="product-price">$${product.price.toFixed(2)}</div>
           <div class="product-category">${product.category}</div>
         </div>
         <button class="add-to-cart-btn" data-id="${id}">Add to Cart</button>
