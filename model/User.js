@@ -82,7 +82,7 @@ User.plugin(passportLocalMongoose, {
 // This lets other files in your project do:
 //     const User = require('./path/to/this/file');
 //     User.find(...), User.register(...), etc.
-module.exports = mongoose.model("userinfos", User);
+module.exports = mongoose.model("Users", User);
 
 // =======================
 // OPTIONAL: Insert Test Data

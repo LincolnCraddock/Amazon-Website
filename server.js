@@ -338,7 +338,7 @@ const mongoose = require("mongoose");
 //   they should go into environment variables for security reasons.
 //   But for testing or class demos, this is fine.
 mongoose.connect(
-  "mongodb+srv://admin:testing1@amazon-db.sccapev.mongodb.net/?appName=amazon-db",
+  "mongodb+srv://admin:testPass@cluster0.t3e421b.mongodb.net/slop-shop-db?appName=Cluster0",
   {
     //useNewUrlParser: true,    // This option ensures compatibility with modern MongoDB drivers.
     //useUnifiedTopology: true  // This option uses the new server discovery and monitoring engine.

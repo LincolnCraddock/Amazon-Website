@@ -47,4 +47,4 @@ const Order = new Schema({
 // This lets other files in your project do:
 //     const Order = require('./path/to/this/file');
 //     Order.find(...), etc.
-module.exports = mongoose.model("orderinfos", Order);
+module.exports = mongoose.model("Orders", Order);
