@@ -162,7 +162,7 @@ app.use(express.static(__dirname));
 
 // -------- Home Page --------
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/index.html"); // Sends the login page as the homepage
+  res.sendFile(__dirname + "/index.html"); // Sends the index.html page as the homepage
 });
 
 // vvv our code, not X's vvv
@@ -180,15 +180,12 @@ app.get("/auth-status", (req, res) => {
 //   res.sendFile(__dirname + '/views/html/login.html'); // Same as above
 // });
 
-// // -------- Dashboard Page (not used) --------
-// // The connectEnsureLogin middleware checks if user is logged in.
-// // If not logged in, it automatically redirects to the login page.
-// app.get('/dashboard', connectEnsureLogin.ensureLoggedIn(), (req, res) => {
-//   res.send(`Hello ${req.user.name}. Your session ID is ${req.sessionID}
-//   and your session expires in ${req.session.cookie.maxAge}
-//   milliseconds. Your email is ${req.user.email}.<br><br>
-//   <a href="/logout">Log Out</a><br><br><a href="/index">Members Only</a>`);
-// });
+// -------- Dashboard Page --------
+// The connectEnsureLogin middleware checks if user is logged in.
+// If not logged in, it automatically redirects to the login page.
+app.get("/dashboard", connectEnsureLogin.ensureLoggedIn(), (req, res) => {
+  res.redirect(__dirname + "/dashboard.html");
+});
 
 // // -------- Secret Page (Protected) --------
 // // Only logged-in users can access this page.
@@ -205,14 +202,13 @@ app.get("/auth-status", (req, res) => {
 
 // -------- Log Out --------
 // req.logout() removes the user from the session (logs them out).
-// After logout, redirect back to login page.
-
+// After logout, redirect back to index.html page.
 app.get("/logout", function (req, res, next) {
   req.logout(function (err) {
     if (err) {
       return next(err);
     }
-    res.redirect("/index.html");
+    res.redirect(__dirname + "/index.html");
   });
 });
 
@@ -266,7 +262,7 @@ app.post("/register", function (req, res, next) {
       }
 
       console.log("user registered!");
-      // res.redirect('/'); // After successful registration, go back to login page
+      // res.redirect('/'); // After successful registration, go back to main page
       if (req.isAuthenticated()) {
         res.json({ loggedIn: true, user: req.user });
       } else {
@@ -297,12 +293,10 @@ app.post("order", function (req, res, next) {
 
 // -------- Login (POST) --------
 // passport.authenticate('local') checks username and password.
-// If they’re wrong, redirect to '/' (login page again).
-// If successful, the user is stored in session and redirected to /index.
 // TODO: remove this redirect vvv
 app.post(
   "/login",
-  passport.authenticate("local", { failureRedirect: { messgae: "failed" } }),
+  passport.authenticate("local", { failureRedirect: { message: "failed" } }),
   function (req, res) {
     console.log(req.user);
     //res.redirect('/dashboard');
