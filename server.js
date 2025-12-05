@@ -101,7 +101,7 @@ const passport = require("passport"); // Authentication library – handles logi
 const connectEnsureLogin = require("connect-ensure-login"); // Middleware to protect pages so only logged-in users can access them
 
 const User = require("/project/Amazon-Website/model/User.js"); // Import the User model defined in model.js (includes schema + passport-local-mongoose setup)
-const Order = require("/project/Amazon-Website/model/Order.js");
+const Order = require("/project/Amazon-Website/model/Order.js"); // /project/workspace/model/User.
 
 const app = express(); // Create an instance of an Express application
 
