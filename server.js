@@ -100,8 +100,8 @@ const session = require("express-session"); // Middleware for creating and manag
 const passport = require("passport"); // Authentication library – handles login and verifying credentials
 const connectEnsureLogin = require("connect-ensure-login"); // Middleware to protect pages so only logged-in users can access them
 
-const User = require("/project/Amazon-Website/model/User.js"); // Import the User model defined in model.js (includes schema + passport-local-mongoose setup)
-const Order = require("/project/Amazon-Website/model/Order.js");
+const User = require("/project/workspace/model/User.js"); // Import the User model defined in model.js (includes schema + passport-local-mongoose setup)
+const Order = require("/project/workspace/model/Order.js");
 
 const app = express(); // Create an instance of an Express application
 
@@ -184,7 +184,7 @@ app.get("/auth-status", (req, res) => {
 // The connectEnsureLogin middleware checks if user is logged in.
 // If not logged in, it automatically redirects to the login page.
 app.get("/dashboard", connectEnsureLogin.ensureLoggedIn(), (req, res) => {
-  res.redirect(__dirname + "/dashboard.html");
+  res.sendFile(__dirname + "/dashboard.html");
 });
 
 // // -------- Secret Page (Protected) --------
@@ -208,7 +208,7 @@ app.get("/logout", function (req, res, next) {
     if (err) {
       return next(err);
     }
-    res.redirect(__dirname + "/index.html");
+    res.redirect("/");
   });
 });
 
