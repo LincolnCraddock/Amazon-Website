@@ -105,6 +105,8 @@ const Order = require("/project/workspace/model/Order.js");
 
 const app = express(); // Create an instance of an Express application
 
+console.log("My name is server.js!");
+
 // vvv our code vvv
 app.use(express.json());
 
@@ -184,7 +186,7 @@ app.get("/auth-status", (req, res) => {
 // The connectEnsureLogin middleware checks if user is logged in.
 // If not logged in, it automatically redirects to the login page.
 app.get("/dashboard", connectEnsureLogin.ensureLoggedIn(), (req, res) => {
-  res.sendFile(__dirname + "/dashboard.html");
+  res.redirect(__dirname + "/dashboard.html");
 });
 
 // // -------- Secret Page (Protected) --------
@@ -206,9 +208,11 @@ app.get("/dashboard", connectEnsureLogin.ensureLoggedIn(), (req, res) => {
 app.get("/logout", function (req, res, next) {
   req.logout(function (err) {
     if (err) {
+      console.log(`failed to log a user out because ${err.message}`);
       return next(err);
     }
-    res.redirect("/");
+    console.log("logged a user out");
+    res.redirect(__dirname + "/index.html");
   });
 });
 
@@ -257,7 +261,7 @@ app.post("/register", function (req, res, next) {
     req.body.password,
     function (err) {
       if (err) {
-        console.log("error while user register!", err);
+        console.log("error in user register!", err);
         return next(err);
       }
 
@@ -293,21 +297,17 @@ app.post("order", function (req, res, next) {
 
 // -------- Login (POST) --------
 // passport.authenticate('local') checks username and password.
-// TODO: remove this redirect vvv
-app.post(
-  "/login",
-  passport.authenticate("local", { failureRedirect: { message: "failed" } }),
-  function (req, res) {
-    console.log(req.user);
-    //res.redirect('/dashboard');
-    //res.redirect('/index');
-    if (req.isAuthenticated()) {
-      res.json({ loggedIn: true, user: req.user });
-    } else {
-      res.json({ loggedIn: false });
-    }
+app.post("/login", passport.authenticate("local"), function (req, res) {
+  //res.redirect('/dashboard');
+  //res.redirect('/index');
+  if (req.isAuthenticated()) {
+    res.json({ loggedIn: true, user: req.user });
+    console.log("logged ${req.user.username} in");
+  } else {
+    res.json({ loggedIn: false });
+    console.log("invalid login sent");
   }
-);
+});
 
 // -------- Get User Info --------
 // This is a route to let the frontend know who is currently logged in.
@@ -337,10 +337,17 @@ const mongoose = require("mongoose");
 //   ⚠️ Normally, we should NOT hardcode the username and password in code —
 //   they should go into environment variables for security reasons.
 //   But for testing or class demos, this is fine.
-mongoose.connect(
-  "mongodb+srv://admin:testing1@amazon-db.sccapev.mongodb.net/?appName=amazon-db",
-  {
-    //useNewUrlParser: true,    // This option ensures compatibility with modern MongoDB drivers.
-    //useUnifiedTopology: true  // This option uses the new server discovery and monitoring engine.
-  }
-);
+mongoose
+  .connect(
+    "mongodb+srv://admin:testing1@amazon-db.sccapev.mongodb.net/?appName=amazon-db",
+    {
+      //useNewUrlParser: true,    // This option ensures compatibility with modern MongoDB drivers.
+      //useUnifiedTopology: true  // This option uses the new server discovery and monitoring engine.
+    }
+  )
+  .then(() => {
+    console.log("Successfully connected to MongoDB");
+  })
+  .catch((err) =>
+    console.log(`Failed to connect to MongoDB because ${err.message}`)
+  );
