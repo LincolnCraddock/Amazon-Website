@@ -186,7 +186,7 @@ app.get("/auth-status", (req, res) => {
 // The connectEnsureLogin middleware checks if user is logged in.
 // If not logged in, it automatically redirects to the login page.
 app.get("/dashboard", connectEnsureLogin.ensureLoggedIn(), (req, res) => {
-  res.redirect(__dirname + "/dashboard.html");
+  res.sendFile(__dirname + "/dashboard.html");
 });
 
 // // -------- Secret Page (Protected) --------
@@ -212,7 +212,7 @@ app.get("/logout", function (req, res, next) {
       return next(err);
     }
     console.log("logged a user out");
-    res.redirect(__dirname + "/index.html");
+    res.redirect("/");
   });
 });
 
