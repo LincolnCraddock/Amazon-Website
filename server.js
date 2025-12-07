@@ -100,8 +100,7 @@ const session = require("express-session"); // Middleware for creating and manag
 const passport = require("passport"); // Authentication library – handles login and verifying credentials
 const connectEnsureLogin = require("connect-ensure-login"); // Middleware to protect pages so only logged-in users can access them
 
-const User = require("/project/workspace/model/User.js"); // Import the User model defined in model.js (includes schema + passport-local-mongoose setup)
-const Order = require("/project/workspace/model/Order.js");
+const { User, Order } = require(__dirname + "/Model.js");
 
 const app = express(); // Create an instance of an Express application
 
@@ -262,11 +261,10 @@ app.post("/register", function (req, res, next) {
       }
 
       console.log("user registered!");
-      // res.redirect('/'); // After successful registration, go back to main page
       if (req.isAuthenticated()) {
-        res.json({ loggedIn: true, user: req.user });
+        res.json({ registered: true, user: req.user });
       } else {
-        res.json({ loggedIn: false });
+        res.json({ registered: false });
       }
     }
   );
@@ -278,7 +276,7 @@ app.post("order", function (req, res, next) {
       email: req.body.email,
       products: req.body.products,
       quantities: req.body.stock,
-      prices: req.body.prices,
+      prices: req.body.prices, // Ideally retrieved server side and not provided by client.
     },
     function (err) {
       if (err) {
@@ -294,20 +292,10 @@ app.post("order", function (req, res, next) {
 // -------- Login (POST) --------
 // passport.authenticate('local') checks username and password.
 // TODO: remove this redirect vvv
-app.post(
-  "/login",
-  passport.authenticate("local", { failureRedirect: { message: "failed" } }),
-  function (req, res) {
-    console.log(req.user);
-    //res.redirect('/dashboard');
-    //res.redirect('/index');
-    if (req.isAuthenticated()) {
-      res.json({ loggedIn: true, user: req.user });
-    } else {
-      res.json({ loggedIn: false });
-    }
-  }
-);
+app.post("/login", passport.authenticate("local", {}), function (req, res) {
+  console.log(`Logged in ${req.user.name}`);
+  res.json({ loggedIn: true, user: req.user });
+});
 
 // -------- Get User Info --------
 // This is a route to let the frontend know who is currently logged in.
@@ -323,24 +311,3 @@ app.get("/user", connectEnsureLogin.ensureLoggedIn(), (req, res) =>
 // When it’s ready, it prints a message in the console.
 const port = 3000;
 app.listen(port, () => console.log(`This app is listening on port ${port}`));
-
-// 'mongoose' is a popular Node.js library that lets us connect to a MongoDB database
-// and define the structure (schema) of the documents we will store there.
-const mongoose = require("mongoose");
-
-// =======================
-// Connect to MongoDB
-// =======================
-
-// We use 'mongoose.connect()' to open a connection to our MongoDB database.
-// Here we’re connecting to a MongoDB Atlas cluster using a connection string.
-//   ⚠️ Normally, we should NOT hardcode the username and password in code —
-//   they should go into environment variables for security reasons.
-//   But for testing or class demos, this is fine.
-mongoose.connect(
-  "mongodb+srv://admin:testPass@cluster0.t3e421b.mongodb.net/slop-shop-db?retryWrites=true&w=majority&tls=true&appName=Cluster0",
-  {
-    //useNewUrlParser: true,    // This option ensures compatibility with modern MongoDB drivers.
-    //useUnifiedTopology: true  // This option uses the new server discovery and monitoring engine.
-  }
-);
