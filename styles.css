@@ -71,6 +71,13 @@ input {
   background-color: black;
 }
 
+/********************* reusable styles *********************/
+
+.error-message {
+  color: red;
+  font-size: 0.75rem;
+}
+
 /********************* PRODUCT GRID *********************/
 
 .grid {
