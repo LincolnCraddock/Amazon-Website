@@ -104,6 +104,8 @@ const { User, Order } = require(__dirname + "/Model.js");
 
 const app = express(); // Create an instance of an Express application
 
+console.log("My name is server.js!");
+
 // vvv our code vvv
 app.use(express.json());
 
@@ -205,8 +207,10 @@ app.get("/dashboard", connectEnsureLogin.ensureLoggedIn(), (req, res) => {
 app.get("/logout", function (req, res, next) {
   req.logout(function (err) {
     if (err) {
+      console.log(`failed to log a user out because ${err.message}`);
       return next(err);
     }
+    console.log("logged a user out");
     res.redirect("/");
   });
 });
@@ -256,7 +260,7 @@ app.post("/register", function (req, res, next) {
     req.body.password,
     function (err) {
       if (err) {
-        console.log("error while user register!", err);
+        console.log("error in user register!", err);
         return next(err);
       }
 
@@ -291,8 +295,7 @@ app.post("order", function (req, res, next) {
 
 // -------- Login (POST) --------
 // passport.authenticate('local') checks username and password.
-// TODO: remove this redirect vvv
-app.post("/login", passport.authenticate("local", {}), function (req, res) {
+app.post("/login", passport.authenticate("local"), function (req, res) {
   console.log(`Logged in ${req.user.name}`);
   res.json({ loggedIn: true, user: req.user });
 });
