@@ -33,25 +33,20 @@ User.plugin(passportLocalMongoose, {
   usernameQueryFields: ["name", "email"],
 });
 
-const Order = new Schema({
-  email: String,
-  products: [String],
-  quantities: [Number],
-  prices: [Number],
-  created: { type: Date, default: Date.now },
+const ItemOrder = new Schema({
+  id: String,
+  quantity: Number,
+  price: Number,
 });
 
-// const StockEntry = new Schema({
-//   id: String,
-//   stock: Number
-// });
-
-// const StockData = new Schema({
-//   entries: [StockEntry]
-// })
+const Order = new Schema({
+  email: String,
+  items: [ItemOrder],
+  created: { type: Date, default: Date.now },
+  total: Number,
+});
 
 module.exports = {
   User: mongoose.model("users", User),
   Order: mongoose.model("orders", Order),
-  // ,StockData: mongoose.model("stocks", StockData)
 };

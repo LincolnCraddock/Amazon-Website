@@ -12,8 +12,16 @@ function getCategorySelect() {
   return document.getElementById("category-select");
 }
 
+function fetchStockData() {
+  fetch("products_real_titles")
+    .then((res) => res.json())
+    .then((data) => {
+      productsData = data.items;
+    });
+}
+
 // Fetch all products
-fetch("products_real_titles.json")
+fetch("products_real_titles")
   .then((res) => res.json())
   .then((data) => {
     productsData = data.items;
@@ -65,6 +73,7 @@ fetch("products_real_titles.json")
     // === APPLY CATEGORY FROM URL === //
     const params = new URLSearchParams(window.location.search);
     const catFromURL = params.get("category");
+    const searchFromURL = params.get("search");
 
     if (catFromURL) {
       // Try to set the dropdown to the matching option (case-insensitive)
@@ -82,18 +91,16 @@ fetch("products_real_titles.json")
             matched = true;
           }
         });
-
-        // If no option matched, add a temporary option and select it (so the UI shows value)
-        if (!matched) {
-          const tempOpt = document.createElement("option");
-          tempOpt.value = catFromURL;
-          tempOpt.text = catFromURL;
-          tempOpt.selected = true;
-          categorySelect.appendChild(tempOpt);
-        }
       }
+    }
 
-      // Filter after a short delay to ensure cards are in the DOM
+    if (searchFromURL) {
+      // Fill the search bar with the search from the URL
+      document.getElementById("search-bar").value = searchFromURL;
+    }
+
+    // Filter after a short delay to ensure cards are in the DOM
+    if (catFromURL || searchFromURL) {
       setTimeout(() => {
         filterProducts();
       }, 60);
@@ -133,14 +140,29 @@ function openModal(id) {
 function showProduct(id) {
   initProductDetails(id).then(() => {
     const closeBtn = document.querySelector(".close-btn");
-    closeBtn.onclick = () => modal.classList.add("hidden");
 
+    closeBtn.onclick = () => closeModal();
     window.onclick = (e) => {
-      if (e.target === modal) modal.classList.add("hidden");
+      if (e.target === modal) closeModal();
     };
 
+    // Ensure modal enters DOM state BEFORE animation class is added
     modal.classList.remove("hidden");
+
+    // Force reflow to guarantee animation activation
+    void modal.offsetWidth;
+
+    modal.classList.add("show");
   });
+}
+
+function closeModal() {
+  modal.classList.remove("show");
+
+  // Delay hiding until after fade-out completes
+  setTimeout(() => {
+    modal.classList.add("hidden");
+  }, 250);
 }
 
 // ===== CART LOGIC ===== //
@@ -148,15 +170,25 @@ function showProduct(id) {
 function addToCart(product) {
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
   const existing = cart.find((item) => item.id === product.id);
-
+  let inStock = productsData.find((item) => item.sys.id === product.id).fields
+    .stock;
   if (existing) {
-    existing.quantity++;
+    if (existing.quantity < inStock) {
+      existing.quantity++;
+    } else {
+      return false;
+    }
   } else {
-    cart.push({ ...product, quantity: 1 });
+    if (inStock > 0) {
+      cart.push({ ...product, quantity: 1 });
+    } else {
+      return false;
+    }
   }
 
   localStorage.setItem("cart", JSON.stringify(cart));
   console.log(`${product.title} added to cart!`);
+  return true;
 }
 
 function attachAddToCartButtons() {
@@ -182,8 +214,16 @@ function attachAddToCartButtons() {
           image: img,
         };
 
-        addToCart(cartItem);
-        alert(`${product.title} added to cart!`);
+        if (addToCart(cartItem)) {
+          btn.classList.add("added-to-cart");
+          btn.textContent = "Added to Cart";
+          btn.disabled = true;
+          setTimeout(() => {
+            btn.classList.remove("added-to-cart");
+            btn.textContent = "Add to Cart";
+            btn.disabled = false;
+          }, 1000);
+        }
       });
     });
   }, 500);
@@ -216,20 +256,35 @@ if (cartButton && cartSidebar && cartOverlay) {
 
 // ===== CATEGORY FILTER ===== //
 
-const categorySelect = document.getElementById("category-select");
+const categoryDropdown = document.getElementById("category-select");
 
-categorySelect.addEventListener("change", () => {
+categoryDropdown.addEventListener("change", () => {
   filterProducts();
 });
 
+// note: there is a function called search_items() in search.js that does the same thing
 function filterProducts() {
-  const selectedCategory = categorySelect.value.toLowerCase();
+  const selectedCategory = categoryDropdown.value.toLowerCase();
   const searchTerm = document
     .getElementById("search-bar")
     .value.trim()
     .toLowerCase();
 
   const productCards = document.querySelectorAll(".product-card");
+
+  // set URL paramaters
+  // Get the current URL
+  const currentUrl = new URL(window.location.href);
+
+  // Clear all search parameters
+  currentUrl.search = "";
+
+  // Update the URL in the browser's history without reloading the page
+  window.history.replaceState({}, document.title, currentUrl.toString());
+  const queryParams = new URLSearchParams(window.location.search);
+  queryParams.set("category", selectedCategory);
+  queryParams.append("search", searchTerm);
+  history.replaceState(null, null, "?" + queryParams.toString());
 
   productCards.forEach((card) => {
     const title = card

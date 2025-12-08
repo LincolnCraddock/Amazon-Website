@@ -10,6 +10,14 @@ const { User, Order } = require(__dirname + "/Model.js");
 
 const app = express(); // Create an instance of an Express application
 
+const fs = require("fs");
+
+const products = JSON.parse(
+  fs.readFileSync(__dirname + "/products_real_titles.json", "utf8")
+); // This object is assumed to be accurate while the server is running. Changes are written back to mongodb.
+
+async function retrieveStocks() {}
+
 console.log("My name is server.js!");
 
 // vvv our code vvv
@@ -81,11 +89,9 @@ app.get("/auth-status", (req, res) => {
   }
 });
 
-// vvv X's code we don't need vvv
-// // -------- Login Page --------
-// app.get('/login', (req, res) => {
-//   res.sendFile(__dirname + '/views/html/login.html'); // Same as above
-// });
+app.get("/products_real_titles", (req, res) => {
+  res.json(products); // Return server loaded json, not the static file.
+});
 
 // -------- Dashboard Page --------
 // The connectEnsureLogin middleware checks if user is logged in.
@@ -123,38 +129,98 @@ app.post("/register", function (req, res, next) {
     req.body.password,
     function (err) {
       if (err) {
-        console.log("error in user register!", err);
-        return next(err);
-      }
-
-      console.log("user registered!");
-      if (req.isAuthenticated()) {
-        res.json({ registered: true, user: req.user });
-      } else {
+        console.log("Error in user register!", err);
         res.json({ registered: false });
-      }
-    }
-  );
-});
-
-app.post("order", function (req, res, next) {
-  Order.register(
-    {
-      email: req.body.email,
-      products: req.body.products,
-      quantities: req.body.stock,
-      prices: req.body.prices, // Ideally retrieved server side and not provided by client.
-    },
-    function (err) {
-      if (err) {
-        console.log("error while order!", err);
         return next(err);
       }
 
-      console.log("order placed!");
+      console.log("User registered!");
+      res.json({ registered: true, user: req.user });
     }
   );
 });
+
+// Order.find({email: "Okay@dope.net"}).exec().then()
+
+app.get("/my-orders", connectEnsureLogin.ensureLoggedIn(), (req, res) => {
+  //console.log(req.user);
+  Order.find({ email: req.user.email })
+    .exec()
+    .then((e) => {
+      console.log(e);
+      res.json(e);
+      console.log(`${req.user.name} successfully got their orders.`);
+    })
+    .catch((e) =>
+      console.log(
+        `${req.user.name} failed to get their orders because ${e.message}`
+      )
+    );
+});
+
+app.post(
+  "/order",
+  connectEnsureLogin.ensureLoggedIn(),
+  async function (req, res, next) {
+    console.log("ordering");
+    try {
+      const cart = req.body.cart;
+      const email = req.body.email;
+      if (!email) {
+        console.log("email was", email);
+        res.json({ success: false, message: "Invalid email" });
+        return;
+      }
+      let items = [];
+      let productIndices = [];
+      let total = 0;
+      for (let i = 0; i < cart.length; i++) {
+        let productIndex = products.items.findIndex(
+          (item) => item.sys.id === cart[i].id
+        );
+        productIndices.push(productIndex);
+        let product = products.items[productIndex];
+        let inStock = product.fields.stock;
+        if (
+          cart[i].quantity > inStock ||
+          cart[i].quantity <= 0 ||
+          !Number.isInteger(cart[i].quantity)
+        ) {
+          res.json({ success: false, message: "Invalid quantity" });
+          return;
+        }
+        items.push({
+          id: product.sys.id,
+          quantity: cart[i].quantity,
+          price: product.fields.price,
+        });
+        total += cart[i].quantity * product.fields.price;
+      }
+
+      await Order.create({
+        email: email,
+        items: items,
+        total: total,
+      });
+
+      for (let i = 0; i < cart.length; i++) {
+        products.items[productIndices[i]].fields.stock -= cart[i].quantity;
+        console.log(products.items[productIndices[i]].fields.stock);
+      }
+
+      res.json({ success: true, message: "Thank you for your purchase." });
+      console.log(`${req.user.name} successfully ordered ${items}`);
+
+      return;
+    } catch (e) {
+      console.log(e.message);
+      res.json({ success: false, message: "Internal error" });
+      console.log(
+        `${req.user.name} unsuccessfully tried to order something, but got the error ${e.message}`
+      );
+    }
+  }
+);
 
 // -------- Login (POST) --------
 // passport.authenticate('local') checks username and password.
