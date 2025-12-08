@@ -1,6 +1,16 @@
 // dashboard.js
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  let productsData = [];
+
+  await fetch("products_real_titles")
+    .then((res) => res.json())
+    .then((data) => {
+      productsData = data.items;
+    });
+
+  console.log(productsData);
+
   // --- Load user info ---
   let user;
   fetch("/auth-status").then((res) => {
@@ -55,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         orders.reverse();
         orders.forEach((order, i) => {
-          console.log(order);
+          // console.log(order);
           const div = document.createElement("div");
           div.className = "order-item";
           div.innerHTML = `
@@ -63,18 +73,9 @@ document.addEventListener("DOMContentLoaded", () => {
               <p><strong>Date:</strong> ${new Date(
                 order.created
               ).toUTCString()}</p>
-              <p><strong>Items:</strong><br>${order.items
-                .map((it) => {
-                  productTitle = productsData.find(
-                    (item) => item.sys.id === it.id
-                  ).fields.title;
-                  return (
-                    it.quantity +
-                    " * " +
-                    productTitle +
-                    ": $" +
-                    it.price * it.quantity
-                  );
+              <p><strong>Items:</strong> ${order.items
+                .map(function (it) {
+                  productsData.items.find(it);
                 })
                 .join("<br>")}</p>
               <p><strong>Total:</strong> $${order.total.toFixed(2)}</p>
