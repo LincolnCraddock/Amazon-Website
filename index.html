@@ -48,12 +48,13 @@
                 style="display: block"
               >
                 <form id="login-form">
-                  <input type="text" placeholder="Email/Username" name="name" />
+                  <input type="text" placeholder="Email/Username" name="name" required/>
                   <input
                     type="password"
                     placeholder="Password"
                     autocomplete="current-password"
                     name="password"
+                    required
                   /><br />
                   <button class="slime-btn">Login</button>
                 </form>
@@ -62,8 +63,8 @@
               <script src="scripts/login.js"></script>
               <div id="register-tab-content" class="tab-content">
                   <form id="register-form">
-                      <input type="email" placeholder="Email" name="email" /><br />
-                      <input type="text" placeholder="name" name="name" />
+                      <input type="email" placeholder="Email" name="email" required/><br />
+                      <input type="text" placeholder="name" name="name" required/>
                       <input
                           type="password"
                           placeholder="Password"
