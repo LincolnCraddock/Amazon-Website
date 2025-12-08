@@ -53,12 +53,13 @@ document.addEventListener("DOMContentLoaded", () => {
       if (orders.length === 0) {
         orderList.innerHTML = "<p>No orders yet.</p>";
       } else {
+        orders.reverse();
         orders.forEach((order, i) => {
           console.log(order);
           const div = document.createElement("div");
           div.className = "order-item";
           div.innerHTML = `
-              <h3>Order #${orders.length - i}</h3>
+              <h3>Order #${i + 1}</h3>
               <p><strong>Date:</strong> ${new Date(
                 order.created
               ).toUTCString()}</p>
