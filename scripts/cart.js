@@ -74,8 +74,18 @@ function renderCart() {
       const idx = parseInt(e.target.dataset.index);
       const action = e.target.dataset.action;
 
-      if (action === "increase") cart[idx].quantity++;
-      else if (action === "decrease" && cart[idx].quantity > 1) {
+      if (action === "increase") {
+        let inStock = productsData.find((item) => item.sys.id === cart[idx].id)
+          .fields.stock;
+        if (cart[idx].quantity < inStock) {
+          cart[idx].quantity++;
+          // if (cart[idx].quantity === inStock) {
+          //   Reached stock limit. Could gray out button.
+          // }
+        } else {
+          // Failed to increase
+        }
+      } else if (action === "decrease" && cart[idx].quantity > 1) {
         cart[idx].quantity--;
       } else if (action === "decrease" && cart[idx].quantity === 1) {
         cart.splice(idx, 1);
@@ -112,7 +122,26 @@ function renderCart() {
       return;
     }
 
-    //alert(`Thank you for your purchase! Total: $${total.toFixed(2)}`);
+    const fetched = await fetch("/auth-status");
+    const status = await fetched.json();
+    if (!status.loggedIn) {
+      alert("You are not logged in!");
+      return;
+    }
+
+    const res = await fetch("/order", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        cart: JSON.parse(localStorage.getItem("cart")),
+        email: status.email,
+      }),
+    });
+
+    alert(`Thank you for your purchase! Total: $${total.toFixed(2)}`);
 
     const orderTotal = total; //cache total before the cart is cleared
 
@@ -123,24 +152,18 @@ function renderCart() {
     //   body: JSON.stringify({ cart })
     // });
 
-    const res = await fakePlaceOrder(cart); 
+    //const res = await fakePlaceOrder(cart);
 
     // const data = await res.json();
 
     //check if server succeeded with orders
-    if (res.success){
+    if (res.success) {
       localStorage.removeItem("cart"); // remove all items in localcart
       //show confirmation
       showOrderConfirmation(orderTotal);
-
     } else {
-      alert("Order Failed: " + data.message) // display issue if order fails
+      alert("Order Failed: " + data.message); // display issue if order fails
     }
-
-    
-
-    
-    
   };
 }
 
@@ -189,7 +212,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-
 // FAKE SERVER to test order confirmation.
 async function fakePlaceOrder(cart) {
   console.log("FAKE SERVER RECEIVED CART:", cart);
@@ -204,7 +226,6 @@ async function fakePlaceOrder(cart) {
   });
 }
 
-
 /*
   ======================
   showOrderConfirmation
@@ -213,7 +234,7 @@ async function fakePlaceOrder(cart) {
   confirmation on an order. Add a button to handle resetting UI
 
 */
-function showOrderConfirmation(total){
+function showOrderConfirmation(total) {
   const cartContainer = document.getElementById("cart-items");
   const subtotal = document.getElementById("cart-subtotal");
   const clearCartBtn = document.getElementById("clear-cart-btn");
@@ -235,11 +256,11 @@ function showOrderConfirmation(total){
   </div>
 `;
 
-// Add handler for returning to normal
-document.getElementById("continue-shopping").onclick = () => {
-  resetCartUI();
-  renderCart();
-};
+  // Add handler for returning to normal
+  document.getElementById("continue-shopping").onclick = () => {
+    resetCartUI();
+    renderCart();
+  };
 }
 
 /*

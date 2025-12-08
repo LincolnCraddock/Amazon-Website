@@ -1,5 +1,5 @@
 // TODO: maybe we should merge this with allItems.js for efficiency?
-fetch("products_real_titles.json")
+fetch("products_real_titles")
   .then((response) => response.json())
   .then((data) => {
     var categories = new Set();
