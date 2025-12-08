@@ -1,5 +1,4 @@
 
-
 /* ---------------------------------------------------------------------------------------------------------------------------------- */
 const express = require("express"); // Import the Express framework – used to build the web server
 const bodyParser = require("body-parser"); // Middleware that helps parse data sent from forms (POST requests)
@@ -111,39 +110,6 @@ app.get("/logout", function (req, res, next) {
     res.redirect("/");
   });
 });
-
-// // -------- Registration Page --------
-// // Shows the signup form.
-// app.get('/register', (req, res) => {
-//   res.sendFile(__dirname + '/views/html/register.html');
-// });
-
-// // -------- CSS Routes --------
-// // These directly send CSS files when accessed.
-// // Normally you’d just use express.static(), but here they’re manually routed.
-// app.get('/css', (req, res) => {
-//     res.sendFile(__dirname + '/views/css/styles.css');
-//   });
-
-// app.get('/css-store', (req, res) => {
-//   res.sendFile(__dirname + '/views/css/store.css');
-// });
-
-// // -------- Store Main Page --------
-// app.get('/main', (req, res) => {
-//   res.sendFile(__dirname + '/views/html/main.html');
-// });
-
-// // -------- Store JavaScript File --------
-// app.get('/storejs', (req, res) => {
-//   res.sendFile(__dirname + '/store.js');
-// });
-
-// // -------- Product JSON File --------
-// app.get('/products', (req, res) => {
-//   res.sendFile(__dirname + '/products.json');
-// });
-
 // ======================
 // POST Routes
 // ======================

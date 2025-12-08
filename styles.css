@@ -509,6 +509,7 @@ input {
   min-width: 0; /* prevents forcing navbar wider */
   white-space: nowrap; /* keeps buttons inline */
   margin-left: 16px;
+  margin-right: 18px;
 }
 
 /* Logo */
