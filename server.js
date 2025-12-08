@@ -100,7 +100,7 @@ const session = require("express-session"); // Middleware for creating and manag
 const passport = require("passport"); // Authentication library – handles login and verifying credentials
 const connectEnsureLogin = require("connect-ensure-login"); // Middleware to protect pages so only logged-in users can access them
 
-const { User, Order } = require(__dirname + "/Model.js");
+const { User, Order, Stock } = require(__dirname + "/Model.js");
 
 const app = express(); // Create an instance of an Express application
 
@@ -109,6 +109,13 @@ const fs = require("fs");
 const products = JSON.parse(
   fs.readFileSync(__dirname + "/products_real_titles.json", "utf8")
 ); // This object is assumed to be accurate while the server is running. Changes are written back to mongodb.
+
+for (var index = 0; index < products.items.length; index++) {
+  let current = index;
+  Stock.findOne({ id: products.items[index].sys.id }).then((e) => {
+    products.items[current].fields.stock = e.quantity;
+  });
+}
 
 async function retrieveStocks() {}
 
@@ -342,6 +349,11 @@ app.post(
 
       for (let i = 0; i < cart.length; i++) {
         products.items[productIndices[i]].fields.stock -= cart[i].quantity;
+        const filter = { id: cart[i].id };
+        const update = {
+          quantity: products.items[productIndices[i]].fields.stock,
+        };
+        await Stock.findOneAndUpdate(filter, update);
         console.log(products.items[productIndices[i]].fields.stock);
       }
 
