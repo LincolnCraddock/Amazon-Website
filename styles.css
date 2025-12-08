@@ -29,7 +29,7 @@ input {
   display: none;
   position: absolute;
   top: 100%; /* Sit directly under button */
-  left: 0; /* Align with button */
+  right: 0; /* Align with button */
   z-index: 9999;
   background: #111;
   border: 1px solid #3aad55;
@@ -44,13 +44,13 @@ input {
   display: block;
 }
 
-/* .dropdown:hover .dropdown-content {
+.dropdown:hover .dropdown-content {
   display: block;
 }
 
 .dropdown:has(.last-clicked) .dropdown-content {
   display: block;
-} */
+}
 
 /********************* tabs *********************/
 
@@ -76,6 +76,7 @@ input {
 .error-message {
   color: red;
   font-size: 0.75rem;
+  margin-bottom: 0px;
 }
 
 /********************* PRODUCT GRID *********************/
