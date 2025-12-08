@@ -6,8 +6,6 @@
  * so products can be stored via the cart.js functions.
  ***********************************************************/
 
-// named productsData2 to avoid conflict with allItems.js
-
 function initProductDetails(id) {
   // Fetch all product data from the JSON file
   // (Each product has fields like title, price, image, etc.)
@@ -59,13 +57,13 @@ function initProductDetails(id) {
           // if (existing) existing.quantity += quantity;
           // else cart.push({ id, title, price, image, quantity });
           if (existing) {
-            if (existing.quantity < inStock) {
-              existing.quantity++;
+            if (existing.quantity + quantity <= inStock) {
+              existing.quantity += quantity;
             } else {
               return false;
             }
           } else {
-            if (inStock > 0) {
+            if (inStock >= quantity) {
               cart.push({ id, title, price, image, quantity });
             } else {
               return false;
