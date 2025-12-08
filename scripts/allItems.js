@@ -132,14 +132,29 @@ function openModal(id) {
 function showProduct(id) {
   initProductDetails(id).then(() => {
     const closeBtn = document.querySelector(".close-btn");
-    closeBtn.onclick = () => modal.classList.add("hidden");
 
+    closeBtn.onclick = () => closeModal();
     window.onclick = (e) => {
-      if (e.target === modal) modal.classList.add("hidden");
+      if (e.target === modal) closeModal();
     };
 
+    // Ensure modal enters DOM state BEFORE animation class is added
     modal.classList.remove("hidden");
+
+    // Force reflow to guarantee animation activation
+    void modal.offsetWidth;
+
+    modal.classList.add("show");
   });
+}
+
+function closeModal() {
+  modal.classList.remove("show");
+
+  // Delay hiding until after fade-out completes
+  setTimeout(() => {
+    modal.classList.add("hidden");
+  }, 250);
 }
 
 // ===== CART LOGIC ===== //
@@ -152,13 +167,13 @@ function addToCart(product) {
   if (existing) {
     if (existing.quantity < inStock) {
       existing.quantity++;
-    }else {
+    } else {
       return false;
     }
   } else {
     if (inStock > 0) {
       cart.push({ ...product, quantity: 1 });
-    }else {
+    } else {
       return false;
     }
   }
@@ -191,8 +206,7 @@ function attachAddToCartButtons() {
           image: img,
         };
 
-        if (addToCart(cartItem))
-        {
+        if (addToCart(cartItem)) {
           btn.classList.add("added-to-cart");
           btn.textContent = "Added to Cart";
           btn.disabled = true;
