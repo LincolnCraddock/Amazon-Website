@@ -1,7 +1,8 @@
 const searchInput = document.getElementById("search-bar");
 const searchButton = document.getElementById("search-button");
 
-searchButton.addEventListener("click", () => {
+
+function search_items(){
   const searchedItem = searchInput.value.trim().toLowerCase();
   const productCards = document.querySelectorAll(".product-card");
   categorySelect.dispatchEvent(new Event("change"));
@@ -24,4 +25,13 @@ searchButton.addEventListener("click", () => {
       setTimeout(() => (card.style.display = "none"), 300); // hide completely after animation
     }
   });
+}
+searchButton.addEventListener("click", () => {
+  search_items();
+});
+
+searchInput.addEventListener("keyup", e => {
+  if (e.key === "Enter"){
+    search_items();
+  }
 });
