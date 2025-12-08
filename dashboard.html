@@ -11,18 +11,27 @@
     <!-- Slimed Navbar -->
     <header class="slime-navbar">
       <div class="nav-left">
-        <a href="index.html"><img src="images/Logo.png" alt="Slop Shop Logo" class="nav-logo"/></a> 
+        <a href="index.html"
+          ><img src="images/Logo.png" alt="Slop Shop Logo" class="nav-logo"
+        /></a>
       </div>
       <div class="nav-center">
         <div class="search-wrapper">
-          <input type="text" id="search-bar" placeholder="Search for anything" />
-      
-          <select id="category-select">
+          <input
+            type="search"
+            id="search-bar"
+            placeholder="Search for anything"
+            oninput="updateSearchButtonURL()"
+          />
+          <select id="category-select" onchange="updateSearchButtonURL()">
             <option value="all">All Items</option>
-            <!-- <option value="" disabled selected>Filter</option> -->
             <script src="scripts/categories.js"></script>
           </select>
-        <button id="search-button" class="slime-btn">Search!</button>
+          <script src="scripts/dashboardSearch.js"></script>
+          <a id="search-button-link"
+            ><button id="search-button" class="slime-btn">Search!</button></a
+          >
+        </div>
       </div>
       <div class="nav-right">
         <button id="cart-button" class="slime-btn">My Cart</button>
@@ -31,7 +40,6 @@
           <button id="dashboard-button" class="slime-btn">Dashboard</button>
         </a>
       </div>
-    
     </header>
 
     <!-- Dashboard Container -->
@@ -52,6 +60,23 @@
       </section>
 
       <button id="logout-btn">Logout</button>
+
+      <!-- Cart Sidebar -->
+      <div id="cart-sidebar" class="cart-sidebar hidden">
+        <div class="cart-header">
+          <h2>My Cart</h2>
+          <button id="close-cart">×</button>
+        </div>
+        <div id="cart-items"></div>
+        <p id="cart-subtotal">Subtotal: $<span id="cart-total">0.00</span></p>
+        <button id="clear-cart-btn" class="slime-btn">Clear Cart</button>
+        <button id="checkout-btn" class="slime-btn">Checkout</button>
+      </div>
+
+      <!-- Overlay behind cart -->
+      <div id="cart-overlay" class="cart-overlay hidden"></div>
+
+      <script src="scripts/cart.js"></script>
     </main>
 
     <!-- Scripts -->

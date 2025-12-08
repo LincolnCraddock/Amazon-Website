@@ -29,7 +29,7 @@ input {
   display: none;
   position: absolute;
   top: 100%; /* Sit directly under button */
-  left: 0; /* Align with button */
+  right: 0; /* Align with button */
   z-index: 9999;
   background: #111;
   border: 1px solid #3aad55;
@@ -44,13 +44,13 @@ input {
   display: block;
 }
 
-/* .dropdown:hover .dropdown-content {
+.dropdown:hover .dropdown-content {
   display: block;
 }
 
 .dropdown:has(.last-clicked) .dropdown-content {
   display: block;
-} */
+}
 
 /********************* tabs *********************/
 
@@ -76,6 +76,7 @@ input {
 .error-message {
   color: red;
   font-size: 0.75rem;
+  margin-bottom: 0px;
 }
 
 /********************* PRODUCT GRID *********************/
@@ -102,6 +103,13 @@ input {
   min-height: 430px; /* slightly taller to fit longer titles */
   position: relative;
   border: 1px solid rgba(58, 173, 85, 0.2);
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.hidden {
+  opacity: 0;
+  transform: translateY(10px);
 }
 
 .product-card:hover {
@@ -302,6 +310,15 @@ input {
 .add-to-cart-btn:hover {
   background: #57d672;
   transform: scale(1.03);
+}
+
+.added-to-cart {
+  background: white;
+}
+
+.added-to-cart:hover {
+  background: white;
+  transform: scale(1);
 }
 
 /* Close button */

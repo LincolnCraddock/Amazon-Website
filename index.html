@@ -9,20 +9,20 @@
   </head>
 
   <body class="dashboard-dark">
+    <!-- Slimed Navbar -->
     <header class="slime-navbar">
       <div class="nav-left">
         <a href="index.html"><img src="images/Logo.png" alt="Slop Shop Logo" class="nav-logo"/></a> 
       </div>
       <div class="nav-center">
         <div class="search-wrapper">
-        <input type="text" id="search-bar" placeholder="Search for anything" />
-        
-        <select id="category-select">
-          <option value="all">All Items</option>
-          <!-- <option value="" disabled selected>Filter</option> -->
-          <script src="scripts/categories.js"></script>
-        </select>
-        <button id="search-button" class="slime-btn">Search!</button>
+          <input type="text" id="search-bar" placeholder="Search for anything" />
+          <select id="category-select">
+            <option value="all">All Items</option>
+            <script src="scripts/categories.js"></script>
+          </select>
+          <button id="search-button" class="slime-btn">Search!</button>
+        </div>
       </div>
       <div class="nav-right">
         <div id="login-dropdown" class="dropdown">
@@ -87,8 +87,6 @@
       
     </header>
 
-    <nav></nav>
-
     <!-- main product area -->
     <main>
       <div id="product-grid" class="grid"></div>
@@ -128,27 +126,15 @@
     >
       <p>© 2025 Slop Shop. Probably not a scam.</p>
     </footer>
-    <!-- placeholder for the sidebar -->
   
     <script>
-      const dropdownBtn = document.querySelector('#login-dropdown .dropdown-button');
-      const dropdownMenu = document.querySelector('#login-dropdown .dropdown-content');
-
-      // open/close dropdown
-      dropdownBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      dropdownMenu.classList.toggle('show');
-    });
-
-    // prevent clicks inside dropdown from closing it
-    dropdownMenu.addEventListener('click', (e) => {
-    e.stopPropagation();
-  });
-
-    // close when clicking anywhere else
-    document.addEventListener('click', () => {
-    dropdownMenu.classList.remove('show');
-  });
+      // track the last clicked element, for use in CSS
+      let lastClickedElement = document.querySelector("body"); // default element
+      document.addEventListener("click", (event) => {
+        lastClickedElement.classList.remove("last-clicked");
+        lastClickedElement = event.target;
+        lastClickedElement.classList.add("last-clicked");
+      });
 
     </script>
   <script src="scripts/tabs.js"></script>
