@@ -351,9 +351,9 @@ app.post(
         products.items[productIndices[i]].fields.stock -= cart[i].quantity;
         const filter = { id: cart[i].id };
         const update = {
-          quantity: products.items[productIndices[i]].fields.stock
+          quantity: products.items[productIndices[i]].fields.stock,
         };
-        Stock.findOneAndUpdate(filter, update);
+        await Stock.findOneAndUpdate(filter, update);
         console.log(products.items[productIndices[i]].fields.stock);
       }
 
