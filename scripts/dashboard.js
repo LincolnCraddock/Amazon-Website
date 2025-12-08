@@ -41,6 +41,12 @@ document.addEventListener("DOMContentLoaded", () => {
       // const orders = JSON.parse(localStorage.getItem("orders")) || [];
       const response = await fetch("/my-orders");
       const orders = await response.json();
+      let productsData = [];
+      await fetch("products_real_titles")
+        .then((res) => res.json())
+        .then((data) => {
+          productsData = data.items;
+        });
 
       const orderList = document.getElementById("order-list");
 
@@ -52,13 +58,22 @@ document.addEventListener("DOMContentLoaded", () => {
           const div = document.createElement("div");
           div.className = "order-item";
           div.innerHTML = `
-              <h3>Order #${i + 1}</h3>
+              <h3>Order #${orders.length - i}</h3>
               <p><strong>Date:</strong> ${new Date(
                 order.created
               ).toUTCString()}</p>
-              <p><strong>Items:</strong> ${order.items
-                .map(function(it) {
-                  productsData.items.find()
+              <p><strong>Items:</strong><br>${order.items
+                .map((it) => {
+                  productTitle = productsData.find(
+                    (item) => item.sys.id === it.id
+                  ).fields.title;
+                  return (
+                    it.quantity +
+                    " * " +
+                    productTitle +
+                    ": $" +
+                    it.price * it.quantity
+                  );
                 })
                 .join("<br>")}</p>
               <p><strong>Total:</strong> $${order.total.toFixed(2)}</p>
