@@ -12,6 +12,14 @@ function getCategorySelect() {
   return document.getElementById("category-select");
 }
 
+function fetchStockData() {
+  fetch("products_real_titles")
+    .then((res) => res.json())
+    .then((data) => {
+      productsData = data.items;
+    });
+}
+
 // Fetch all products
 fetch("products_real_titles")
   .then((res) => res.json())
