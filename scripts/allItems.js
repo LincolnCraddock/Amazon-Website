@@ -13,7 +13,7 @@ function getCategorySelect() {
 }
 
 // Fetch all products
-fetch("products_real_titles.json")
+fetch("products_real_titles")
   .then((res) => res.json())
   .then((data) => {
     productsData = data.items;
@@ -148,9 +148,12 @@ function showProduct(id) {
 function addToCart(product) {
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
   const existing = cart.find((item) => item.id === product.id);
-
+  let inStock = productsData.find((item) => item.sys.id === product.id).fields
+    .stock;
   if (existing) {
-    existing.quantity++;
+    if (existing.quantity < inStock) {
+      existing.quantity++;
+    }
   } else {
     cart.push({ ...product, quantity: 1 });
   }
@@ -183,7 +186,6 @@ function attachAddToCartButtons() {
         };
 
         addToCart(cartItem);
-        alert(`${product.title} added to cart!`);
       });
     });
   }, 500);

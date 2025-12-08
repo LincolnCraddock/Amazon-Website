@@ -100,9 +100,20 @@ const session = require("express-session"); // Middleware for creating and manag
 const passport = require("passport"); // Authentication library – handles login and verifying credentials
 const connectEnsureLogin = require("connect-ensure-login"); // Middleware to protect pages so only logged-in users can access them
 
-const { User, Order } = require(__dirname + "/Model.js");
+const { User, Order, StockData } = require(__dirname + "/Model.js");
 
 const app = express(); // Create an instance of an Express application
+
+const fs = require("fs");
+
+const products = JSON.parse(
+  fs.readFileSync(__dirname + "/products_real_titles.json", "utf8")
+); // This object is assumed to be accurate while the server is running. Changes are written back to mongodb.
+
+let productStocksRetrieved = false;
+// Stock information is retrieved and written to the object on first request.
+
+async function retrieveStocks() {}
 
 console.log("My name is server.js!");
 
@@ -175,11 +186,9 @@ app.get("/auth-status", (req, res) => {
   }
 });
 
-// vvv X's code we don't need vvv
-// // -------- Login Page --------
-// app.get('/login', (req, res) => {
-//   res.sendFile(__dirname + '/views/html/login.html'); // Same as above
-// });
+app.get("/products_real_titles", (req, res) => {
+  res.json(products); // Return server loaded json, not the static file.
+});
 
 // -------- Dashboard Page --------
 // The connectEnsureLogin middleware checks if user is logged in.
@@ -274,24 +283,46 @@ app.post("/register", function (req, res, next) {
   );
 });
 
-app.post("order", function (req, res, next) {
-  Order.register(
-    {
-      email: req.body.email,
-      products: req.body.products,
-      quantities: req.body.stock,
-      prices: req.body.prices, // Ideally retrieved server side and not provided by client.
-    },
-    function (err) {
-      if (err) {
-        console.log("error while order!", err);
-        return next(err);
-      }
+app.post(
+  "/order",
+  connectEnsureLogin.ensureLoggedIn(),
+  async function (req, res, next) {
+    console.log("ordering");
+    try {
+      const cart = req.body.cart;
+      let items = [];
+      let productIndices = [];
+      let total = 0;
+      for (let i = 0; i < cart.length; i++) {
+        let productIndex = products.items.findIndex(
+          (item) => item.sys.id === cart[i].id
+        );
+        productIndices.push(productIndex);
+        let product = products.items[productIndex];
+        let inStock = product.fields.stock;
+        if (
+          cart[i].quantity > inStock ||
+          cart[i].quantity <= 0 ||
+          !Number.isInteger(cart[i].quantity)
+        ) {
+          res.json({ success: false, message: "Invalid quantity" });
+          return;
+        }
+        items.push({
+          id: product.sys.id,
+          quantity: cart[i].quantity,
+          price: product.fields.price,
+        });
+        total += cart[i].quantity * product.fields.price;
 
-      console.log("order placed!");
+        res.json({ success: true, message: "Thank you for your purchase." });
+      }
+    } catch (e) {
+      console.log(e.message);
+      res.json({ success: false, message: "Internal error" });
     }
-  );
-});
+  }
+);
 
 // -------- Login (POST) --------
 // passport.authenticate('local') checks username and password.
