@@ -195,6 +195,17 @@ input {
   padding: 50px;
 }
 
+.modal-content {
+  opacity: 0;
+  transform: scale(0.75);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.modal.show .modal-content {
+  opacity: 1;
+  transform: scale(1);
+}
+
 .popup-layout {
   display: grid;
   grid-template-columns: auto 1fr;
