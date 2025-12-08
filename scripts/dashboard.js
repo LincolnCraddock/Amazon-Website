@@ -1,10 +1,20 @@
 // dashboard.js
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  let productsData = [];
+
+  await fetch("products_real_titles")
+    .then((res) => res.json())
+    .then((data) => {
+      productsData = data.items;
+    });
+
+  console.log(productsData);
+
   // --- Load user info ---
   let user;
   fetch("/auth-status").then((res) => {
-    res.json().then((data) => {
+    res.json().then(async (data) => {
       if (data.loggedIn) {
         user = {
           username: data.user.name,
@@ -33,24 +43,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
       document.getElementById("username").textContent = user.username;
       document.getElementById("email").textContent = user.email;
-      document.getElementById("date-joined").textContent = user.dateJoined;
+      document.getElementById("date-joined").textContent = new Date(
+        user.dateJoined
+      ).toUTCString();
 
       // --- Load order history ---
-      const orders = JSON.parse(localStorage.getItem("orders")) || [];
+      // const orders = JSON.parse(localStorage.getItem("orders")) || [];
+      const response = await fetch("/my-orders");
+      const orders = await response.json();
+
       const orderList = document.getElementById("order-list");
 
       if (orders.length === 0) {
         orderList.innerHTML = "<p>No orders yet.</p>";
       } else {
         orders.forEach((order, i) => {
+          // console.log(order);
           const div = document.createElement("div");
           div.className = "order-item";
           div.innerHTML = `
               <h3>Order #${i + 1}</h3>
-              <p><strong>Date:</strong> ${order.date}</p>
+              <p><strong>Date:</strong> ${new Date(
+                order.created
+              ).toUTCString()}</p>
               <p><strong>Items:</strong> ${order.items
-                .map((it) => it.title)
-                .join(", ")}</p>
+                .map(function (it) {
+                  productsData.items.find(it);
+                })
+                .join("<br>")}</p>
               <p><strong>Total:</strong> $${order.total.toFixed(2)}</p>
             `;
           orderList.appendChild(div);

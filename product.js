@@ -9,7 +9,7 @@
 function initProductDetails(id) {
   // Fetch all product data from the JSON file
   // (Each product has fields like title, price, image, etc.)
-  return fetch("products_real_titles.json")
+  return fetch("products_real_titles")
     .then((res) => res.json())
     .then((data) => {
       // Find the product in the data array that matches the given ID
@@ -27,7 +27,8 @@ function initProductDetails(id) {
       // Populate all product info in the popup
       document.getElementById("prod-img").src = img;
       document.getElementById("prod-title").textContent = product.title;
-      document.getElementById("prod-price").textContent = product.price.toFixed(2);
+      document.getElementById("prod-price").textContent =
+        product.price.toFixed(2);
       const catLink = document.getElementById("prod-category-link");
       catLink.textContent = product.category;
       catLink.href = `index.html?category=${encodeURIComponent(
@@ -51,11 +52,37 @@ function initProductDetails(id) {
 
           let cart = JSON.parse(localStorage.getItem("cart")) || [];
           const existing = cart.find((c) => c.id === id);
-          if (existing) existing.quantity += quantity;
-          else cart.push({ id, title, price, image, quantity });
+          let inStock = productsData.find((item) => item.sys.id === id).fields
+            .stock;
+          // if (existing) existing.quantity += quantity;
+          // else cart.push({ id, title, price, image, quantity });
+          if (existing) {
+            if (existing.quantity + quantity <= inStock) {
+              existing.quantity += quantity;
+            } else {
+              return false;
+            }
+          } else {
+            if (inStock >= quantity) {
+              cart.push({ id, title, price, image, quantity });
+            } else {
+              return false;
+            }
+          }
 
           localStorage.setItem("cart", JSON.stringify(cart));
-          alert(`${title} added to cart!`);
+          console.log(`${product.title} added to cart!`);
+
+          // successfully added
+          addBtn.classList.add("added-to-cart");
+          addBtn.textContent = "Added to Cart";
+          addBtn.disabled = true;
+          setTimeout(() => {
+            addBtn.classList.remove("added-to-cart");
+            addBtn.textContent = "Add to Cart";
+            addBtn.disabled = false;
+          }, 1000);
+          //alert(`${title} added to cart!`); no alerts!
         };
       }
     });

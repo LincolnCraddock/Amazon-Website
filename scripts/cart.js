@@ -74,8 +74,18 @@ function renderCart() {
       const idx = parseInt(e.target.dataset.index);
       const action = e.target.dataset.action;
 
-      if (action === "increase") cart[idx].quantity++;
-      else if (action === "decrease" && cart[idx].quantity > 1) {
+      if (action === "increase") {
+        let inStock = productsData.find((item) => item.sys.id === cart[idx].id)
+          .fields.stock;
+        if (cart[idx].quantity < inStock) {
+          cart[idx].quantity++;
+          // if (cart[idx].quantity === inStock) {
+          //   Reached stock limit. Could gray out button.
+          // }
+        } else {
+          // Failed to increase
+        }
+      } else if (action === "decrease" && cart[idx].quantity > 1) {
         cart[idx].quantity--;
       } else if (action === "decrease" && cart[idx].quantity === 1) {
         cart.splice(idx, 1);
@@ -106,16 +116,51 @@ function renderCart() {
   };
 
   // checkout button
-  checkoutBtn.onclick = () => {
+  checkoutBtn.onclick = async () => {
     if (cart.length === 0) {
       alert("Your cart is empty!");
       return;
     }
 
+    const fetched = await fetch("/auth-status");
+    const authStatus = await fetched.json();
+    if (!authStatus.loggedIn) {
+      alert("You are not logged in!");
+      return;
+    }
+
+    console.log(authStatus.user.email);
+
+    const res = await fetch("/order", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        cart: JSON.parse(localStorage.getItem("cart")),
+        email: authStatus.user.email,
+      }),
+    });
+
     //alert(`Thank you for your purchase! Total: $${total.toFixed(2)}`);
 
-    localStorage.removeItem("cart");
-    renderCart();
+    const orderTotal = total; //cache total before the cart is cleared
+
+    //const res = await fakePlaceOrder(cart);
+
+    const data = await res.json();
+
+    console.log(data);
+    //check if server succeeded with orders
+    if (data.success) {
+      localStorage.removeItem("cart"); // remove all items in localcart
+      //show confirmation
+      showOrderConfirmation(orderTotal);
+      fetchStockData();
+    } else {
+      alert("Order Failed: " + data.message); // display issue if order fails
+    }
   };
 }
 
@@ -163,3 +208,77 @@ document.addEventListener("DOMContentLoaded", () => {
     cartOverlay.classList.remove("show");
   });
 });
+
+// FAKE SERVER to test order confirmation.
+// async function fakePlaceOrder(cart) {
+//   console.log("FAKE SERVER RECEIVED CART:", cart);
+
+//   return new Promise((resolve) => {
+//     setTimeout(() => {
+//       resolve({
+//         success: true,
+//         orderId: "TEST-" + Math.floor(Math.random() * 999999),
+//       });
+//     }, 600);
+//   });
+// }
+
+/*
+  ======================
+  showOrderConfirmation
+  ======================
+  overwrites the cart when an order is successful to display 
+  confirmation on an order. Add a button to handle resetting UI
+
+*/
+function showOrderConfirmation(total) {
+  const cartContainer = document.getElementById("cart-items");
+  const subtotal = document.getElementById("cart-subtotal");
+  const clearCartBtn = document.getElementById("clear-cart-btn");
+  const checkoutBtn = document.getElementById("checkout-btn");
+
+  // Hide cart controls
+  subtotal.style.display = "none";
+  clearCartBtn.style.display = "none";
+  checkoutBtn.style.display = "none";
+
+  cartContainer.innerHTML = `
+  <div class="order-confirmation">
+    <h3>🎉 Order Placed Successfully!</h3>
+    <p>Your order total was:</p>
+    <p><strong>$${total.toFixed(2)}</strong></p>
+    <button id="continue-shopping" class="slime-btn" style="margin-top:15px;">
+      Continue Shopping
+    </button>
+  </div>
+`;
+
+  // Add handler for returning to normal
+  document.getElementById("continue-shopping").onclick = () => {
+    resetCartUI();
+    renderCart();
+  };
+}
+
+/*
+  ============
+  resetCartUI 
+  ============
+  overwrites the cart when an order is successful to display 
+  confirmation on an order. Add a button to handle resetting UI
+  should the user want to continue shopping
+*/
+
+function resetCartUI() {
+  // Show subtotal again
+  const subtotal = document.getElementById("cart-subtotal");
+  if (subtotal) subtotal.style.display = "block";
+
+  // Show Clear Cart button
+  const clearCartBtn = document.getElementById("clear-cart-btn");
+  if (clearCartBtn) clearCartBtn.style.display = "inline-block";
+
+  // Show Checkout button
+  const checkoutBtn = document.getElementById("checkout-btn");
+  if (checkoutBtn) checkoutBtn.style.display = "inline-block";
+}

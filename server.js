@@ -100,10 +100,19 @@ const session = require("express-session"); // Middleware for creating and manag
 const passport = require("passport"); // Authentication library – handles login and verifying credentials
 const connectEnsureLogin = require("connect-ensure-login"); // Middleware to protect pages so only logged-in users can access them
 
-const User = require("/project/Amazon-Website/model/User.js"); // Import the User model defined in model.js (includes schema + passport-local-mongoose setup)
-const Order = require("/project/Amazon-Website/model/Order.js");
+const { User, Order } = require(__dirname + "/Model.js");
 
 const app = express(); // Create an instance of an Express application
+
+const fs = require("fs");
+
+const products = JSON.parse(
+  fs.readFileSync(__dirname + "/products_real_titles.json", "utf8")
+); // This object is assumed to be accurate while the server is running. Changes are written back to mongodb.
+
+async function retrieveStocks() {}
+
+console.log("My name is server.js!");
 
 // vvv our code vvv
 app.use(express.json());
@@ -162,7 +171,7 @@ app.use(express.static(__dirname));
 
 // -------- Home Page --------
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/index.html"); // Sends the login page as the homepage
+  res.sendFile(__dirname + "/index.html"); // Sends the index.html page as the homepage
 });
 
 // vvv our code, not X's vvv
@@ -174,21 +183,16 @@ app.get("/auth-status", (req, res) => {
   }
 });
 
-// vvv X's code we don't need vvv
-// // -------- Login Page --------
-// app.get('/login', (req, res) => {
-//   res.sendFile(__dirname + '/views/html/login.html'); // Same as above
-// });
+app.get("/products_real_titles", (req, res) => {
+  res.json(products); // Return server loaded json, not the static file.
+});
 
-// // -------- Dashboard Page (not used) --------
-// // The connectEnsureLogin middleware checks if user is logged in.
-// // If not logged in, it automatically redirects to the login page.
-// app.get('/dashboard', connectEnsureLogin.ensureLoggedIn(), (req, res) => {
-//   res.send(`Hello ${req.user.name}. Your session ID is ${req.sessionID}
-//   and your session expires in ${req.session.cookie.maxAge}
-//   milliseconds. Your email is ${req.user.email}.<br><br>
-//   <a href="/logout">Log Out</a><br><br><a href="/index">Members Only</a>`);
-// });
+// -------- Dashboard Page --------
+// The connectEnsureLogin middleware checks if user is logged in.
+// If not logged in, it automatically redirects to the login page.
+app.get("/dashboard", connectEnsureLogin.ensureLoggedIn(), (req, res) => {
+  res.sendFile(__dirname + "/dashboard.html");
+});
 
 // // -------- Secret Page (Protected) --------
 // // Only logged-in users can access this page.
@@ -205,14 +209,15 @@ app.get("/auth-status", (req, res) => {
 
 // -------- Log Out --------
 // req.logout() removes the user from the session (logs them out).
-// After logout, redirect back to login page.
-
+// After logout, redirect back to index.html page.
 app.get("/logout", function (req, res, next) {
   req.logout(function (err) {
     if (err) {
+      console.log(`failed to log a user out because ${err.message}`);
       return next(err);
     }
-    res.redirect("/index.html");
+    console.log("logged a user out");
+    res.redirect("/");
   });
 });
 
@@ -257,63 +262,109 @@ app.get("/logout", function (req, res, next) {
 // User.register() is provided by passport-local-mongoose and automatically hashes the password.
 app.post("/register", function (req, res, next) {
   User.register(
-    { name: req.body.name, email: req.body.email, username: req.body.username },
+    { name: req.body.name, email: req.body.email },
     req.body.password,
     function (err) {
       if (err) {
-        console.log("error while user register!", err);
+        console.log("Error in user register!", err);
+        res.json({ registered: false });
         return next(err);
       }
 
-      console.log("user registered!");
-      // res.redirect('/'); // After successful registration, go back to login page
-      if (req.isAuthenticated()) {
-        res.json({ loggedIn: true, user: req.user });
-      } else {
-        res.json({ loggedIn: false });
-      }
+      console.log("User registered!");
+      res.json({ registered: true, user: req.user });
     }
   );
 });
 
-app.post("order", function (req, res, next) {
-  Order.register(
-    {
-      email: req.body.email,
-      products: req.body.products,
-      quantities: req.body.stock,
-      prices: req.body.prices,
-    },
-    function (err) {
-      if (err) {
-        console.log("error while order!", err);
-        return next(err);
-      }
+// Order.find({email: "Okay@dope.net"}).exec().then()
 
-      console.log("order placed!");
-    }
-  );
+app.get("/my-orders", connectEnsureLogin.ensureLoggedIn(), (req, res) => {
+  //console.log(req.user);
+  Order.find({ email: req.user.email })
+    .exec()
+    .then((e) => {
+      console.log(e);
+      res.json(e);
+      console.log(`${req.user.name} successfully got their orders.`);
+    })
+    .catch((e) =>
+      console.log(
+        `${req.user.name} failed to get their orders because ${e.message}`
+      )
+    );
 });
 
-// -------- Login (POST) --------
-// passport.authenticate('local') checks username and password.
-// If they’re wrong, redirect to '/' (login page again).
-// If successful, the user is stored in session and redirected to /index.
-// TODO: remove this redirect vvv
 app.post(
-  "/login",
-  passport.authenticate("local", { failureRedirect: { messgae: "failed" } }),
-  function (req, res) {
-    console.log(req.user);
-    //res.redirect('/dashboard');
-    //res.redirect('/index');
-    if (req.isAuthenticated()) {
-      res.json({ loggedIn: true, user: req.user });
-    } else {
-      res.json({ loggedIn: false });
+  "/order",
+  connectEnsureLogin.ensureLoggedIn(),
+  async function (req, res, next) {
+    console.log("ordering");
+    try {
+      const cart = req.body.cart;
+      const email = req.body.email;
+      if (!email) {
+        console.log("email was", email);
+        res.json({ success: false, message: "Invalid email" });
+        return;
+      }
+      let items = [];
+      let productIndices = [];
+      let total = 0;
+      for (let i = 0; i < cart.length; i++) {
+        let productIndex = products.items.findIndex(
+          (item) => item.sys.id === cart[i].id
+        );
+        productIndices.push(productIndex);
+        let product = products.items[productIndex];
+        let inStock = product.fields.stock;
+        if (
+          cart[i].quantity > inStock ||
+          cart[i].quantity <= 0 ||
+          !Number.isInteger(cart[i].quantity)
+        ) {
+          res.json({ success: false, message: "Invalid quantity" });
+          return;
+        }
+        items.push({
+          id: product.sys.id,
+          quantity: cart[i].quantity,
+          price: product.fields.price,
+        });
+        total += cart[i].quantity * product.fields.price;
+      }
+
+      await Order.create({
+        email: email,
+        items: items,
+        total: total,
+      });
+
+      for (let i = 0; i < cart.length; i++) {
+        products.items[productIndices[i]].fields.stock -= cart[i].quantity;
+        console.log(products.items[productIndices[i]].fields.stock);
+      }
+
+      res.json({ success: true, message: "Thank you for your purchase." });
+      console.log(`${req.user.name} successfully ordered ${items}`);
+
+      return;
+    } catch (e) {
+      console.log(e.message);
+      res.json({ success: false, message: "Internal error" });
+      console.log(
+        `${req.user.name} unsuccessfully tried to order something, but got the error ${e.message}`
+      );
     }
   }
 );
+
+// -------- Login (POST) --------
+// passport.authenticate('local') checks username and password.
+app.post("/login", passport.authenticate("local"), function (req, res) {
+  console.log(`Logged in ${req.user.name}`);
+  res.json({ loggedIn: true, user: req.user });
+});
 
 // -------- Get User Info --------
 // This is a route to let the frontend know who is currently logged in.
@@ -329,24 +380,3 @@ app.get("/user", connectEnsureLogin.ensureLoggedIn(), (req, res) =>
 // When it’s ready, it prints a message in the console.
 const port = 3000;
 app.listen(port, () => console.log(`This app is listening on port ${port}`));
-
-// 'mongoose' is a popular Node.js library that lets us connect to a MongoDB database
-// and define the structure (schema) of the documents we will store there.
-const mongoose = require("mongoose");
-
-// =======================
-// Connect to MongoDB
-// =======================
-
-// We use 'mongoose.connect()' to open a connection to our MongoDB database.
-// Here we’re connecting to a MongoDB Atlas cluster using a connection string.
-//   ⚠️ Normally, we should NOT hardcode the username and password in code —
-//   they should go into environment variables for security reasons.
-//   But for testing or class demos, this is fine.
-mongoose.connect(
-  "mongodb+srv://admin:testing1@amazon-db.sccapev.mongodb.net/?appName=amazon-db",
-  {
-    //useNewUrlParser: true,    // This option ensures compatibility with modern MongoDB drivers.
-    //useUnifiedTopology: true  // This option uses the new server discovery and monitoring engine.
-  }
-);

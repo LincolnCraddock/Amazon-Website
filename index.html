@@ -4,28 +4,25 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  
     <title>Slop Shop</title>
-
-    <!-- Styles -->
     <link rel="stylesheet" href="styles.css" />
   </head>
-    <body class="dashboard-dark">
-      <header class="slime-navbar">
-        <div class="nav-left">
-          <img src="images/Logo.png" alt="Slop Shop Logo" class="nav-logo"/>
-          <a href="index.html"></a> 
+
+  <body class="dashboard-dark">
+    <!-- Slimed Navbar -->
+    <header class="slime-navbar">
+      <div class="nav-left">
+        <a href="index.html"><img src="images/Logo.png" alt="Slop Shop Logo" class="nav-logo"/></a> 
+      </div>
+      <div class="nav-center">
+        <div class="search-wrapper">
+          <input type="text" id="search-bar" placeholder="Search for anything" />
+          <select id="category-select">
+            <option value="all">All Items</option>
+            <script src="scripts/categories.js"></script>
+          </select>
+          <button id="search-button" class="slime-btn">Search!</button>
         </div>
-        <div class="nav-center">
-          <div class="search-wrapper">
-        <input type="text" id="search-bar" placeholder="Search for anything" />
-        
-        <select id="category-select">
-          <option value="all">All Items</option>
-          <!-- <option value="" disabled selected>Filter</option> -->
-          <script src="scripts/categories.js"></script>
-        </select>
-        <button id="search-button" class="slime-btn">Search!</button>
       </div>
       <div class="nav-right">
         <div id="login-dropdown" class="dropdown">
@@ -51,21 +48,23 @@
                 style="display: block"
               >
                 <form id="login-form">
-                  <input type="text" placeholder="Email/Username" name="name" />
+                  <input type="text" placeholder="Email/Username" name="name" required/>
                   <input
                     type="password"
                     placeholder="Password"
                     autocomplete="current-password"
                     name="password"
+                    required
                   /><br />
                   <button class="slime-btn">Login</button>
                 </form>
+                <p id="login-error-message" class="error-message"></p>
               </div>
               <script src="scripts/login.js"></script>
               <div id="register-tab-content" class="tab-content">
                   <form id="register-form">
-                      <input type="email" placeholder="Email" name="email" /><br />
-                      <input type="text" placeholder="name" name="name" />
+                      <input type="email" placeholder="Email" name="email" required/><br />
+                      <input type="text" placeholder="name" name="name" required/>
                       <input
                           type="password"
                           placeholder="Password"
@@ -74,6 +73,7 @@
                           <br />
                       <button class="slime-btn" type="submit">Register</button>
                   </form>
+                  <p id="register-error-message" class="error-message"></p>
               </div>
               <script src="scripts/register.js"></script>
             </div>
@@ -84,11 +84,9 @@
         <a href="dashboard.html">
           <button id="dashboard-button" class="slime-btn">Dashboard</button>
         </a>
-        </div>
+      </div>
       
     </header>
-
-    <nav></nav>
 
     <!-- main product area -->
     <main>
@@ -129,27 +127,15 @@
     >
       <p>© 2025 Slop Shop. Probably not a scam.</p>
     </footer>
-    <!-- placeholder for the sidebar -->
   
     <script>
-      const dropdownBtn = document.querySelector('#login-dropdown .dropdown-button');
-      const dropdownMenu = document.querySelector('#login-dropdown .dropdown-content');
-
-      // open/close dropdown
-      dropdownBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      dropdownMenu.classList.toggle('show');
-    });
-
-    // prevent clicks inside dropdown from closing it
-    dropdownMenu.addEventListener('click', (e) => {
-    e.stopPropagation();
-  });
-
-    // close when clicking anywhere else
-    document.addEventListener('click', () => {
-    dropdownMenu.classList.remove('show');
-  });
+      // track the last clicked element, for use in CSS
+      let lastClickedElement = document.querySelector("body"); // default element
+      document.addEventListener("click", (event) => {
+        lastClickedElement.classList.remove("last-clicked");
+        lastClickedElement = event.target;
+        lastClickedElement.classList.add("last-clicked");
+      });
 
     </script>
   <script src="scripts/tabs.js"></script>
