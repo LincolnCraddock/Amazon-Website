@@ -13,7 +13,7 @@ function getCategorySelect() {
 }
 
 // Fetch all products
-fetch("products_real_titles.json")
+fetch("products_real_titles")
   .then((res) => res.json())
   .then((data) => {
     productsData = data.items;
@@ -147,15 +147,25 @@ function showProduct(id) {
 function addToCart(product) {
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
   const existing = cart.find((item) => item.id === product.id);
-
+  let inStock = productsData.find((item) => item.sys.id === product.id).fields
+    .stock;
   if (existing) {
-    existing.quantity++;
+    if (existing.quantity < inStock) {
+      existing.quantity++;
+    }else {
+      return false;
+    }
   } else {
-    cart.push({ ...product, quantity: 1 });
+    if (inStock > 0) {
+      cart.push({ ...product, quantity: 1 });
+    }else {
+      return false;
+    }
   }
 
   localStorage.setItem("cart", JSON.stringify(cart));
   console.log(`${product.title} added to cart!`);
+  return true;
 }
 
 function attachAddToCartButtons() {
@@ -181,15 +191,17 @@ function attachAddToCartButtons() {
           image: img,
         };
 
-        addToCart(cartItem);
-        btn.classList.add("added-to-cart");
-        btn.textContent = "Added to Cart";
-        btn.disabled = true;
-        setTimeout(() => {
-          btn.classList.remove("added-to-cart");
-          btn.textContent = "Add to Cart";
-          btn.disabled = false;
-        }, 1000);
+        if (addToCart(cartItem))
+        {
+          btn.classList.add("added-to-cart");
+          btn.textContent = "Added to Cart";
+          btn.disabled = true;
+          setTimeout(() => {
+            btn.classList.remove("added-to-cart");
+            btn.textContent = "Add to Cart";
+            btn.disabled = false;
+          }, 1000);
+        }
       });
     });
   }, 500);

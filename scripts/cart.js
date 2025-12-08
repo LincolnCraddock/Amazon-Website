@@ -74,8 +74,18 @@ function renderCart() {
       const idx = parseInt(e.target.dataset.index);
       const action = e.target.dataset.action;
 
-      if (action === "increase") cart[idx].quantity++;
-      else if (action === "decrease" && cart[idx].quantity > 1) {
+      if (action === "increase") {
+        let inStock = productsData.find((item) => item.sys.id === cart[idx].id)
+          .fields.stock;
+        if (cart[idx].quantity < inStock) {
+          cart[idx].quantity++;
+          // if (cart[idx].quantity === inStock) {
+          //   Reached stock limit. Could gray out button.
+          // }
+        } else {
+          // Failed to increase
+        }
+      } else if (action === "decrease" && cart[idx].quantity > 1) {
         cart[idx].quantity--;
       } else if (action === "decrease" && cart[idx].quantity === 1) {
         cart.splice(idx, 1);
@@ -112,7 +122,26 @@ function renderCart() {
       return;
     }
 
-    //alert(`Thank you for your purchase! Total: $${total.toFixed(2)}`);
+    const fetched = await fetch("/auth-status");
+    const status = await fetched.json();
+    if (!status.loggedIn) {
+      alert("You are not logged in!");
+      return;
+    }
+
+    const res = await fetch("/order", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        cart: JSON.parse(localStorage.getItem("cart")),
+        email: status.email,
+      }),
+    });
+
+    alert(`Thank you for your purchase! Total: $${total.toFixed(2)}`);
 
     const orderTotal = total; //cache total before the cart is cleared
 
