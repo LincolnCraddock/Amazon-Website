@@ -46,17 +46,7 @@ const Order = new Schema({
   total: Number,
 });
 
-const StockEntry = new Schema({
-  id: String,
-  stock: Number,
-});
-
-const StockData = new Schema({
-  entries: [StockEntry],
-});
-
 module.exports = {
   User: mongoose.model("users", User),
   Order: mongoose.model("orders", Order),
-  StockData: mongoose.model("stocks", StockData),
 };
