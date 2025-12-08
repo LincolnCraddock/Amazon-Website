@@ -152,24 +152,18 @@ function renderCart() {
     //   body: JSON.stringify({ cart })
     // });
 
-    const res = await fakePlaceOrder(cart); 
+    //const res = await fakePlaceOrder(cart);
 
     // const data = await res.json();
 
     //check if server succeeded with orders
-    if (res.success){
+    if (res.success) {
       localStorage.removeItem("cart"); // remove all items in localcart
       //show confirmation
       showOrderConfirmation(orderTotal);
-
     } else {
-      alert("Order Failed: " + data.message) // display issue if order fails
+      alert("Order Failed: " + data.message); // display issue if order fails
     }
-
-    
-
-    
-    
   };
 }
 
@@ -218,7 +212,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-
 // FAKE SERVER to test order confirmation.
 async function fakePlaceOrder(cart) {
   console.log("FAKE SERVER RECEIVED CART:", cart);
@@ -233,7 +226,6 @@ async function fakePlaceOrder(cart) {
   });
 }
 
-
 /*
   ======================
   showOrderConfirmation
@@ -242,7 +234,7 @@ async function fakePlaceOrder(cart) {
   confirmation on an order. Add a button to handle resetting UI
 
 */
-function showOrderConfirmation(total){
+function showOrderConfirmation(total) {
   const cartContainer = document.getElementById("cart-items");
   const subtotal = document.getElementById("cart-subtotal");
   const clearCartBtn = document.getElementById("clear-cart-btn");
@@ -264,11 +256,11 @@ function showOrderConfirmation(total){
   </div>
 `;
 
-// Add handler for returning to normal
-document.getElementById("continue-shopping").onclick = () => {
-  resetCartUI();
-  renderCart();
-};
+  // Add handler for returning to normal
+  document.getElementById("continue-shopping").onclick = () => {
+    resetCartUI();
+    renderCart();
+  };
 }
 
 /*
