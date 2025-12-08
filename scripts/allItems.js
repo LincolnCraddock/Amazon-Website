@@ -65,6 +65,7 @@ fetch("products_real_titles.json")
     // === APPLY CATEGORY FROM URL === //
     const params = new URLSearchParams(window.location.search);
     const catFromURL = params.get("category");
+    const searchFromURL = params.get("search");
 
     if (catFromURL) {
       // Try to set the dropdown to the matching option (case-insensitive)
@@ -82,18 +83,16 @@ fetch("products_real_titles.json")
             matched = true;
           }
         });
-
-        // If no option matched, add a temporary option and select it (so the UI shows value)
-        if (!matched) {
-          const tempOpt = document.createElement("option");
-          tempOpt.value = catFromURL;
-          tempOpt.text = catFromURL;
-          tempOpt.selected = true;
-          categorySelect.appendChild(tempOpt);
-        }
       }
+    }
 
-      // Filter after a short delay to ensure cards are in the DOM
+    if (searchFromURL) {
+      // Fill the search bar with the search from the URL
+      document.getElementById("search-bar").value = searchFromURL;
+    }
+
+    // Filter after a short delay to ensure cards are in the DOM
+    if (catFromURL || searchFromURL) {
       setTimeout(() => {
         filterProducts();
       }, 60);
@@ -223,20 +222,35 @@ if (cartButton && cartSidebar && cartOverlay) {
 
 // ===== CATEGORY FILTER ===== //
 
-const categorySelect = document.getElementById("category-select");
+const categoryDropdown = document.getElementById("category-select");
 
-categorySelect.addEventListener("change", () => {
+categoryDropdown.addEventListener("change", () => {
   filterProducts();
 });
 
+// note: there is a function called search_items() in search.js that does the same thing
 function filterProducts() {
-  const selectedCategory = categorySelect.value.toLowerCase();
+  const selectedCategory = categoryDropdown.value.toLowerCase();
   const searchTerm = document
     .getElementById("search-bar")
     .value.trim()
     .toLowerCase();
 
   const productCards = document.querySelectorAll(".product-card");
+
+  // set URL paramaters
+  // Get the current URL
+  const currentUrl = new URL(window.location.href);
+
+  // Clear all search parameters
+  currentUrl.search = "";
+
+  // Update the URL in the browser's history without reloading the page
+  window.history.replaceState({}, document.title, currentUrl.toString());
+  const queryParams = new URLSearchParams(window.location.search);
+  queryParams.set("category", selectedCategory);
+  queryParams.append("search", searchTerm);
+  history.replaceState(null, null, "?" + queryParams.toString());
 
   productCards.forEach((card) => {
     const title = card

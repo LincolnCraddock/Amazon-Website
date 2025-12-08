@@ -284,17 +284,18 @@ app.post("order", function (req, res, next) {
         console.log("error while order!", err);
         return next(err);
       }
-
+    
       console.log("order placed!");
     }
   );
 });
 
+
+
 // -------- Login (POST) --------
 // passport.authenticate('local') checks username and password.
 app.post("/login", passport.authenticate("local"), function (req, res) {
   console.log(`Logged in ${req.user.name}`);
-  console.log("i should be inside of this block of code");
   res.json({ loggedIn: true, user: req.user });
 });
 
