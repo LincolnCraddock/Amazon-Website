@@ -140,14 +140,29 @@ function openModal(id) {
 function showProduct(id) {
   initProductDetails(id).then(() => {
     const closeBtn = document.querySelector(".close-btn");
-    closeBtn.onclick = () => modal.classList.add("hidden");
 
+    closeBtn.onclick = () => closeModal();
     window.onclick = (e) => {
-      if (e.target === modal) modal.classList.add("hidden");
+      if (e.target === modal) closeModal();
     };
 
+    // Ensure modal enters DOM state BEFORE animation class is added
     modal.classList.remove("hidden");
+
+    // Force reflow to guarantee animation activation
+    void modal.offsetWidth;
+
+    modal.classList.add("show");
   });
+}
+
+function closeModal() {
+  modal.classList.remove("show");
+
+  // Delay hiding until after fade-out completes
+  setTimeout(() => {
+    modal.classList.add("hidden");
+  }, 250);
 }
 
 // ===== CART LOGIC ===== //
