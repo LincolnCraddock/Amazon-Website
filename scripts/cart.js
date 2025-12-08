@@ -145,6 +145,8 @@ function renderCart() {
 
     const orderTotal = total; //cache total before the cart is cleared
 
+    //const res = await fakePlaceOrder(cart);
+
     // const data = await res.json();
 
     //check if server succeeded with orders
