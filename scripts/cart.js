@@ -123,11 +123,13 @@ function renderCart() {
     }
 
     const fetched = await fetch("/auth-status");
-    const status = await fetched.json();
-    if (!status.loggedIn) {
+    const authStatus = await fetched.json();
+    if (!authStatus.loggedIn) {
       alert("You are not logged in!");
       return;
     }
+
+    console.log(authStatus.user.email);
 
     const res = await fetch("/order", {
       method: "POST",
@@ -137,23 +139,25 @@ function renderCart() {
       },
       body: JSON.stringify({
         cart: JSON.parse(localStorage.getItem("cart")),
-        email: status.email,
+        email: authStatus.user.email,
       }),
     });
 
-    alert(`Thank you for your purchase! Total: $${total.toFixed(2)}`);
+    //alert(`Thank you for your purchase! Total: $${total.toFixed(2)}`);
 
     const orderTotal = total; //cache total before the cart is cleared
 
     //const res = await fakePlaceOrder(cart);
 
-    // const data = await res.json();
+    const data = await res.json();
 
+    console.log(data);
     //check if server succeeded with orders
-    if (res.success) {
+    if (data.success) {
       localStorage.removeItem("cart"); // remove all items in localcart
       //show confirmation
       showOrderConfirmation(orderTotal);
+      fetchStockData();
     } else {
       alert("Order Failed: " + data.message); // display issue if order fails
     }
@@ -206,18 +210,18 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // FAKE SERVER to test order confirmation.
-async function fakePlaceOrder(cart) {
-  console.log("FAKE SERVER RECEIVED CART:", cart);
+// async function fakePlaceOrder(cart) {
+//   console.log("FAKE SERVER RECEIVED CART:", cart);
 
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        success: true,
-        orderId: "TEST-" + Math.floor(Math.random() * 999999),
-      });
-    }, 600);
-  });
-}
+//   return new Promise((resolve) => {
+//     setTimeout(() => {
+//       resolve({
+//         success: true,
+//         orderId: "TEST-" + Math.floor(Math.random() * 999999),
+//       });
+//     }, 600);
+//   });
+// }
 
 /*
   ======================

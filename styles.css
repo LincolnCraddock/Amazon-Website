@@ -525,6 +525,8 @@ input {
   min-width: 0; /* prevents forcing navbar wider */
   white-space: nowrap; /* keeps buttons inline */
   margin-left: 16px;
+  margin-right: 16px;
+  
 }
 
 /* Logo */
@@ -591,6 +593,11 @@ input {
   cursor: pointer;
   font-weight: 600;
   transition: all 0.15s ease;
+  
+}
+
+#dashboard-button{
+  margin-right: 10px;
 }
 
 .slime-btn:hover {

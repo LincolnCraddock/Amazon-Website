@@ -12,6 +12,14 @@ function getCategorySelect() {
   return document.getElementById("category-select");
 }
 
+function fetchStockData() {
+  fetch("products_real_titles")
+    .then((res) => res.json())
+    .then((data) => {
+      productsData = data.items;
+    });
+}
+
 // Fetch all products
 fetch("products_real_titles")
   .then((res) => res.json())
@@ -152,13 +160,13 @@ function addToCart(product) {
   if (existing) {
     if (existing.quantity < inStock) {
       existing.quantity++;
-    }else {
+    } else {
       return false;
     }
   } else {
     if (inStock > 0) {
       cart.push({ ...product, quantity: 1 });
-    }else {
+    } else {
       return false;
     }
   }
@@ -191,8 +199,7 @@ function attachAddToCartButtons() {
           image: img,
         };
 
-        if (addToCart(cartItem))
-        {
+        if (addToCart(cartItem)) {
           btn.classList.add("added-to-cart");
           btn.textContent = "Added to Cart";
           btn.disabled = true;

@@ -6,19 +6,12 @@
  * so products can be stored via the cart.js functions.
  ***********************************************************/
 
-let productsData2 = [];
-// named productsData2 to avoid conflict with cart.js
-
-fetch("products_real_titles")
-  .then((res) => res.json())
-  .then((data) => {
-    productsData2 = data.items;
-  });
+// named productsData2 to avoid conflict with allItems.js
 
 function initProductDetails(id) {
   // Fetch all product data from the JSON file
   // (Each product has fields like title, price, image, etc.)
-  return fetch("products_real_titles.json")
+  return fetch("products_real_titles")
     .then((res) => res.json())
     .then((data) => {
       // Find the product in the data array that matches the given ID
@@ -61,7 +54,7 @@ function initProductDetails(id) {
 
           let cart = JSON.parse(localStorage.getItem("cart")) || [];
           const existing = cart.find((c) => c.id === id);
-          let inStock = productsData2.find((item) => item.sys.id === id).fields
+          let inStock = productsData.find((item) => item.sys.id === id).fields
             .stock;
           // if (existing) existing.quantity += quantity;
           // else cart.push({ id, title, price, image, quantity });

@@ -100,7 +100,7 @@ const session = require("express-session"); // Middleware for creating and manag
 const passport = require("passport"); // Authentication library – handles login and verifying credentials
 const connectEnsureLogin = require("connect-ensure-login"); // Middleware to protect pages so only logged-in users can access them
 
-const { User, Order, StockData } = require(__dirname + "/Model.js");
+const { User, Order } = require(__dirname + "/Model.js");
 
 const app = express(); // Create an instance of an Express application
 
@@ -109,9 +109,6 @@ const fs = require("fs");
 const products = JSON.parse(
   fs.readFileSync(__dirname + "/products_real_titles.json", "utf8")
 ); // This object is assumed to be accurate while the server is running. Changes are written back to mongodb.
-
-let productStocksRetrieved = false;
-// Stock information is retrieved and written to the object on first request.
 
 async function retrieveStocks() {}
 
@@ -280,6 +277,24 @@ app.post("/register", function (req, res, next) {
   );
 });
 
+// Order.find({email: "Okay@dope.net"}).exec().then()
+
+app.get("/my-orders", connectEnsureLogin.ensureLoggedIn(), (req, res) => {
+  //console.log(req.user);
+  Order.find({ email: req.user.email })
+    .exec()
+    .then((e) => {
+      console.log(e);
+      res.json(e);
+      console.log(`${req.user.name} successfully got their orders.`);
+    })
+    .catch((e) =>
+      console.log(
+        `${req.user.name} failed to get their orders because ${e.message}`
+      )
+    );
+});
+
 app.post(
   "/order",
   connectEnsureLogin.ensureLoggedIn(),
@@ -287,6 +302,12 @@ app.post(
     console.log("ordering");
     try {
       const cart = req.body.cart;
+      const email = req.body.email;
+      if (!email) {
+        console.log("email was", email);
+        res.json({ success: false, message: "Invalid email" });
+        return;
+      }
       let items = [];
       let productIndices = [];
       let total = 0;
@@ -311,17 +332,32 @@ app.post(
           price: product.fields.price,
         });
         total += cart[i].quantity * product.fields.price;
-
-        res.json({ success: true, message: "Thank you for your purchase." });
       }
+
+      await Order.create({
+        email: email,
+        items: items,
+        total: total,
+      });
+
+      for (let i = 0; i < cart.length; i++) {
+        products.items[productIndices[i]].fields.stock -= cart[i].quantity;
+        console.log(products.items[productIndices[i]].fields.stock);
+      }
+
+      res.json({ success: true, message: "Thank you for your purchase." });
+      console.log(`${req.user.name} successfully ordered ${items}`);
+
+      return;
     } catch (e) {
       console.log(e.message);
       res.json({ success: false, message: "Internal error" });
+      console.log(
+        `${req.user.name} unsuccessfully tried to order something, but got the error ${e.message}`
+      );
     }
   }
 );
-
-
 
 // -------- Login (POST) --------
 // passport.authenticate('local') checks username and password.
