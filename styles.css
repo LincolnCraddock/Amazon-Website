@@ -103,6 +103,13 @@ input {
   min-height: 430px; /* slightly taller to fit longer titles */
   position: relative;
   border: 1px solid rgba(58, 173, 85, 0.2);
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.hidden {
+  opacity: 0;
+  transform: translateY(10px);
 }
 
 .product-card:hover {
@@ -303,6 +310,15 @@ input {
 .add-to-cart-btn:hover {
   background: #57d672;
   transform: scale(1.03);
+}
+
+.added-to-cart {
+  background: white;
+}
+
+.added-to-cart:hover {
+  background: white;
+  transform: scale(1);
 }
 
 /* Close button */
