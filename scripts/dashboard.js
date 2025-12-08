@@ -51,12 +51,19 @@ document.addEventListener("DOMContentLoaded", async () => {
       // const orders = JSON.parse(localStorage.getItem("orders")) || [];
       const response = await fetch("/my-orders");
       const orders = await response.json();
+      let productsData = [];
+      await fetch("products_real_titles")
+        .then((res) => res.json())
+        .then((data) => {
+          productsData = data.items;
+        });
 
       const orderList = document.getElementById("order-list");
 
       if (orders.length === 0) {
         orderList.innerHTML = "<p>No orders yet.</p>";
       } else {
+        orders.reverse();
         orders.forEach((order, i) => {
           // console.log(order);
           const div = document.createElement("div");
