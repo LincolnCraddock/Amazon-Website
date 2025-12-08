@@ -260,16 +260,13 @@ app.post("/register", function (req, res, next) {
     req.body.password,
     function (err) {
       if (err) {
-        console.log("error in user register!", err);
+        console.log("Error in user register!", err);
+        res.json({ registered: false });
         return next(err);
       }
 
-      console.log("user registered!");
-      if (req.isAuthenticated()) {
-        res.json({ registered: true, user: req.user });
-      } else {
-        res.json({ registered: false });
-      }
+      console.log("User registered!");
+      res.json({ registered: true, user: req.user });
     }
   );
 });
@@ -297,6 +294,7 @@ app.post("order", function (req, res, next) {
 // passport.authenticate('local') checks username and password.
 app.post("/login", passport.authenticate("local"), function (req, res) {
   console.log(`Logged in ${req.user.name}`);
+  console.log("i should be inside of this block of code");
   res.json({ loggedIn: true, user: req.user });
 });
 

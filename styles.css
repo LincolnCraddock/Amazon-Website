@@ -316,6 +316,11 @@ input {
   background: white;
 }
 
+.added-to-cart:hover {
+  background: white;
+  transform: scale(1);
+}
+
 /* Close button */
 .close-btn {
   position: absolute;

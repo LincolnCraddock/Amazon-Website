@@ -183,7 +183,14 @@ function attachAddToCartButtons() {
         };
 
         addToCart(cartItem);
-        alert(`${product.title} added to cart!`);
+        btn.classList.add("added-to-cart");
+        btn.textContent = "Added to Cart";
+        btn.disabled = true;
+        setTimeout(() => {
+          btn.classList.remove("added-to-cart");
+          btn.textContent = "Add to Cart";
+          btn.disabled = false;
+        }, 1000);
       });
     });
   }, 500);

@@ -27,7 +27,8 @@ function initProductDetails(id) {
       // Populate all product info in the popup
       document.getElementById("prod-img").src = img;
       document.getElementById("prod-title").textContent = product.title;
-      document.getElementById("prod-price").textContent = product.price.toFixed(2);
+      document.getElementById("prod-price").textContent =
+        product.price.toFixed(2);
       const catLink = document.getElementById("prod-category-link");
       catLink.textContent = product.category;
       catLink.href = `index.html?category=${encodeURIComponent(
@@ -55,7 +56,16 @@ function initProductDetails(id) {
           else cart.push({ id, title, price, image, quantity });
 
           localStorage.setItem("cart", JSON.stringify(cart));
-          alert(`${title} added to cart!`);
+
+          addBtn.classList.add("added-to-cart");
+          addBtn.textContent = "Added to Cart";
+          addBtn.disabled = true;
+          setTimeout(() => {
+            addBtn.classList.remove("added-to-cart");
+            addBtn.textContent = "Add to Cart";
+            addBtn.disabled = false;
+          }, 1000);
+          //alert(`${title} added to cart!`); no alerts!
         };
       }
     });
