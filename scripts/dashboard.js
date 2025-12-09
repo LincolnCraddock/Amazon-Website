@@ -1,16 +1,6 @@
 // dashboard.js
 
-document.addEventListener("DOMContentLoaded", async () => {
-  let productsData = [];
-
-  await fetch("products_real_titles")
-    .then((res) => res.json())
-    .then((data) => {
-      productsData = data.items;
-    });
-
-  console.log(productsData);
-
+document.addEventListener("DOMContentLoaded", () => {
   // --- Load user info ---
   let user;
   fetch("/auth-status").then((res) => {
@@ -51,14 +41,21 @@ document.addEventListener("DOMContentLoaded", async () => {
       // const orders = JSON.parse(localStorage.getItem("orders")) || [];
       const response = await fetch("/my-orders");
       const orders = await response.json();
+      let productsData = [];
+      await fetch("products_real_titles")
+        .then((res) => res.json())
+        .then((data) => {
+          productsData = data.items;
+        });
 
       const orderList = document.getElementById("order-list");
 
       if (orders.length === 0) {
         orderList.innerHTML = "<p>No orders yet.</p>";
       } else {
+        orders.reverse();
         orders.forEach((order, i) => {
-          // console.log(order);
+          console.log(order);
           const div = document.createElement("div");
           div.className = "order-item";
           div.innerHTML = `
@@ -66,9 +63,18 @@ document.addEventListener("DOMContentLoaded", async () => {
               <p><strong>Date:</strong> ${new Date(
                 order.created
               ).toUTCString()}</p>
-              <p><strong>Items:</strong> ${order.items
-                .map(function (it) {
-                  productsData.items.find(it);
+              <p><strong>Items:</strong><br>${order.items
+                .map((it) => {
+                  productTitle = productsData.find(
+                    (item) => item.sys.id === it.id
+                  ).fields.title;
+                  return (
+                    it.quantity +
+                    " * " +
+                    productTitle +
+                    ": $" +
+                    it.price * it.quantity
+                  );
                 })
                 .join("<br>")}</p>
               <p><strong>Total:</strong> $${order.total.toFixed(2)}</p>
