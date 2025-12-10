@@ -39,6 +39,16 @@ function initProductDetails(id) {
 
       // --- Add to Cart button handler ---
       const addBtn = document.querySelector(".modal-add-cart-btn");
+      // --- GRAY OUT BUTTON IF NO STOCK ---
+      if (product.stock <= 0) {
+        addBtn.textContent = "No Stock";
+        addBtn.disabled = true;
+        addBtn.classList.add("no-stock");
+      } else {
+        addBtn.textContent = "Add to Cart";
+        addBtn.disabled = false;
+        addBtn.classList.remove("no-stock");
+      }
       if (addBtn) {
         addBtn.onclick = () => {
           const quantity =

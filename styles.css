@@ -323,6 +323,17 @@ input {
   transform: scale(1.03);
 }
 
+.add-to-cart-btn.no-stock {
+  background-color: #888 !important;
+  cursor: not-allowed !important;
+  opacity: 0.6;
+  border-color: #777 !important;
+}
+
+.add-to-cart-btn.no-stock:hover {
+  background-color: #888 !important;
+}
+
 .added-to-cart {
   background: white;
 }
@@ -537,7 +548,6 @@ input {
   white-space: nowrap; /* keeps buttons inline */
   margin-left: 16px;
   margin-right: 16px;
-  
 }
 
 /* Logo */
@@ -604,10 +614,9 @@ input {
   cursor: pointer;
   font-weight: 600;
   transition: all 0.15s ease;
-  
 }
 
-#dashboard-button{
+#dashboard-button {
   margin-right: 10px;
 }
 
