@@ -46,6 +46,13 @@ Minor tweaks to text, added appropriate decimal precision for prices in a couple
 Filled in stuff for the order history part of the dashboard.
 
 Calvin:
+-Implemented the product grid with necessary info the json
+-Implemented the product detail page
+-Designed the logo
+-Helped with the color scheme
+-added ability to filter by category by clicking product category in product details 
+-added updating add to cart button that changes based on item stock and what you're attempting
+-read over and reviewed the backend
 
 Tanner:
 Filtering feature js /integrated with searching,
