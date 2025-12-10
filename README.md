@@ -48,16 +48,16 @@ Filled in stuff for the order history part of the dashboard.
 Calvin:
 
 Tanner:
-Filtering feature js /integrated with searching
-Contributed to allitems.js
-Contributed to product.js
-Cart UI
-Cart JS
-Dashboard UI
-Dashboard JS
-Contributed to login/register dropdown UI
-Contributed to home page style/layout
-Contributed to navbar/header design
+Filtering feature js /integrated with searching,
+Contributed to allitems.js,
+Contributed to product.js,
+Cart UI,
+Cart JS,
+Dashboard UI,
+Dashboard JS,
+Contributed to login/register dropdown UI,
+Contributed to home page style/layout,
+Contributed to navbar/header design,
 Contributed to overall layout/style/UI of website
 
 ## Authors
