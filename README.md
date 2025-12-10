@@ -13,36 +13,36 @@ Do you like buying AI generated slop? Using our tool, you can search for slop, f
 
 ## Contributions
 Lincoln:
-basic header UI
-user registration/login back & front end
-search bar in the dashboard
-fixing things
+basic header UI,
+user registration/login back & front end,
+search bar in the dashboard,
+fixing things,
 rubber ducky
 
 James:
-search and animation for searching
-also worked on user registration (i wrote the original server.js and user.js)
-to note: evan and lincoln both added to server.js
-order confirmation
-cleaned up project structure (moving most js files into the script folder and removing any unused files)
-a lot backend testing and bug fixes
+search and animation for searching,
+also worked on user registration (i wrote the original server.js and user.js),
+to note: evan and lincoln both added to server.js,
+order confirmation,
+cleaned up project structure (moving most js files into the script folder and removing any unused files),
+a lot backend testing and bug fixes,
 
 Evan:
 Other:
-A decent bit of mongoose prototyping
-Rubber ducky
-Testing
-Thought of "Slop Shop" lol
+A decent bit of mongoose prototyping,
+Rubber ducky,
+Testing,
+Thought of "Slop Shop" lol,
 Backend:
-Refactored our model and mongoose related things which fixed the user registration/login not working
-Added mongoose and route handling of orders
-Added mongoose handling of stock information
-Added order-related adjustment of stock info in server memory (with those changes back-written to the mongodb)
-Created route for the product json so that it retrieves the info as it exists in server memory instead of the static json.
-Worked with Lincoln on the order history route
+Refactored our model and mongoose related things which fixed the user registration/login not working,
+Added mongoose and route handling of orders,
+Added mongoose handling of stock information,
+Added order-related adjustment of stock info in server memory (with those changes back-written to the mongodb),
+Created route for the product json so that it retrieves the info as it exists in server memory instead of the static json.,
+Worked with Lincoln on the order history route,
 Frontend:
-Added logic to various "add to cart" buttons to prevent exceeding stock.
-Minor tweaks to text, added appropriate decimal precision for prices in a couple places.
+Added logic to various "add to cart" buttons to prevent exceeding stock.,
+Minor tweaks to text, added appropriate decimal precision for prices in a couple places.,
 Filled in stuff for the order history part of the dashboard.
 
 Calvin:
