@@ -47,7 +47,13 @@ fetch("products_real_titles")
           <div class="product-price">$${product.price.toFixed(2)}</div>
           <div class="product-category">${product.category}</div>
         </div>
-        <button class="add-to-cart-btn" data-id="${id}">Add to Cart</button>
+        <button 
+          class="add-to-cart-btn ${product.stock === 0 ? "no-stock" : ""}" 
+          data-id="${id}"
+          ${product.stock === 0 ? "disabled" : ""}
+        >
+          ${product.stock === 0 ? "No Stock" : "Add to Cart"}
+        </button>
       `;
 
       // Prevent modal from opening when clicking the Add Cart button
@@ -218,11 +224,24 @@ function attachAddToCartButtons() {
           btn.classList.add("added-to-cart");
           btn.textContent = "Added to Cart";
           btn.disabled = true;
-          setTimeout(() => {
-            btn.classList.remove("added-to-cart");
-            btn.textContent = "Add to Cart";
-            btn.disabled = false;
-          }, 1000);
+
+          // Check remaining stock
+          const stockLeft = productsData.find((p) => p.sys.id === id).fields
+            .stock;
+
+          if (stockLeft === 0) {
+            // Out of stock now → permanently disable button
+            btn.textContent = "No Stock";
+            btn.classList.add("no-stock");
+            btn.disabled = true;
+          } else {
+            // Still stock left → restore button after animation
+            setTimeout(() => {
+              btn.classList.remove("added-to-cart");
+              btn.textContent = "Add to Cart";
+              btn.disabled = false;
+            }, 1000);
+          }
         }
       });
     });
@@ -238,6 +257,10 @@ const cartOverlay = document.getElementById("cart-overlay");
 
 if (cartButton && cartSidebar && cartOverlay) {
   cartButton.addEventListener("click", () => {
+    // Close product modal if it is open
+    if (!modal.classList.contains("hidden")) {
+      closeModal();
+    }
     cartSidebar.classList.add("visible");
     cartOverlay.classList.add("visible");
     renderCart();
